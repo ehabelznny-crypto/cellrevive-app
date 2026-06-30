@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CellRevive AI - ماسح الهندسة الجزيئية</title>
+    <style>
+        :root {
+            --emerald-green: #046307;
+            --mitochondrial-blue: #0055ff;
+            --alert-orange: #ff9900;
+            --dark-bg: #0b0f19;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .scanner-container {
+            max-width: 500px;
+            width: 100%;
+            background: #111827;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            position: relative;
+        }
+        .viewfinder {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=500&auto=format&fit=crop') center/cover;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* محاكاة مربعات التعرف الذكي للذكاء الاصطناعي */
+        .ai-box {
+            position: absolute;
+            border: 3px solid var(--mitochondrial-blue);
+            background: rgba(0, 85, 255, 0.1);
+            border-radius: 8px;
+            padding: 5px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 15px var(--mitochondrial-blue);
+        }
+        #rice-box {
+            top: 40px;
+            left: 50px;
+            width: 180px;
+            height: 140px;
+        }
+        #salad-box {
+            bottom: 40px;
+            right: 40px;
+            width: 150px;
+            height: 120px;
+            border-color: var(--emerald-green);
+            background: rgba(4, 99, 7, 0.15);
+            box-shadow: 0 0 15px var(--emerald-green);
+        }
+        .scan-laser {
+            width: 100%;
+            height: 4px;
+            background: var(--mitochondrial-blue);
+            position: absolute;
+            top: 0;
+            box-shadow: 0 0 15px var(--mitochondrial-blue);
+            animation: laserMove 3s linear infinite;
+        }
+        .interface-body {
+            padding: 25px;
+        }
+        .status-badge {
+            background: rgba(255, 153, 0, 0.15);
+            border: 1px solid var(--alert-orange);
+            color: var(--alert-orange);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .rescue-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .rescue-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--mitochondrial-blue);
+        }
+        .rescue-icon {
+            font-size: 24px;
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 12px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .rescue-text h4 {
+            margin: 0 0 5px 0;
+            font-size: 15px;
+            color: #ffffff;
+        }
+        .rescue-text p {
+            margin: 0;
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.4;
+        }
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: var(--emerald-green);
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        @keyframes laserMove {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="scanner-container">
+    <div class="viewfinder">
+        <div class="scan-laser"></div>
+        
+        <div class="ai-box" id="rice-box">
+            أرز أبيض مصور<br>(1.5 وحدة بصرية)
+        </div>
+        <div class="ai-box" id="salad-box">
+            سلطة خضراء مرتمية<br>( APPROVED )
+        </div>
+    </div>
+
+    <div class="interface-body">
+        <div class="status-badge">⚠️ مصفوفة الإنقاذ اللحظي: مطلوب تعديل حيوي للحمل السكري</div>
+        
+        <div class="rescue-card" onclick="selectRescue('molecular')">
+            <div class="rescue-icon">🧪</div>
+            <div class="rescue-text">
+                <h4>المقاصة الجزيئية الكيميائية</h4>
+                <p>أضف ملعقة كبيرة من خل التفاح العضوي إلى كوب ماء قبل الأكل لتثبيط إنزيمات هضم النشا.</p>
+            </div>
+        </div>
+
+        <div class="rescue-card" onclick="selectRescue('kinetic')">
+            <div class="rescue-icon">👟</div>
+            <div class="rescue-text">
+                <h4>المقاصة الحركية الميكانيكية</h4>
+                <p>تفعيل تقلصات عضلة الساق (Soleus Pushups) لـ 6 دقائق بعد الأكل بـ 20 دقيقة لفتح بوابات GLUT4.</p>
+            </div>
+        </div>
+
+        <div class="rescue-card" onclick="selectRescue('volumetric')">
+            <div class="rescue-icon">🍽️</div>
+            <div class="rescue-text">
+                <h4>تقليص الحجم البصري الفوري</h4>
+                <p>اترك ثلث كمية الأرز الحالية في الطبق لخفض الحمل الجلوكوزي المتوقع بنسبة 35% حتمياً.</p>
+            </div>
+        </div>
+
+        <button class="action-btn" onclick="confirmModification()">اعتماد التعديل وتصديق الوجبة خلاياك</button>
+    </div>
+</div>
+
+<script>
+    function selectRescue(type) {
+        alert("تم اختيار نمط المقاصة الحيوية المفضل: " + type + ". سيقوم النظام بمراقبة أثره على المنحنى اللحظي.");
+    }
+    function confirmModification() {
+        const badge = document.querySelector('.status-badge');
+        badge.style.background = "rgba(4, 99, 7, 0.2)";
+        badge.style.borderColor = "var(--emerald-green)";
+        badge.style.color = "var(--emerald-green)";
+        badge.innerText = "✓ تم تصديق الوجبة بالكامل! خلاياك في أمان الآن";
+        alert("تم إرسال إشارات الاستجابة الحيوية للسيرفر بنجاح وتأمين البنكرياس.");
+    }
+</script>
+
+</body>
+</html>
