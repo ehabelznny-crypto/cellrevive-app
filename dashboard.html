@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CellRevive AI - لوحة تحكم الاستشاري السيادية</title>
+    <style>
+        :root {
+            --emerald-green: #046307;
+            --mitochondrial-blue: #0055ff;
+            --alert-orange: #ff9900;
+            --dark-bg: #0b0f19;
+            --panel-bg: #111827;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+        /* القائمة الجانبية السيادية */
+        .sidebar {
+            width: 260px;
+            background-color: var(--panel-bg);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            box-sizing: border-box;
+        }
+        .sidebar h2 {
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--emerald-green);
+            padding-bottom: 10px;
+        }
+        .menu-item {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255,255,255,0.7);
+        }
+        .menu-item.active, .menu-item:hover {
+            background: rgba(0, 85, 255, 0.1);
+            color: #fff;
+            border-right: 4px solid var(--mitochondrial-blue);
+        }
+        /* المنطقة الرئيسية للبيانات */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .header-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            flex: 1;
+            background-color: var(--panel-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+        }
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .stat-card .value.green { color: #10b981; }
+        /* جدول مراقبة الحالات الاستراتيجي */
+        .patient-table-container {
+            background-color: var(--panel-bg);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .patient-table-container h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        th {
+            color: rgba(255,255,255,0.4);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        td {
+            font-size: 14px;
+        }
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        .status-dot.active { background-color: #10b981; box-shadow: 0 0 10px #10b981; }
+        .status-dot.warning { background-color: var(--alert-orange); box-shadow: 0 0 10px var(--alert-orange); }
+        
+        .action-link {
+            color: var(--mitochondrial-blue);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .action-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>CellRevive Hub</h2>
+        <div class="menu-item active">📊 المراقبة الكلية حية</div>
+        <div class="menu-item">👥 سجل المرضى الخلوي</div>
+        <div class="menu-item">🔬 دالات معادلة CRI</div>
+        <div class="menu-item">⚙️ إعدادات الخوارزميات</div>
+    </div>
+
+    <div class="main-content">
+        <div style="margin-bottom: 25px;">
+            <h1 style="margin: 0; font-size: 26px;">لوحة الاستشاري والتحكم الاستراتيجي</h1>
+            <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.5); font-size: 14px;">مراقبة حية لحظية لمعدلات الالتهام الذاتي وعكس مسار مقاومة الإنسولين</p>
+        </div>
+
+        <div class="header-stats">
+            <div class="stat-card">
+                <h3>إجمالي الحالات النشطة</h3>
+                <div class="value">1,248 مريض</div>
+            </div>
+            <div class="stat-card">
+                <h3>معدل الإنهاء وعكس السكري الكلي</h3>
+                <div class="value green">92.4%</div>
+            </div>
+            <div class="stat-card">
+                <h3>إجمالي الخلايا المرممة (تقديري)</h3>
+                <div class="value" style="color: var(--mitochondrial-blue);">4.8M خلية</div>
+            </div>
+        </div>
+
+        <div class="patient-table-container">
+            <h3>خريطة الحرارة الأيضية للمرضى الحركيين</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم المريض</th>
+                        <th>مؤشر مقاومة الإنسولين (HOMA-IR)</th>
+                        <th>مؤشر دهون الكبد (TyG)</th>
+                        <th>العمر الأيضي الحالي</th>
+                        <th>الحالة الخلوية اللحظية</th>
+                        <th>العمليات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>أحمد م. عبد الله</td>
+                        <td>4.2 <span style="color: #ef4444; font-size: 11px;">(مرتفع)</span></td>
+                        <td>8.9</td>
+                        <td>54.2 عاماً</td>
+                        <td><span class="status-dot active"></span>صيام: إذابة الدهون الحشوية</td>
+                        <td><span class="action-link" onclick="openPatient('أحمد')">فحص وتعديل الجينات</span></td>
+                    </tr>
+                    <tr>
+                        <td>سارة ج. التميمي</td>
+                        <td>1.8 <span style="color: #10b981; font-size: 11px;">(متعافي)</span></td>
+                        <td>7.2</td>
+                        <td>31.0 عاماً</td>
+                        <td><span class="status-dot active"></span>تعديل المستقبلات الفوق جينية</td>
+                        <td><span class="action-link" onclick="openPatient('سارة')">فحص وتعديل الجينات</span></td>
+                    </tr>
+                    <tr>
+                        <td>محمود خ. الراوي</td>
+                        <td>5.1 <span style="color: #ef4444; font-size: 11px;">(حرجة)</span></td>
+                        <td>9.4</td>
+                        <td>61.5 عاماً</td>
+                        <td><span class="status-dot warning"></span>إجهاد كورتيزول حاد (تثبيت)</td>
+                        <td><span class="action-link" onclick="openPatient('محمود')">فحص وتعديل الجينات</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script>
+    function openPatient(name) {
+        alert("جاري سحب البصمة الحيوية الكاملة وسجل المقاصة اللحظي للمريض: " + name + " مباشرة من السيرفر السحابي...");
+    }
+</script>
+
+</body>
+</html>
