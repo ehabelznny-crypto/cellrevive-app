@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CellRevive AI - البوابة السيادية المشفرة</title>
+    <title>CellRevive AI - البوابة المشفرة الموقوتة</title>
     <style>
         :root { --emerald-green: #046307; --mitochondrial-blue: #0055ff; --dark-bg: #0b0f19; }
         body { font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at center, #111827, var(--dark-bg)); color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
@@ -21,24 +21,27 @@
         #activation-screen { display: flex; flex-direction: column; align-items: center; text-align: center; }
         .lock-icon { font-size: 50px; margin-bottom: 20px; color: var(--mitochondrial-blue); }
         #app-content { display: none; }
+        .expiry-note { font-size: 12px; color: #ff9900; text-align: center; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>CellRevive AI</h1>
-    <div class="subtitle">المنظومة السيادية الحتمية للترميم الخلوي</div>
+    <div class="subtitle">المنظومة السيادية للترميم الخلوي وعكس السكري</div>
 
+    <!-- 1. شاشة التفعيل -->
     <div id="activation-screen">
         <div class="lock-icon">🔒</div>
-        <h3 style="margin-top:0;">نظام مغلق ومحمي جزيئياً</h3>
-        <p style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:20px;">الرجاء إدخال كود التفعيل الخاص بك الممنوح لك من الدكتور إيهاب الزني لتفعيل البصمة الأيضية.</p>
+        <h3>نظام التفعيل الموقوت</h3>
+        <p style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:20px;">الرجاء إدخال كود الاشتراك (30 أو 90 يوماً) الممنوح لك من الدكتور إيهاب الزني.</p>
         <div class="input-group" style="width:100%;">
-            <input type="text" id="activation-key" placeholder="ادخل كود التفعيل هنا (مثال: CR-2026-A1)" style="text-align:center; letter-spacing:2px;">
+            <input type="text" id="activation-key" placeholder="ادخل الكود (مثال: CR30-A1)" style="text-align:center; letter-spacing:2px;">
         </div>
-        <button onclick="verifyActivationCode()" style="background: var(--mitochondrial-blue);">تفعيل المنصة الآن</button>
+        <button onclick="verifyActivationCode()" style="background: var(--mitochondrial-blue);">تفعيل فترة الاشتراك الآن</button>
     </div>
 
+    <!-- 2. محتوى البرنامج -->
     <div id="app-content">
         <div id="setup-form">
             <div class="input-group"><label>السكر الصائم (FBG) - مجم/دسل</label><input type="number" id="fbg" value="140"></div>
@@ -54,47 +57,64 @@
             <h3 style="color: var(--emerald-green); margin-bottom: 10px;">تم حساب البصمة الحيوية بنجاح</h3>
             <p id="display-homa" style="font-size: 15px;"></p>
         </div>
+        <div id="expiry-msg" class="expiry-note"></div>
     </div>
 </div>
 
 <script>
-    const validKeys = ["CR-2026-A1", "CR-2026-B2", "CR-2026-C3", "CR-2026-D4", "CR-2026-E5"];
+    // الأكواد المعتمدة ومقسمة حسب المدة
+    const keys30Days = ["CR30-A1", "CR30-B2", "CR30-C3"];
+    const keys90Days = ["CR90-X1", "CR90-Y2", "CR90-Z3"];
 
     window.onload = function() {
-        const savedKey = localStorage.getItem("active_user_key");
-        let revokedKeys = JSON.parse(localStorage.getItem("revoked_keys") || "[]");
+        const activationTime = localStorage.getItem("activation_time");
+        const durationDays = parseInt(localStorage.getItem("subscription_duration") || "0");
 
-        if (savedKey && revokedKeys.includes(savedKey)) {
-            localStorage.clear();
-            alert("⚠️ انتهت فترة صلاحية اشتراكك في برنامج الترميم الخلوي. يرجى التواصل مع الدكتور إيهاب الزني.");
-            window.location.reload();
-        } else if (localStorage.getItem("cellrevive_active") === "true") {
-            showApp();
+        if (activationTime && durationDays > 0) {
+            const now = new Date().getTime();
+            const daysPassed = (now - parseInt(activationTime)) / (1000 * 60 * 60 * 24);
+
+            // فحص الصلاحية الصارم: إذا انتهت الأيام، دمر التفعيل فوراً وطرد!
+            if (daysPassed >= durationDays) {
+                localStorage.clear();
+                alert("⚠️ انتهت مدة اشتراكك (30/90 يوماً) في برنامج الترميم الخلوي. يرجى مراجعة الدكتور إيهاب لتجديد الصلاحية.");
+                window.location.reload();
+            } else {
+                const remainingDays = Math.ceil(durationDays - daysPassed);
+                showApp(remainingDays);
+            }
         }
     }
 
     function verifyActivationCode() {
         const inputCode = document.getElementById("activation-key").value.trim();
-        let revokedKeys = JSON.parse(localStorage.getItem("revoked_keys") || "[]");
+        let duration = 0;
 
-        if (revokedKeys.includes(inputCode)) {
-            alert("🚫 هذا الكود منتهي الصلاحية وتم إيقافه من قِبل إدارة البرنامج الطبي.");
-            return;
+        if (keys30Days.includes(inputCode)) {
+            duration = 30; // باقة شهر
+        } else if (keys90Days.includes(inputCode)) {
+            duration = 90; // باقة 3 شهور
         }
 
-        if (validKeys.includes(inputCode)) {
+        if (duration > 0) {
+            const now = new Date().getTime();
             localStorage.setItem("cellrevive_active", "true");
-            localStorage.setItem("active_user_key", inputCode);
-            alert("🔒 تم التحقق من الكود السيادي! مرحباً بك في عالم الشفاء الجزيئي.");
-            showApp();
+            localStorage.setItem("activation_time", now.toString()); // تسجيل لحظة التفعيل بدقة
+            localStorage.setItem("subscription_duration", duration.toString());
+            
+            alert(`🔒 تم التفعيل بنجاح! اشتراكك مفعّل وصالح لمدة ${duration} يوماً كاملة من الآن.`);
+            showApp(duration);
         } else {
-            alert("❌ كود التفعيل غير صحيح. يرجى التواصل مع الدكتور إيهاب الزني.");
+            alert("❌ كود الاشتراك غير صحيح أو غير مخصص لهذه الباقة. يرجى التحقق منه.");
         }
     }
 
-    function showApp() {
+    function showApp(daysLeft) {
         document.getElementById("activation-screen").style.display = "none";
         document.getElementById("app-content").style.display = "block";
+        const msgDiv = document.getElementById("expiry-msg");
+        msgDiv.style.display = "block";
+        msgDiv.innerText = `⏳ متبقي على صلاحية وصولك للبرنامج: ${daysLeft} يوم؛ تحت إشراف د. إيهاب الزني.`;
     }
 
     function generateSovereignProfile() {
