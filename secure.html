@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CellRevive AI - البوابة السيادية المشفرة</title>
+    <style>
+        :root { --emerald-green: #046307; --mitochondrial-blue: #0055ff; --dark-bg: #0b0f19; }
+        body { font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at center, #111827, var(--dark-bg)); color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { max-width: 500px; width: 100%; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 24px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        h1 { text-align: center; color: #ffffff; font-size: 24px; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 30px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: rgba(255,255,255,0.8); }
+        input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #fff; font-size: 16px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; border: none; border-radius: 14px; background: linear-gradient(135deg, var(--emerald-green), #089112); color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .result-container { display: none; margin-top: 30px; text-align: center; }
+        .bio-ring { width: 180px; height: 180px; border-radius: 50%; border: 6px dashed var(--mitochondrial-blue); margin: 0 auto 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .bio-age { font-size: 36px; font-weight: bold; color: #ffffff; }
+        .bio-label { font-size: 12px; color: rgba(255,255,255,0.6); }
+        #activation-screen { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .lock-icon { font-size: 50px; margin-bottom: 20px; color: var(--mitochondrial-blue); }
+        #app-content { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>CellRevive AI</h1>
+    <div class="subtitle">المنظومة السيادية الحتمية للترميم الخلوي</div>
+
+    <div id="activation-screen">
+        <div class="lock-icon">🔒</div>
+        <h3 style="margin-top:0;">نظام مغلق ومحمي جزيئياً</h3>
+        <p style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:20px;">الرجاء إدخال كود التفعيل الخاص بك الممنوح لك من الدكتور إيهاب الزني لتفعيل البصمة الأيضية.</p>
+        <div class="input-group" style="width:100%;">
+            <input type="text" id="activation-key" placeholder="ادخل كود التفعيل هنا (مثال: CR-2026-A1)" style="text-align:center; letter-spacing:2px;">
+        </div>
+        <button onclick="verifyActivationCode()" style="background: var(--mitochondrial-blue);">تفعيل المنصة الآن</button>
+    </div>
+
+    <div id="app-content">
+        <div id="setup-form">
+            <div class="input-group"><label>السكر الصائم (FBG) - مجم/دسل</label><input type="number" id="fbg" value="140"></div>
+            <div class="input-group"><label>الإنسولين الصائم - وحدة/مل</label><input type="number" id="insulin" value="18"></div>
+            <div class="input-group"><label>الدهون الثلاثية (TG) - مجم/دسل</label><input type="number" id="tg" value="210"></div>
+            <div class="input-group"><label>الكوليسترول النافع (HDL) - مجم/دسل</label><input type="number" id="hdl" value="35"></div>
+            <div class="input-group"><label>السكر التراكمي (HbA1c) - %</label><input type="number" id="hba1c" value="7.4"></div>
+            <button onclick="generateSovereignProfile()">توليد البصمة الأيضية الشاملة</button>
+        </div>
+
+        <div id="result-screen" class="result-container">
+            <div class="bio-ring"><div class="bio-age" id="display-age">--</div><div class="bio-label">العمر البيولوجي الأيضي</div></div>
+            <h3 style="color: var(--emerald-green); margin-bottom: 10px;">تم حساب البصمة الحيوية بنجاح</h3>
+            <p id="display-homa" style="font-size: 15px;"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const validKeys = ["CR-2026-A1", "CR-2026-B2", "CR-2026-C3", "CR-2026-D4", "CR-2026-E5"];
+
+    window.onload = function() {
+        const savedKey = localStorage.getItem("active_user_key");
+        let revokedKeys = JSON.parse(localStorage.getItem("revoked_keys") || "[]");
+
+        if (savedKey && revokedKeys.includes(savedKey)) {
+            localStorage.clear();
+            alert("⚠️ انتهت فترة صلاحية اشتراكك في برنامج الترميم الخلوي. يرجى التواصل مع الدكتور إيهاب الزني.");
+            window.location.reload();
+        } else if (localStorage.getItem("cellrevive_active") === "true") {
+            showApp();
+        }
+    }
+
+    function verifyActivationCode() {
+        const inputCode = document.getElementById("activation-key").value.trim();
+        let revokedKeys = JSON.parse(localStorage.getItem("revoked_keys") || "[]");
+
+        if (revokedKeys.includes(inputCode)) {
+            alert("🚫 هذا الكود منتهي الصلاحية وتم إيقافه من قِبل إدارة البرنامج الطبي.");
+            return;
+        }
+
+        if (validKeys.includes(inputCode)) {
+            localStorage.setItem("cellrevive_active", "true");
+            localStorage.setItem("active_user_key", inputCode);
+            alert("🔒 تم التحقق من الكود السيادي! مرحباً بك في عالم الشفاء الجزيئي.");
+            showApp();
+        } else {
+            alert("❌ كود التفعيل غير صحيح. يرجى التواصل مع الدكتور إيهاب الزني.");
+        }
+    }
+
+    function showApp() {
+        document.getElementById("activation-screen").style.display = "none";
+        document.getElementById("app-content").style.display = "block";
+    }
+
+    function generateSovereignProfile() {
+        const fbg = parseFloat(document.getElementById('fbg').value);
+        const insulin = parseFloat(document.getElementById('insulin').value);
+        const tg = parseFloat(document.getElementById('tg').value);
+        const hdl = parseFloat(document.getElementById('hdl').value);
+        const hba1c = parseFloat(document.getElementById('hba1c').value);
+
+        const homa_ir = (fbg * insulin) / 405.0;
+        const tyg_index = Math.log((tg * fbg) / 2.0);
+        const degradation_factor = (tyg_index * 4.5) + (hba1c * 3.2) + (homa_ir * 0.5);
+        const biological_age = 20.0 + degradation_factor;
+
+        document.getElementById('setup-form').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        document.getElementById('display-age').innerText = biological_age.toFixed(1);
+        document.getElementById('display-homa').innerHTML = `مؤشر مقاومة الإنسولين الخلوية (HOMA-IR): <strong>${homa_ir.toFixed(2)}</strong><br>مؤشر دهان الكبد والأحشاء (TyG Index): <strong>${tyg_index.toFixed(2)}</strong>`;
+    }
+</script>
+
+</body>
+</html>
