@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CellRevive AI - البوابة المشفرة الموقوتة</title>
+    <title>CellRevive AI - البوابة السيادية المشفرة</title>
     <style>
         :root { --emerald-green: #046307; --mitochondrial-blue: #0055ff; --dark-bg: #0b0f19; }
         body { font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at center, #111827, var(--dark-bg)); color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
@@ -33,8 +33,8 @@
     <!-- 1. شاشة التفعيل -->
     <div id="activation-screen">
         <div class="lock-icon">🔒</div>
-        <h3>نظام التفعيل الموقوت</h3>
-        <p style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:20px;">الرجاء إدخال كود الاشتراك (30 أو 90 يوماً) الممنوح لك من الدكتور إيهاب الزني.</p>
+        <h3>نظام تفعيل الصلاحية</h3>
+        <p style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:20px;">الرجاء إدخال كود الاشتراك الممنوح لك من الدكتور إيهاب حشمت الظني لتفعيل الحساب.</p>
         <div class="input-group" style="width:100%;">
             <input type="text" id="activation-key" placeholder="ادخل الكود (مثال: CR30-A1)" style="text-align:center; letter-spacing:2px;">
         </div>
@@ -62,7 +62,6 @@
 </div>
 
 <script>
-    // الأكواد المعتمدة ومقسمة حسب المدة
     const keys30Days = ["CR30-A1", "CR30-B2", "CR30-C3"];
     const keys90Days = ["CR90-X1", "CR90-Y2", "CR90-Z3"];
 
@@ -74,10 +73,9 @@
             const now = new Date().getTime();
             const daysPassed = (now - parseInt(activationTime)) / (1000 * 60 * 60 * 24);
 
-            // فحص الصلاحية الصارم: إذا انتهت الأيام، دمر التفعيل فوراً وطرد!
             if (daysPassed >= durationDays) {
                 localStorage.clear();
-                alert("⚠️ انتهت مدة اشتراكك (30/90 يوماً) في برنامج الترميم الخلوي. يرجى مراجعة الدكتور إيهاب لتجديد الصلاحية.");
+                alert("⚠️ انتهت فترة صلاحية اشتراكك في برنامج الترميم الخلوي. يرجى مراجعة الدكتور إيهاب حشمت الظني.");
                 window.location.reload();
             } else {
                 const remainingDays = Math.ceil(durationDays - daysPassed);
@@ -91,21 +89,21 @@
         let duration = 0;
 
         if (keys30Days.includes(inputCode)) {
-            duration = 30; // باقة شهر
+            duration = 30;
         } else if (keys90Days.includes(inputCode)) {
-            duration = 90; // باقة 3 شهور
+            duration = 90;
         }
 
         if (duration > 0) {
             const now = new Date().getTime();
             localStorage.setItem("cellrevive_active", "true");
-            localStorage.setItem("activation_time", now.toString()); // تسجيل لحظة التفعيل بدقة
+            localStorage.setItem("activation_time", now.toString());
             localStorage.setItem("subscription_duration", duration.toString());
             
-            alert(`🔒 تم التفعيل بنجاح! اشتراكك مفعّل وصالح لمدة ${duration} يوماً كاملة من الآن.`);
+            alert(`🔒 تم التحقق بنجاح! اشتراكك مفعّل وصالح لمدة ${duration} يوماً كاملة.`);
             showApp(duration);
         } else {
-            alert("❌ كود الاشتراك غير صحيح أو غير مخصص لهذه الباقة. يرجى التحقق منه.");
+            alert("❌ كود الاشتراك غير صحيح. يرجى التحقق منه والمحاولة مرة أخرى.");
         }
     }
 
@@ -114,7 +112,7 @@
         document.getElementById("app-content").style.display = "block";
         const msgDiv = document.getElementById("expiry-msg");
         msgDiv.style.display = "block";
-        msgDiv.innerText = `⏳ متبقي على صلاحية وصولك للبرنامج: ${daysLeft} يوم؛ تحت إشراف د. إيهاب الظني.`;
+        msgDiv.innerText = `⏳ متبقي على صلاحية وصولك للبرنامج: ${daysLeft} يوم؛ تحت إشراف د. إيهاب حشمت الظني.`;
     }
 
     function generateSovereignProfile() {
