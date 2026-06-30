@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CellRevive AI - المنصة السيادية</title>
+    <style>
+        :root {
+            --emerald-green: #046307;
+            --mitochondrial-blue: #0055ff;
+            --dark-bg: #0b0f19;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at center, #111827, var(--dark-bg));
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 24px;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--mitochondrial-blue);
+            box-shadow: 0 0 10px rgba(0, 85, 255, 0.3);
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--emerald-green), #089112);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(4, 99, 7, 0.4);
+        }
+        /* دائرة العمر الأيضي المتوهجة السيادية */
+        .result-container {
+            display: none;
+            margin-top: 30px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .bio-ring {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 6px dashed var(--mitochondrial-blue);
+            margin: 0 auto 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.2);
+            animation: rotateRing 20s linear infinite;
+        }
+        .bio-ring-content {
+            animation: stopRotate 20s linear infinite;
+        }
+        .bio-age {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        .bio-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 5px;
+        }
+        @keyframes rotateRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>CellRevive AI</h1>
+    <div class="subtitle">المحرك السيادي لعكس مسار السكري ومقاومة الإنسولين</div>
+    
+    <div id="setup-form">
+        <div class="input-group">
+            <label>السكر الصائم (FBG) - مجم/دسل</label>
+            <input type="number" id="fbg" value="140">
+        </div>
+        <div class="input-group">
+            <label>الإنسولين الصائم (Fast Insulin) - وحدة/مل</label>
+            <input type="number" id="insulin" value="18">
+        </div>
+        <div class="input-group">
+            <label>الدهون الثلاثية (TG) - مجم/دسل</label>
+            <input type="number" id="tg" value="210">
+        </div>
+        <div class="input-group">
+            <label>الكوليسترول النافع (HDL) - مجم/دسل</label>
+            <input type="number" id="hdl" value="35">
+        </div>
+        <div class="input-group">
+            <label>السكر التراكمي (HbA1c) - %</label>
+            <input type="number" id="hba1c" value="7.4">
+        </div>
+        <button onclick="generateSovereignProfile()">توليد البصمة الأيضية الشاملة</button>
+    </div>
+
+    <div id="result-screen" class="result-container">
+        <div class="bio-ring">
+            <div class="bio-ring-content">
+                <div class="bio-age" id="display-age">--</div>
+                <div class="bio-label">العمر البيولوجي الأيضي</div>
+            </div>
+        </div>
+        <h3 style="color: var(--emerald-green); margin-bottom: 10px;">تم حساب البصمة الحيوية بنجاح</h3>
+        <p id="display-homa" style="font-size: 15px; rgba(255,255,255,0.8)"></p>
+    </div>
+</div>
+
+<script>
+    function generateSovereignProfile() {
+        // قراءة المدخلات من الشاشة الرسومية
+        const fbg = parseFloat(document.getElementById('fbg').value);
+        const insulin = parseFloat(document.getElementById('insulin').value);
+        const tg = parseFloat(document.getElementById('tg').value);
+        const hdl = parseFloat(document.getElementById('hdl').value);
+        const hba1c = parseFloat(document.getElementById('hba1c').value);
+
+        // محاكاة الاتصال الفوري بالمعادلات الرياضية للحساب اللحظي
+        const homa_ir = (fbg * insulin) / 405.0;
+        const tyg_index = Math.log((tg * fbg) / 2.0);
+        const degradation_factor = (tyg_index * 4.5) + (hba1c * 3.2) + (homa_ir * 0.5);
+        const biological_age = 20.0 + degradation_factor;
+
+        // تحديث الواجهة بصرياً وتفعيل الحركات التفاعلية
+        document.getElementById('setup-form').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        document.getElementById('display-age').innerText = biological_age.toFixed(1);
+        document.getElementById('display-homa').innerHTML = `مؤشر مقاومة الإنسولين الخلوية (HOMA-IR): <strong>${homa_ir.toFixed(2)}</strong><br>مؤشر دهان الكبد والأحشاء (TyG Index): <strong>${tyg_index.toFixed(2)}</strong>`;
+    }
+</script>
+
+</body>
+</html>
