@@ -103,9 +103,40 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# واجهة الترحيب السيادية الكبرى
-st.markdown("<h1>🧬 مصفوفة السيطرة الأيضية — CellRevive AI</h1>", unsafe_allow_html=True)
-st.write("<p style='text-align: center; font-size: 19px; color: #ffd700; font-weight: bold;'>المنصة السحابية الأولى لتدقيق المغذيات وعكس مسار التدهور الخلوي</p>", unsafe_allow_html=True)
+# ====================================================================
+# واجهة الترحيب السيادية الكبرى (تعديل احترافي عالي التباين وضخم الحجم)
+# ====================================================================
+st.markdown("""
+    <h1 style="
+        font-size: 42px !important; 
+        color: #FFD700 !important; 
+        text-align: center !important; 
+        font-weight: 900 !important; 
+        line-height: 1.5 !important;
+        letter-spacing: 1px !important;
+        text-shadow: 0px 4px 20px rgba(255, 215, 0, 0.6) !important;
+        margin-top: 20px !important;
+        margin-bottom: 10px !important;
+        border-bottom: 3px solid #FFD700 !important;
+        padding-bottom: 20px !important;
+    ">
+        🧬 مصفوفة السيطرة الأيضية — CellRevive AI
+    </h1>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+    <p style="
+        font-size: 22px !important; 
+        color: #FFFFFF !important; 
+        text-align: center !important; 
+        font-weight: bold !important;
+        text-shadow: 0px 2px 10px rgba(255, 255, 255, 0.3) !important;
+        margin-bottom: 30px !important;
+    ">
+        المنصة السحابية السيادية الأولى لتعديل المغذيات وعكس مسار التدهور الخلوي
+    </p>
+""", unsafe_allow_html=True)
+
 st.write("---")
 
 # ==========================================
@@ -159,7 +190,7 @@ if not is_master and current_time > expiration_time:
     st.error("🚫 عذراً، تم تفعيل آلية القفل الذاتي لتجاوز الكود المدة الزمنية المخصصة له برمجياً منذ تاريخ أول إدخال.")
     st.stop()
 
-# حساب وحساب الوقت المتبقي للمستخدمين لتشجيعهم وتحفيزهم علمياً
+# حساب الوقت المتبقي للمستخدمين لتشجيعهم وتحفيزهم علمياً
 if is_master:
     time_display = "مستمر ومستدام مدى الحياة ♾️"
 else:
@@ -283,7 +314,7 @@ with tab2:
         else:
             st.success("✅ طبق متوازن ومصادق عليه ويتماشى تماماً مع الخريطة الجينية والغذائية المحددة لاشتراكك السيادي الفاخر.")
 
-# --- التبويب الثالث: المحرك التنبئي والتقرير الطبي المحدث ---
+# --- التبويب الثالث: المحرك التنبئي والتقرير الطبي المُحدث ---
 with tab3:
     st.header("🔮 محرك الاستشراف الجزيئي وعكس تقدم الخلايا")
     
@@ -300,7 +331,7 @@ with tab3:
         st.write("---")
         st.subheader("📄 السجل الكلينيكي الرسمي المعتمد (De-prescription)")
         
-        # التقرير الطبي المُحدث
+        # التقرير الطبي الانجليزي الصارم المنسق
         report_text = f"""[CLINICAL SOVEREIGN REPORT]
 -------------------------------------------
 Date of Evaluation: July 2026
@@ -324,7 +355,7 @@ Status: Officially Verified by CellRevive AI Matrix."""
         st.text_area("معاينة السجل الطبي الموثق بالكامل باللغة الإنجليزية لمنع أي تداخل بالمعاني:", report_text, height=220)
         
         st.download_button(
-            label="📥 تحميل التقرير الطبي المعتمد لمشاركته مع الطبيب المتابع لحالتك",
+            label="📥 تحميل التقرير الطبي المعتمد لمشاركته مع الطبيب المُتابع لحالتك",
             data=report_text,
             file_name="CellRevive_Sovereign_Report.txt",
             mime="text/plain"
