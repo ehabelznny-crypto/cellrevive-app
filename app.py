@@ -84,9 +84,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # العنوان الرئيسي للمنصة العالمية الأولى للترميم الخلوي
-st.markdown('<div class="main-title">🧬 CELLREVIVE AI • المنظومة السيادية</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">االمنصة العالمية للترميم الخلوي وعكس مسار مقاومة الانسولين والسكري من النوع الثاني - إشراف د. إيهاب حشمت الظني 
-
+st.markdown('<div class="main-title">🧬 CELLREVIVE AI • المنظومة المتكاملة</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">المنصة العالمية للترميم الخلوي وعكس مسار مقاومة الانسولين والسكري من النوع الثاني - إشراف د. إيهاب حشمت الظني</div>', unsafe_allow_html=True)
 </div>', unsafe_allow_html=True)
 
 # ==============================================================================
