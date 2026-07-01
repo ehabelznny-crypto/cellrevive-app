@@ -2,132 +2,139 @@ import streamlit as st
 import datetime
 import math
 
-# إعدادات الصفحة السيادية الفاخرة
+# إعدادات المنصة السيادية الكبرى
 st.set_page_config(page_title="CellRevive AI — Sovereign Platform", page_icon="🧬", layout="centered")
 
-# هندسة التصميم الفاخر باللون الأزرق الداكن والذهب الفرعوني مع فرض اتجاه اليمين إلى اليسار (RTL)
+# الهندسة البصرية المتقدمة لعلماء البرمجة (أعلى تباين، فخامة مطلقة، دعم RTL كامل)
 st.markdown("""
     <style>
-    /* فرض الاتجاه العربي لمنع انقلاب الشاشة */
+    /* فرض الاتجاه العربي وضبط الشاشة */
     .main, .block-container, div[data-testid="stSidebarUserContent"] {
         direction: RTL !important;
         text-align: right !important;
     }
     
-    /* تصميم الخلفية الملكية الداكنة العميقة */
+    /* خلفية الأزرق الليلي العميق الغني - شديد الفخامة والوضوح */
     .main {
-        background: linear-gradient(135deg, #051622 0%, #0b2c4d 100%) !important;
+        background: linear-gradient(135deg, #020b14 0%, #05192d 100%) !important;
     }
     
-    /* تعديل ألوان النصوص لتتناسب مع الخلفية الداكنة وتشع فخامة */
-    p, span, label, .stMarkdown {
-        color: #e0e9f4 !important;
+    /* ألوان الكتابة: بيضاء ناصعة وعالية التباين تماماً لإنهاء البهتان */
+    p, span, label, .stMarkdown, .stSelectbox, .stNumberInput {
+        color: #ffffff !important;
+        font-size: 16px !important;
+        font-weight: 500 !important;
     }
     
-    /* العناوين الكبرى بالذهب النفيس والأبيض الملكي */
+    /* العناوين الكبرى بالذهب النقي اللامع المتباين */
     h1 {
-        color: #f4d068 !important;
+        color: #ffd700 !important; /* الذهب النقي */
         font-family: 'Times New Roman', Arial, sans-serif;
         text-align: center;
         font-weight: 900;
-        border-bottom: 2px solid #f4d068;
+        border-bottom: 3px solid #ffd700;
         padding-bottom: 15px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        text-shadow: 0px 4px 10px rgba(255, 215, 0, 0.3);
     }
     
     h2, h3 {
-        color: #f4d068 !important;
-        font-family: Arial, sans-serif;
+        color: #ffd700 !important;
+        font-weight: bold !important;
     }
 
-    /* صناديق التنبيه الفاخرة مبطنة بخلفية داكنة متناسقة */
+    /* صناديق التنبيه الفاخرة - عالية التباين وبخلفية شديدة الوضوح */
     .stAlert {
-        border-right: 5px solid #f4d068 !important;
+        border-right: 6px solid #ffd700 !important;
         border-left: none !important;
-        background-color: #0b2545 !important;
-        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
+        background-color: #092139 !important;
+        box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.6);
         border-radius: 12px;
     }
     .stAlert p {
         color: #ffffff !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
     }
     
-    /* أزرار السيادة الملكية ببريق ذهبي */
+    /* أزرار السيادة الملكية ببريق ذهبي ناري متباين */
     .stButton>button {
-        background: linear-gradient(90deg, #ca6702 0%, #f4d068 100%) !important;
-        color: #051622 !important;
-        border: 1px solid #ffffff;
+        background: linear-gradient(90deg, #b8860b 0%, #ffd700 100%) !important;
+        color: #01060c !important; /* كتابة داكنة جداً داخل الزر الذهبي لراحة العين */
+        border: 2px solid #ffffff;
         width: 100%;
         border-radius: 12px;
-        font-weight: bold;
-        font-size: 18px;
+        font-weight: 900 !important;
+        font-size: 20px !important;
         height: 55px;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(244,208,104,0.2);
+        box-shadow: 0 4px 20px rgba(255,215,0,0.3);
     }
     .stButton>button:hover {
-        background: linear-gradient(90deg, #f4d068 0%, #ffffff 100%) !important;
-        box-shadow: 0 4px 25px rgba(244,208,104,0.4);
+        background: linear-gradient(90deg, #ffd700 0%, #ffffff 100%) !important;
+        box-shadow: 0 6px 30px rgba(255,215,0,0.6);
         cursor: pointer;
     }
 
-    /* التبويبات الأنيقة المتوافقة مع النطاق الداكن */
+    /* التبويبات الاحترافية عالية التباين */
     .stTabs [data-baseweb="tab"] {
-        font-size: 18px;
-        font-weight: bold;
-        color: #a3b8cc !important;
-        padding: 10px 20px;
+        font-size: 19px !important;
+        font-weight: bold !important;
+        color: #a3c2e0 !important; /* أزرق سماوي واضح جداً */
+        padding: 10px 25px;
     }
     .stTabs [data-baseweb="tab"][aria-selected="true"] {
-        color: #f4d068 !important;
-        border-bottom-color: #f4d068 !important;
+        color: #ffd700 !important;
+        border-bottom: 3px solid #ffd700 !important;
     }
     
-    /* القائمة الجانبية الداكنة */
+    /* القائمة الجانبية الداكنة شديدة التباين */
     section[data-testid="stSidebar"] {
-        background-color: #030f18 !important;
-        border-left: 1px solid #134074;
+        background-color: #01060c !important;
+        border-left: 2px solid #ffd700;
     }
     
-    /* منع تداخل النصوص الانجليزية داخل الأسطر العربية */
-    .en-badge {
-        display: inline-block;
-        direction: LTR !important;
-        text-align: left !important;
-        background-color: #f4d068;
-        color: #051622;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-family: monospace;
-        font-size: 14px;
-        font-weight: bold;
+    /* تعديل مربعات الإدخال لتكون واضحة ونصوصها بيضاء ناصعة */
+    input {
+        background-color: #0c2540 !important;
+        color: #ffffff !important;
+        border: 1px solid #ffd700 !important;
+        border-radius: 8px !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# واجهة الترحيب الفخمة المحدثة
+# واجهة الترحيب السيادية الكبرى
 st.markdown("<h1>🧬 مصفوفة السيطرة الأيضية — CellRevive AI</h1>", unsafe_allow_html=True)
-st.write("<p style='text-align: center; font-size: 18px; color: #a3b8cc; font-weight: bold;'>المنصة السحابية السيادية الأولى لتشفير المغذيات وعكس مسار التدهور الخلوي</p>", unsafe_allow_html=True)
+st.write("<p style='text-align: center; font-size: 19px; color: #ffd700; font-weight: bold;'>المنصة السحابية الأولى لتدقيق المغذيات وعكس مسار التدهور الخلوي</p>", unsafe_allow_html=True)
 st.write("---")
 
 # ==========================================
-# 1. قاعدة البيانات والتحقق الفوري من الصلاحية والتفعيل الديناميكي
+# 1. جدار التشفير الجزيئي وأكواد الوصول
 # ==========================================
 
+# الكود المستدام والمفتوح مدى الحياة الخاص بحضرتك كـ Master Developer
+MASTER_CODE = "dr-ehab-sovereign-2026"
+
+# أكواد المشتركين المحدودة (30 و 90 يوماً)
 VALID_30_DAYS = ["rev30-egy-7712", "rev30-egy-2941", "rev30-egy-8850", "rev30-egy-1493", "rev30-egy-6204", "rev30-egy-3319", "rev30-egy-5582", "rev30-egy-9041", "rev30-egy-4723", "rev30-egy-1109"]
 VALID_90_DAYS = ["slv90-royal-9901", "slv90-royal-4412", "slv90-royal-8823", "slv90-royal-1154", "slv90-royal-7765", "slv90-royal-3376", "slv90-royal-5587", "slv90-royal-2298", "slv90-royal-6609", "slv90-royal-1314"]
 
-st.sidebar.markdown("<h2 style='color: #f4d068; text-align: center;'>🔐 جدار التشفير الخلوي</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<h2 style='color: #ffd700; text-align: center;'>🔐 جدار التشفير الخلوي</h2>", unsafe_allow_html=True)
 
 client_code = st.sidebar.text_input("برجاء إدخال كود التنشيط الجزيئي الخاص بك:", value="", type="password").strip().lower()
 
-# الرسائل الملكية الجديدة الفاخرة البعيدة تماماً عن نمط العيادات التقليدي
 if not client_code:
     st.info("👑 مرحباً بك في النطاق السيادي لـ CellRevive AI. تمهيداً لإعادة هندسة التمثيل الغذائي الخاص بك، فضلاً قم بإدخال 'كود التنشيط المشفر' الممنوح لك في القائمة الجانبية؛ لتفعيل المحرك البصري وفك تشفير مستقبلات الخلايا الحية.")
     st.stop()
 
-# تحديد نوع الاشتراك والمدة بناءً على الكود المدخل
-if client_code in VALID_30_DAYS:
+# الفحص والتحقق الديناميكي من صلاحية الكود ونوعه
+is_master = (client_code == MASTER_CODE)
+
+if is_master:
+    duration_days = 99999  # صلاحية لا نهائية ومستدامة
+    package_name = "👑 النطاق السيادي المطلق وصلاحية المطور الرئيسي لـ CellRevive AI"
+    barcode_data = f"CellRevive-Master-Developer-Ehab"
+elif client_code in VALID_30_DAYS:
     duration_days = 30
     package_name = "معسكر الـ 30 يوماً المكثف للمقاصة الأيضية وتنشيط AMPK"
     barcode_data = f"CellRevive-Verified-30Days-{client_code}"
@@ -136,10 +143,10 @@ elif client_code in VALID_90_DAYS:
     package_name = "بروتوكول الترميم الخلوي الشامل والسيادة الجينية (90 يوماً)"
     barcode_data = f"CellRevive-Verified-90Days-{client_code}"
 else:
-    st.error("🚨 رمز التنشيط غير متطابق مع المصفوفة الجزيئية، أو انتهت فترة الصلاحية المحددة له.")
+    st.error("🚨 رمز التنشيط غير متطابق مع مصفوفة المنصة، أو انتهت فترة الصلاحية المحددة له.")
     st.stop()
 
-# آلية التفعيل الفوري عند أول إدخال وحساب تاريخ انتهاء الصلاحية الذاتي
+# آلية احتساب مدة انتهاء التفعيل للمشتركين فقط (مع استثناء كود المطور المستدام)
 if "activation_date" not in st.session_state:
     st.session_state["activation_date"] = datetime.datetime.now()
 
@@ -147,27 +154,34 @@ activation_time = st.session_state["activation_date"]
 expiration_time = activation_time + datetime.timedelta(days=duration_days)
 current_time = datetime.datetime.now()
 
-# التحقق من القفل التلقائي بعد انتهاء الصلاحية
-if current_time > expiration_time:
+# التحقق من القفل الذاتي للمشتركين فقط
+if not is_master and current_time > expiration_time:
     st.error("🚫 عذراً، تم تفعيل آلية القفل الذاتي لتجاوز الكود المدة الزمنية المخصصة له برمجياً منذ تاريخ أول إدخال.")
     st.stop()
 
-# حساب الوقت المتبقي للعميل لبهجته وتحفيزه
-days_remaining = (expiration_time - current_time).days
-if days_remaining == 0:
-    hours_remaining = round((expiration_time - current_time).seconds / 3600, 1)
-    time_display = f"{hours_remaining} ساعة"
+# حساب وحساب الوقت المتبقي للمستخدمين لتشجيعهم وتحفيزهم علمياً
+if is_master:
+    time_display = "مستمر ومستدام مدى الحياة ♾️"
 else:
-    time_display = f"{days_remaining} يوم"
+    days_remaining = (expiration_time - current_time).days
+    if days_remaining == 0:
+        hours_remaining = round((expiration_time - current_time).seconds / 3600, 1)
+        time_display = f"{hours_remaining} ساعة"
+    else:
+        time_display = f"{days_remaining} يوم"
 
-# إظهار البيانات والباركود في القائمة الجانبية الفاخرة
-st.sidebar.success(f"👑 تم فك تشفير الكود بنجاح!")
-st.sidebar.markdown(f"**نطاق البروتوكول:** \n {package_name}")
-st.sidebar.markdown(f"**حالة المصفوفة:** نشطة وتعمل بكامل طاقة المعالجة")
-st.sidebar.markdown(f"**تدمير ذاتي تلقائي بعد:** <span style='color:#f4d068; font-weight:bold;'>{time_display}</span>", unsafe_allow_html=True)
+# إظهار لوحة التحكم والباركود في القائمة الجانبية الفاخرة
+if is_master:
+    st.sidebar.success(f"👑 أهلاً بك يا دكتور إيهاب في لوحة التحكم المستدامة!")
+else:
+    st.sidebar.success(f"✅ تم فك تشفير الكود بنجاح!")
 
-qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={barcode_data}&color=f4d068&bgcolor=030f18"
-st.sidebar.image(qr_url, caption="📟 باركود الهوية الرقمية الموثق للمشترك")
+st.sidebar.markdown(f"**نطاق البروتوكول:** \n <span style='color:#ffffff;'>{package_name}</span>", unsafe_allow_html=True)
+st.sidebar.markdown(f"**حالة المصفوفة:** نشطة وتعمل بكامل طاقة المعالجة الجزيئية")
+st.sidebar.markdown(f"**صلاحية الدخول للبرنامج:** <span style='color:#ffd700; font-weight:bold; font-size:18px;'>{time_display}</span>", unsafe_allow_html=True)
+
+qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={barcode_data}&color=ffd700&bgcolor=01060c"
+st.sidebar.image(qr_url, caption="📟 باركود الهوية الرقمية الموثق للمنصة")
 
 # ==========================================
 # 2. الدستور الدوائي المصري المحدث 2026
@@ -187,7 +201,7 @@ EGYPTIAN_DRUG_REGISTRY = {
 }
 
 # ==========================================
-# 3. تبويبات واجهة المستخدم الملكية (يمين إلى يسار)
+# 3. تبويبات واجهة المستخدم السيادية عالية التباين
 # ==========================================
 tab1, tab2, tab3 = st.tabs(["📋 القياسات الحيوية والدواء", "📸 المسح البصري للوجبات والجلد", "🔮 محرك التنبؤ وعكس السكري"])
 
@@ -269,30 +283,30 @@ with tab2:
         else:
             st.success("✅ طبق متوازن ومصادق عليه ويتماشى تماماً مع الخريطة الجينية والغذائية المحددة لاشتراكك السيادي الفاخر.")
 
-# --- التبويب الثالث: المحرك التنبئي والتقرير الطبي الدقيق ---
+# --- التبويب الثالث: المحرك التنبئي والتقرير الطبي المحدث ---
 with tab3:
     st.header("🔮 محرك الاستشراف الجزيئي وعكس تقدم الخلايا")
     
     if st.button("🚀 تشغيل محاكاة العكس الأيضي الكبرى"):
         st.markdown(f"### 🧬 العمر البيولوجي الحالي لخلاياك: {round(biological_age, 1)} سنة")
         
-        # حساب التراجع المتوقع بناء على نوع الاشتراك لضمان الفخامة والبهجة والتحفيز العلمي
-        age_reduction = 7.2 if duration_days == 90 else 3.1
+        # حساب التراجع التنبئي لإسعاد وتحفيز المشتركين علمياً
+        age_reduction = 7.2 if duration_days >= 90 else 3.1
         target_age = round(biological_age - age_reduction, 1)
         
-        st.markdown(f"### 📈 التنبؤ الدقيق بنهاية بروتوكول الـ ({duration_days}) يوماً:")
+        st.markdown(f"### 📈 التنبؤ الاستشرافي بنهاية بروتوكول الـ ({duration_days if not is_master else 90}) يوماً:")
         st.info(f"✨ بفضل بروتوكول الأغذية المشفرة وتنشيط إنتاج الـ SCFAs في الأمعاء لفتح مستقبلات الأنسولين المغلقة، يتوقع تراجع عمرك البيولوجي إلى {target_age} سنة، مع تلاشي تام لعلامات الشواك الأسود وعودة حساسية الخلايا لوضعها الفطري الأصيل.")
         
         st.write("---")
-        st.subheader("📄 السجل الأكلينيكي الرسمي المعتمد (De-prescription)")
+        st.subheader("📄 السجل الكلينيكي الرسمي المعتمد (De-prescription)")
         
-        # صياغة النص الإنجليزي الصارم الموجه في قالب مستقل تماماً لمنع التداخل واللخبطة
+        # التقرير الطبي المُحدث
         report_text = f"""[CLINICAL SOVEREIGN REPORT]
 -------------------------------------------
 Date of Evaluation: July 2026
 Patient Identification: {patient_name_in}
 Verification Code Status: {client_code.upper()}
-Dynamic Duration Window: {duration_days} Days Active
+Dynamic Duration Window: {duration_days if not is_master else 'LIFETIME ACCESS'}
 
 [BIOMEDICAL MATRIX]
 - Fasting Blood Glucose: {fbg} mg/dL
@@ -303,7 +317,7 @@ Dynamic Duration Window: {duration_days} Days Active
 [CLINICAL ASSESSMENT & ORGAN SAFETY]
 - Current Drug Category Rule: {selected_category.upper()}
 - Organ Safety Status Flag: {organ_safety_status}
-- Dynamic Expiration Lock Date: {expiration_time.strftime('%Y-%m-%d %H:%M')}
+- Dynamic Expiration Lock Date: {expiration_time.strftime('%Y-%m-%d %H:%M') if not is_master else 'PERMANENT'}
 -------------------------------------------
 Status: Officially Verified by CellRevive AI Matrix."""
 
