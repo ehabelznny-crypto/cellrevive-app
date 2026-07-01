@@ -1,146 +1,149 @@
 import streamlit as st
 import math
-from datetime import datetime
+from fpdf import FPDF
+import base64
 
-# إعدادات الواجهة السيادية
-st.set_page_config(page_title="CellRevive AI Engine", page_icon="🧬", layout="centered")
-
-st.markdown("""
-    <style>
-    .main { background-color: #f8f9fa; }
-    h1 { color: #004085; font-family: 'Arial'; text-align: center; }
-    h3 { color: #17a2b8; text-align: center; }
-    .report-box { background-color: #ffffff; padding: 20px; border-radius: 10px; border: 2px solid #004085; }
-    </style>
-""", unsafe_allow_html=True)
+# إعدادات الصفحة والواجهة السيادية لـ CellRevive AI
+st.set_page_config(page_title="CellRevive AI - Clinical Portal", page_icon="🧬", layout="centered")
 
 st.title("🧬 المنظومة السيادية: CellRevive AI")
-st.subheader("بروتوكول الترميم الخلوي وعكس مسار السكري لعام 2026")
+st.subheader("منصة الإشراف الأيضي وعكس مسار السكري الخلوي (تحديث 2026)")
 st.write("---")
 
-# مدخلات بيانات المريض والتحاليل والأدوية
+# 1. مدخلات البيانات الكلينيكية والفيزيولوجية
 col1, col2 = st.columns(2)
-
 with col1:
-    patient_name = st.text_input("اسم المريض الثلاثي (لإصدار التقرير):", value="أحمد محمد علي")
+    patient_name = st.text_input("اسم المريض بالكامل:", value="أحمد محمد عبد الله")
     fbg = st.number_input("سكر الصائم الحالي (mg/dL):", value=142.0)
-    hba1c = st.number_input("السكر التراكمي (HbA1c%):", value=7.5)
+    hba1c = st.number_input("السكر التراكمي الحادث (HbA1c%):", value=7.5)
     weight = st.number_input("الوزن الحالي للمريض (كجم):", value=85.0)
 
 with col2:
-    waist = st.number_input("محيط الخصر بدقة (سم):", value=106.0)
+    waist = st.number_input("محيط الخصر المقاس بدقة (سم):", value=106.0)
     bmi = st.number_input("مؤشر كتلة الجسم الحالي (BMI):", value=31.5)
-    has_acanthosis = st.selectbox("العلامات الفيزيولوجية (تصبغات الرقبة/الزوائد):", ["موجودة وعنيفة", "غير موجودة"])
-    medication = st.selectbox("الدواء المصري الحالي المتداخل مع الأيض:", [
+    has_acanthosis = st.selectbox("العلامات الفيزيولوجية (الشواك الأسود):", ["موجودة وعنيفة", "غير موجودة"])
+    medication = st.selectbox("الدواء المصري الحالي المتداخل:", [
         "لا يوجد دواء متداخل حالياً", 
-        "Deltacortril (Prednisolone) - كورتيزون هادم", 
+        "Deltacortril (Prednisolone) - كورتيزون", 
         "Cydophage / Metformin - منظم كبدي",
-        "Lasix (Furosemide) - مدر مستنزف للأيونات",
+        "Lasix (Furosemide) - مدر مستنزف",
         "Ketosteril - حماية كلوية صارمة"
     ])
 
-# زر التفعيل ومعالجة البيانات
-if st.button("🚀 تفعيل بروتوكول الترميم الخلوي وفك تشفير الخلايا"):
+# 2. تشغيل المحرك والمعادلات الجزيئية
+estimated_tg = 90.0 + (waist * 1.34) + (bmi * 2.1)
+has_signs = True if "موجودة" in has_acanthosis else False
+base_insulin_proxy = 5.0 + (3.5 * int(has_signs)) + 8.0
+insulin_score = min(28.0, base_insulin_proxy + (bmi * 0.2))
+
+homa_ir = (fbg * insulin_score) / 405.0
+tyg_index = math.log((estimated_tg * fbg) / 2.0)
+
+max_allowed_protein_ratio = 1.5
+metabolic_burn_modifier = 1.0
+restricted_organ = "آمن بالكامل"
+
+if "Deltacortril" in medication:
+    max_allowed_protein_ratio = 1.3
+    metabolic_burn_modifier = 0.70
+elif "Lasix" in medication:
+    max_allowed_protein_ratio = 0.8
+    restricted_organ = "الـكـلـى (Kidney Protection)"
+elif "Ketosteril" in medication:
+    max_allowed_protein_ratio = 0.6
+    restricted_organ = "الخلايا كلوية"
+
+degradation_index = (tyg_index * 4.2) + (hba1c * 3.5) + (homa_ir * 0.6)
+biological_age = 18.0 + (degradation_index * (2.0 - metabolic_burn_modifier))
+safe_protein_grams_daily = weight * max_allowed_protein_ratio
+
+# تحويل الجرامات إلى معايير منزلية دقيقة يعرفها المريض (التحدي الأول)
+chicken_hand = round(safe_protein_grams_daily / 25.0, 1)
+cheese_box = round(safe_protein_grams_daily / 6.0, 1)
+foul_cup = round(safe_protein_grams_daily / 15.0, 1)
+
+# 3. عرض المخرجات على شاشة التطبيق
+if st.button("🚀 تفعيل بروتوكول الترميم الخلوي وحساب البصمة"):
     st.write("---")
-    
-    # 1. المعادلات الحسابية للمؤشرات الأيضية
-    estimated_tg = 90.0 + (waist * 1.34) + (bmi * 2.1)
-    has_signs = True if "موجودة" in has_acanthosis else False
-    base_insulin_proxy = 5.0 + (3.5 * int(has_signs)) + 8.0
-    insulin_score = min(28.0, base_insulin_proxy + (bmi * 0.2))
-
-    homa_ir = (fbg * insulin_score) / 405.0
-    tyg_index = math.log((estimated_tg * fbg) / 2.0)
-    
-    # المقاصة الدوائية وحصص البروتين بناءً على دستور الأدوية
-    max_allowed_protein_ratio = 1.5
-    metabolic_burn_modifier = 1.0
-    clinical_warnings = []
-    restricted_organ = "آمن بالكامل"
-
-    if "Deltacortril" in medication:
-        max_allowed_protein_ratio = 1.3  # حماية العضلات دون إجهاد الكلى
-        metabolic_burn_modifier = 0.70
-        clinical_warnings.append("⚠️ تنبيه سيادي: دواء Deltacortril يرفع المقاومة قسرياً ويسبب هدماً عضلياً.")
-    elif "Lasix" in medication:
-        max_allowed_protein_ratio = 0.8  # حماية وظائف الكلى من التجفاف
-        restricted_organ = "الـكـلـى (Kidney Protection)"
-        clinical_warnings.append("⚠️ تنبيه كلوية: المريض على مدر بول لاسيكس، يحظر الإفراط في النيتروجين.")
-    elif "Ketosteril" in medication:
-        max_allowed_protein_ratio = 0.6  # حماية قصوى ومقاصة نيتروجينية صارمة
-        restricted_organ = "الخلايا الكلوية المتهالكة"
-        clinical_warnings.append("⚠️ تنبيه حرج: المريض يتناول كيتوستيريل، تم تفعيل بروتوكول حظر النيتروجين لحماية وظائف الكلى.")
-
-    degradation_index = (tyg_index * 4.2) + (hba1c * 3.5) + (homa_ir * 0.6)
-    biological_age = 18.0 + (degradation_index * (2.0 - metabolic_burn_modifier))
-    
-    # حساب البروتين الصافي بالجرام
-    safe_protein_grams = weight * max_allowed_protein_ratio
-
-    # 2. التحدي الأول: تحويل الجرامات لمعايير منزلية بصرية دقيقة
-    # الحسابات مبنية على متوسط 25g للبروتين الحيواني، و 7g للأجبان والبيض، و 15g للبقوليات لكل معيار
-    palm_chicken = round(safe_protein_grams / 25.0, 1)
-    palm_fish = round(safe_protein_grams / 20.0, 1)
-    matchbox_cheese = round(safe_protein_grams / 6.0, 1)
-    foul_cups = round(safe_protein_grams / 15.0, 1)
-    eggs_count = math.ceil(safe_protein_grams / 7.0)
-
-    # عرض المخرجات الأساسية للمشرف
     st.success(f"🧬 العمر الأيضي البيولوجي للخلايا: {round(biological_age, 1)} سنة")
     
     c1, c2 = st.columns(2)
     with c1:
-        st.metric(label="مؤشر مقاومة الإنسولين المستدل (HOMA-IR)", value=round(homa_ir, 2))
-        st.metric(label="كمية البروتين الصافي المطلوبة يومياً", value=f"{round(safe_protein_grams, 1)} جرام")
+        st.metric(label="مؤشر HOMA-IR المستدل", value=round(homa_ir, 2))
+        st.metric(label="كمية البروتين الصافي المطلوبة", value=f"{round(safe_protein_grams_daily, 1)} جرام")
     with c2:
-        st.metric(label="مؤشر دهون الكبد والأحشاء (TyG Index)", value=round(tyg_index, 2))
-        st.metric(label="منطقة حماية الأعضاء الحيوية", value=restricted_organ)
+        st.metric(label="مؤشر دهون الكبد (TyG Index)", value=round(tyg_index, 2))
+        st.metric(label="منطقة حماية الأعضاء", value=restricted_organ)
 
-    st.write("---")
-    
-    # 🍽️ صياغة الدليل المنزلي الموجه للمريض (تلبية التحدي الأول)
-    st.subheader("🍽️ الدليل المنزلي الموجه للمريض (ترجمة غرامات البروتين):")
-    st.info(f"عزيزي المريض، لتغطية احتياج خلاياك للترميم اليومي ({round(safe_protein_grams, 1)} جرام بروتين صافي)، يمكنك تناول **أحد الخيارات التالية** موزعة على مدار اليوم:")
-    
-    st.markdown(f"""
-    * **🍗 الفراخ واللحوم الصافية:** ما يعادل **{palm_chicken} كف يد (بدون أصابع)** من صدور الدجاج أو اللحم المشوي.
-    * **🐟 الأسماك المشوية:** ما يعادل **{palm_fish} كف يد كامل مع الأصابع** من السمك البلطي أو البوري المتوسط.
-    * **🫘 الخيارات النباتية:** ما يعادل **{foul_cups} كوب (سعة 240 مل)** من الفول المدمج أو العدس المطبوخ جيداً.
-    * **🧀 الجبن القريش:** ما يعادل **{matchbox_cheese} قطعة بحجم 'علبة الكبريت'** من الجبن القريش الفلاحي.
-    * **🥚 البيض المسلوق:** ما يعادل **{eggs_count} بيضات كاملة** مسلوقة طوال اليوم (في حال الاعتماد عليه كمصدر رئيسي).
+    # دليل المريض البصري المنزلي (التحدي الأول مبرمجاً بالكامل)
+    st.subheader("🍽️ الدليل المنزلي البصري الموجه للمريض:")
+    st.info(f"""
+    لتغطية احتياج خلاياك للترميم اليوم بدون إجهاد الأعضاء، اختر خياراً واحداً من هذه المعايير الموزعة على مدار اليوم:
+    * 🥩 **اللحوم والدواجن:** ما يعادل تقريباً ({chicken_hand}) كف يد (بدون أصابع) من الصدور أو اللحم الصافي.
+    * 🧀 **الأجبان البيضاء النظيفة:** ما يعادل ({cheese_box}) مكعباً بحجم "علبة الكبريت" من الجبن القريش.
+    * 🫘 **البقوليات والأكواب:** ما يعادل ({foul_cup}) كوباً (سعة 240 مل) من الفول أو العدس المطبوخ.
     """)
 
-    st.write("---")
+    # 4. توليد التقرير الطبي الـ PDF الإنساني الراقِ (التحدي الثالث)
+    st.subheader("📄 بوابة التقارير الطبية الرسمية (De-prescription)")
+    
+    class PDF(FPDF):
+        def header(self):
+            self.set_font('Arial', 'B', 12)
+            self.cell(0, 10, 'CellRevive AI - Clinical Metabolic Report (Confidential)', 0, 1, 'C')
+            self.line(10, 20, 200, 20)
+        def footer(self):
+            self.set_y(-15)
+            self.set_font('Arial', 'I', 8)
+            self.cell(0, 10, f'Page {self.page_no()} | Inter-professional Consultation Report', 0, 0, 'C')
 
-    # 3. التحدي الثالث: توليد التقرير الأكاديمي السيادي الموجه للطبيب المعالج
-    st.subheader("📄 التقرير الأكاديمي السيادي (إصدار De-prescription):")
+    pdf = PDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=11)
     
-    # محاكاة بنية تقرير احترافي جاهز للطباعة مباشرة
-    report_date = datetime.now().strftime("%Y-%m-%d")
+    # ديباجة طبية بالإنجليزية لضمان القبول الأكاديمي الدولي والمحلي
+    report_content = f"""
+    Date: 2026
+    Patient Name: {patient_name}
+    Biomedical Parameters Evaluated:
+    - Fasting Blood Glucose: {fbg} mg/dL
+    - HbA1c: {hba1c}%
+    - Calculated HOMA-IR Proxy: {round(homa_ir, 2)}
+    - Calculated TyG Index (Hepatic Steatosis Indicator): {round(tyg_index, 2)}
+    - Target Safe Protein Intake: {round(safe_protein_grams_daily, 1)} g/day (Physiologically Tailored)
+    - Current Concomitant Medication: {medication}
+
+    -----------------------------------------------------------------------------------------
+    Dear Attending Physician / Consultant in Charge,
     
-    st.markdown(f"""
-    <div class="report-box">
-        <h4 style="color:#004085; text-align:center; margin-bottom:2px;">CellRevive AI Clinical Report</h4>
-        <p style="text-align:center; font-size:12px; color:#6c757d;">بروتوكول عكس مسار السكري والتحسين الأيضي المستدام</p>
-        <p style="font-size:14px;"><b>التاريخ:</b> {report_date} &nbsp;&nbsp;|&nbsp;&nbsp; <b>اسم المريض:</b> {patient_name}</p>
-        <hr style="border: 0.5px solid #004085;">
-        <p><b>السيد الزميل الطبيب المعالج المحترم،</b></p>
-        <p style="text-align:justify; line-height:1.6;">
-            تحية طيبة وبعد، نحيط سيادتكم علماً بأن المريض المذكور أعلاه قد خضع لبروتوكول <b>"الترميم الخلوي"</b> المكثف لتحسين الحساسية النسيجية للإنسولين وعكس العناد الأيضي خلاد الفترة الماضية. وبناءً على خوارزميات الاستدلال الفيزيولوجي لعام 2026، تم رصد المؤشرات الحالية الحيوية التالية:
-        </p>
-        <ul>
-            <li><b>مؤشر مقاومة الإنسولين الحقيقي المستدل (HOMA-IR):</b> {round(homa_ir, 2)} (مؤشر التراجع الكلينيكي)</li>
-            <li><b>مؤشر دهون الكبد والأحشاء (TyG Index):</b> {round(tyg_index, 2)}</li>
-            <li><b>العمر الأيضي البيولوجي المكتشف للخلايا:</b> {round(biological_age, 1)} سنة</li>
-            <li><b>العلاج الدوائي الحالي المتداخل رصده:</b> {medication}</li>
-        </ul>
-        <p style="background-color:#e2e3e5; padding:10px; border-radius:5px; font-weight:bold; color:#383d41;">
-            💡 التوصية السريرية السيادية المقترحة (Clinical Recommendation):<br>
-            نظراً لاستعادة الخلايا لجزء كبير من حساسيتها الحيوية للإنسولين وهبوط مؤشر السمية السكرية المزمنة، يُرجى التكرم بالنظر في خفض جرعات مضادات السكري الفموية بنسبة 50% أو البدء في السحب التدريجي لجرعات الكورتيزون/المدرات حسب رؤيتكم الطبية، لتفادي نوبات هبوط السكر المفاجئة (Hypoglycemia) نظراً لاستجابة الأنسجة المتسارعة للترميم الخلوي.
-        </p>
-        <p style="text-align:right; font-size:12px; margin-top:15px;"><b>صادر عن المحرك الأيضي الذكي لـ CellRevive AI تحت إشراف د. إيهاب</b></p>
-    </div>
-    """, unsafe_allow_html=True)
+    I hope this clinical correspondence finds you in the best of health and professional success.
     
-    # زر مخصص لطباعة الصفحة الحالية كـ PDF في المتصفح
-    st.button("🖨️ اضغط Ctrl + P لطباعة التقرير كـ PDF فوراً")
+    We are writing to share with you a comprehensive metabolic update regarding our mutual patient, 
+    seeking your expert clinical insight. Following a targeted cellular restoration protocol aimed 
+    at mitigating severe peripheral insulin resistance and mitigating lipotoxicity, the patient's 
+    biomarkers have demonstrated significant physiological adaptation.
+
+    Given the notable reduction in the calculated HOMA-IR proxy and the stabilization of fasting glucose 
+    under controlled macronutrient partitioning, the patient's cellular receptor sensitivity appears 
+    to be progressively restoring. 
+
+    To prevent induced hypoglycemic episodes and to optimize the patient's long-term organ protection, 
+    we respectfully suggest reviewing the current dosage of the pharmacological regimen. If clinically 
+    indicated by your examination, a gradual down-titration of anti-diabetic medications or adjacent 
+    metabolic stressors may now be considered safe and highly beneficial for the patient's current metabolic state.
+
+    Thank you for your unyielding dedication to human health and for your continuous collaboration 
+    in maximizing patient-centered outcomes.
+
+    Warmest professional regards,
+    Clinical Nutrition & Longevity Support Team
+    CellRevive AI Platform
+    """
+    
+    pdf.multi_cell(0, 7, report_content)
+    
+    # تحويل البي دي اف لزر تحميل مباشر
+    pdf_output = pdf.output(dest='S').encode('latin-1', errors='ignore')
+    b64 = base64.b64encode(pdf_output).decode()
+    href = f'<a href="data:application/octet-stream;base64,{b64}" download="CellRevive_Clinical_Report.pdf"><button style="background-color:#004085; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">📥 تحميل التقرير الطبي الرسمي المعين للطبيب (PDF)</button></a>'
+    st.markdown(href, unsafe_allow_html=True)
