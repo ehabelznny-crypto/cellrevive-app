@@ -150,7 +150,7 @@ if uploaded_image is not None:
 st.write("---")
 st.header("📄 التقرير الطبي المُحدث الموجه للطبيب")
 
-if st.button("📄 توليد وتحميل التقرير الطبي (يُرسل إلى من الطبيب المعالج)"):
+if st.button("📄 توليد وتحميل التقرير الطبي (يُرسل إلى الطبيب المعالج)"):
     class PDF(FPDF):
         def header(self):
             self.set_font('Arial', 'B', 12)
