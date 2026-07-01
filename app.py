@@ -5,9 +5,9 @@ import math
 # إعدادات الصفحة السيادية الفاخرة
 st.set_page_config(page_title="CellRevive AI — المنظومة الملكية", page_icon="🧬", layout="centered")
 
-# هندسة التصميم الفاخر والأصالة الفرعونية مع خلفية زرقاء داكنة وفرض اتجاه اليمين إلى اليسار (RTL)
+# هندسة التصميم الفاخر باللون الأزرق الداكن والذهب الفرعوني مع فرض اتجاه اليمين إلى اليسار (RTL)
 st.markdown("""
-    <style>
+<style>
     /* فرض الاتجاه العربي لمنع انقلاب الشاشة */
     .main, .block-container, div[data-testid="stSidebarUserContent"] {
         direction: RTL !important;
