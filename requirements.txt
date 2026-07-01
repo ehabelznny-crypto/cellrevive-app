@@ -1,5 +1,6 @@
 streamlit
+protobuf
 fastapi
 uvicorn
 pydantic
-protobuf
+fpdf
