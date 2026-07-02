@@ -217,21 +217,23 @@ custom_drugs_input = st.text_area(
 drug_files_upload = st.file_uploader(
     "📸 قم برفع أو تصوير علب الأدوية أو الروشتة (يمكن رفع عدة صور معاً للتحليل التكنولوجي الـ OCR والباركود):", 
     type=["jpg", "png", "jpeg"], 
-    accept_multiple_files=True
+    accept_multiple_files=True,
+    key="drugs_up"
 )
 
 if drug_files_upload:
     st.info(f"⚙️ تم استلام {len(drug_files_upload)} صورة من علب الأدوية بنجاح؛ يجري مسح الروشتات والباركود واستخراج المركبات الكيميائية بدقة...")
 
 # ==============================================================================
-# 4️⃣ محرك الفحص المتناهي لبصمة الجلد السداسية (دعم حتى 5 صور للعلامات)
+# 4️⃣ محرك الفحص المتناهي لبصمة الجلد السداسية (دعم حتى 5 صور مع ميزة الـ key المحمية)
 # ==============================================================================
 st.markdown('<div class="premium-card"><h3 style="color:#d4af37; margin:0;">📸 مستشار الفحص المجهري المطور (دعم متعدد لصور الجلد)</h3><p style="font-size:12.5px; color:#ffff00;">تحليل دقيق للربط المباشر بين المؤشرات الجلدية المتعددة وعناد الحرق الأيضي وخطر السكري المكتوم.</p></div>', unsafe_allow_html=True)
 
 uploaded_skin_imgs = st.file_uploader(
     "📲 التقط أو حمّل لقطات واضحة للعلامات الجلدية من هاتف المريض (يمكن رفع حتى 5 صور لتفسير شامل):", 
     type=["jpg", "png", "jpeg"], 
-    accept_multiple_files=True
+    accept_multiple_files=True,
+    key="skin_up"
 )
 
 skin_findings = []
@@ -239,13 +241,11 @@ clinical_severity_score = 0.0
 
 if uploaded_skin_imgs:
     st.success(f"🔬 تم رفع {len(uploaded_skin_imgs)} صور للعلامات الجلدية بدقة عالية. يجري تحليل الطبقات وتفسير النسيج المخملي...")
-    # عرض صور الجلد المرفوعة في معرض مصغر
     cols = st.columns(min(len(uploaded_skin_imgs), 5))
     for idx, img in enumerate(uploaded_skin_imgs):
         with cols[idx]:
             st.image(img, caption=f"لقطة جلدية {idx+1}", use_container_width=True)
             
-    # تفعيل الكشف التلقائي المتكامل نظراً لرفع الصور
     skin_findings = [
         "1. الشواك الأسود (Acanthosis nigricans): رصد مؤكد وتصبغات مخملية داكنة وسميكة في طيات الرقبة والإبط تشير لفرط إنسولين تعويضي حاد وفقاً لبروتوكول ADA.",
         "2. الزوائد الجلدية (Skin tags): رصد زوائد صغيرة ننسيجية ناتجة عن تحفيز مستقبلات IGF-1 الخلوية.",
@@ -263,7 +263,7 @@ else:
         skin_findings.append("⚠️ الزوائد الجلدية: نمو زائد وصغير للجلد يعكس تحفيز هرمونات النمو الخلوية.")
         clinical_severity_score += 1.0
     if st.checkbox("🎯 حب الشباب (Acne): ظهور حب الشباب المتركز في منطقة الذقن والفك السفلي"):
-        skin_findings.append("⚠️ حب الشباب: بثور هرمونية متركزة في منطقة الذقن والفك سفلياً.")
+        skin_findings.append("⚠️ حب الشباب: بثور هرمونية متركزة in منطقة الذقن والفك سفلياً.")
         clinical_severity_score += 0.8
     if st.checkbox("🎯 اسمرار الوجه: تصبغات داكنة غير مبررة مرتبطة بالمتلازمة الأيضية"):
         skin_findings.append("⚠️ اسمرار الوجه: تصبغات داكنة غير مبررة مرتبطة بالمتلازمة الأيضية الخلوية.")
@@ -273,14 +273,15 @@ else:
         clinical_severity_score += 0.4
 
 # ==============================================================================
-# 5️⃣ مستشار التطهير والتحليل البصري للوجبات (دعم حتى 5 صور للأطباق)
+# 5️⃣ مستشار التطهير والتحليل البصري للوجبات (دعم حتى 5 صور للأطباق مع الـ key المحمية)
 # ==============================================================================
 st.markdown('<div class="premium-card"><h3 style="color:#d4af37; margin:0;">🥗 مستشار التطهير والتحليل للوجبات (دعم حتى 5 صور للوجبة)</h3><p style="font-size:12.5px; color:#ffff00;">التقط صوراً لكافة أطباق ومكونات وجبة المريض الحرة (السلطة، النشويات، البروتين) ليتم فحصها بالوحدات المنزلية الحركية بدقة هندسية.</p></div>', unsafe_allow_html=True)
 
 uploaded_meal_imgs = st.file_uploader(
     "📸 التقط لقطات فوتوغرافية واضحة لكافة أطباق وجبة المريض (يمكن رفع حتى 5 صور لتنظيف السفرة بالكامل أييضياً):", 
     type=["jpg", "png", "jpeg"], 
-    accept_multiple_files=True
+    accept_multiple_files=True,
+    key="meals_up"
 )
 
 if uploaded_meal_imgs:
@@ -291,7 +292,7 @@ if uploaded_meal_imgs:
             st.image(img, caption=f"طبق/مكون {idx+1}", use_container_width=True)
 
 meal_text_details = st.text_area(
-    "🔍 صِف بدقة كميات المكونات بالوحدات المنزلية (كف اليد، الملاعق، القبضة، الأكواب، علبة الكبريت):",
+    "🔍 صِف بدقة كميات المكونات بالوحدات المنزلية (كف اليد، الملاعق, القبضة، الأكواب، علبة الكبريت):",
     value="طبق رز حجم كف اليد، حتتين لحمة بحجم علبة كبريت صغيرة، طبق ملوخية، نصف رغيف بلدي بحجم قبضتين يد"
 )
 
@@ -326,7 +327,6 @@ if st.button("🚀 تفعيل محرك الترميم الخلوي وإصدار 
     clinical_warnings = []
     organs_at_risk = []
 
-    # معالجة القائمة الموسعة للأدوية الـ 15 المتزامنة
     for selected_item in selected_drugs_list:
         for key, data in EGYPTIAN_DRUG_DB.items():
             if data["ar"] in selected_item:
