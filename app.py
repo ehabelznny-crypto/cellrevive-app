@@ -72,7 +72,8 @@ st.markdown("""
 def init_db():
     conn = sqlite3.connect('cellrevive_sovereign.db')
     cursor = conn.cursor()
-    # جدول المرضى الأساسي المحدث ليشمل السكر الفاطر والعشوائي الافتراضي
+    
+    # إنشاء جدول المرضى الأساسي إن لم يكن موجوداً بالبنية الأساسية
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS patients (
             patient_code TEXT PRIMARY KEY,
@@ -87,7 +88,19 @@ def init_db():
             selected_drugs TEXT DEFAULT ''
         )
     """)
-    # جدول سجلات السكر الفورية المحدث بدعم أنواع القياسات الجديدة
+    
+    # ترقية تلقائية آمنة لقواعد البيانات القديمة لإضافة الأعمدة الجديدة فوراً من دون فقدان البيانات
+    try:
+        cursor.execute("ALTER TABLE patients ADD COLUMN ppbg REAL DEFAULT 140.0")
+    except sqlite3.OperationalError:
+        pass  # العمود مضاف مسبقاً، تخطى بأمان
+        
+    try:
+        cursor.execute("ALTER TABLE patients ADD COLUMN rbg REAL DEFAULT 120.0")
+    except sqlite3.OperationalError:
+        pass  # العمود مضاف مسبقاً، تخطى بأمان
+
+    # إنشاء جدول سجلات السكر الفورية المحدث
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS glucose_logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -101,6 +114,7 @@ def init_db():
     conn.commit()
     conn.close()
 
+# تشغيل تهيئة قاعدة البيانات تلقائياً
 init_db()
 
 def get_patient_data(code):
@@ -199,7 +213,7 @@ def check_emergency_status(value, context_phrase=""):
                 <div class="emergency-card">
                     <h3 style="color:#ff4b4b; margin:0 0 10px 0;">🚨 إشارة تحذيرية سيادية خطيرة (هبوط حاد في السكر): {value} mg/dL</h3>
                     <p style="color:#ffffff !important; font-size:15px; margin:0;">
-                        <b>تنبيه حرج جداً ({context_phrase}):</b> تم رصد هبوط حاد بمستوى السكر تحت النطاق الآمن. يرجى تناول كربوهيدرات سريعة الامتصاص فوراً ومراجعة الدكتور إيهاب حشمت أو التوجه إلى قسم الطوارئ بالمستشفى دون أي تأخير منعاً لحدوث غيبوبة نقص السكر!
+                        <b>تنبيه حرج جداً ({context_phrase}):</b> تم رصد هبوط حاد بمستوى السكر تحت النطاق الآمن. يرجى تناول كربوهيدرات سريعة الامتصاص فوراً ومراجعة الدكتور إيهاب حشمت أو التوجه إلى قسم الطوارئ بالمستشفى دون أي تأخير منعاً لغيبوبة نقص السكر!
                     </p>
                 </div>
             """, unsafe_allow_html=True)
@@ -312,7 +326,7 @@ if st.session_state.role == "doctor":
             'selected_drugs': ",".join(mod_drugs)
         }
         save_patient_data(target_patient, updated_data)
-        st.success(f"تم حفظ وتشفير ملف المريض {target_patient} بنجاح دون أي خلل برمي.")
+        st.success(f"تم حفظ وتشفير ملف المريض {target_patient} بنجاح دون أي خلل برمجي.")
 
 # ==============================================================================
 # 8️⃣ واجهة المريض السريعة والذكية - تجربة تناول الوجبة بكبسة زر واحدة مع الإنذار
