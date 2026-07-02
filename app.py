@@ -12,22 +12,26 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# هندسة الواجهة الفاخرة المحدثة بالكامل لعام 2026 بألوان بيضاء وصفراء واضحة جداً ودعم كامل للـ RTL
+# هندسة الواجهة الفاخرة لعام 2026 وعزل الـ RTL تماماً عن القوائم الجانبية لمنع تداخل الحروف
 st.markdown("""
     <style>
-    /* إجبار المتصفح على عرض المحتوى من اليمين إلى اليسار */
+    /* خلفية التطبيق الكبرى ولون النص الأساسي */
     .stApp {
         background-color: #040d1a;
         color: #ffffff !important;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        direction: rtl;
-        text-align: right;
     }
     
-    /* ضبط اتجاه عناصر الاستمارات وحقول الاختيار */
-    .stTextInput, .stNumberInput, .stSelectbox, .stMultiSelect, .stTextArea, .stCheckbox {
+    /* تطبيق الاتجاه العربي فقط على حاوية المحتوى الرئيسية وحقول الإدخال لتجنب عصر النصوص */
+    [data-testid="stMainBlockContainer"], .stTextInput, .stNumberInput, .stSelectbox, .stMultiSelect, .stTextArea, .stCheckbox {
         direction: rtl !important;
         text-align: right !important;
+    }
+    
+    /* حماية صرامة القائمة الجانبية من تسريب الحروف على الهواتف */
+    [data-testid="stSidebar"], [data-testid="stSidebarUserContent"] {
+        direction: ltr !important;
+        text-align: left !important;
     }
     
     /* تصميم الحاويات الفاخرة والبطاقات */
@@ -40,6 +44,17 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         direction: rtl;
         text-align: right;
+    }
+    
+    /* نظام شارات الهوية والتحقق العلوية البديلة للقائمة الجانبية */
+    .identity-bar {
+        background: rgba(212, 175, 55, 0.1);
+        border-right: 4px solid #d4af37;
+        padding: 10px 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        font-size: 13.5px;
+        color: #ffffff;
     }
     
     /* العناوين والخطوط الملكية الواضحة والبيضاء والذهبية */
@@ -139,7 +154,7 @@ if not st.session_state['authenticated']:
             st.session_state['user_role'] = "OWNER"
             st.session_state['expiry_display'] = "صلاحية أبدية مدى الحياة (المدير والمطور)"
             st.session_state['badge'] = "القيادة العليا للمنظومة"
-            st.success("👑 أهلاً بك يا دكتور إيهاب حشمت الظني. تم تفعيل الصلاحية الأبدية للمطور ومدير المنصة بنجاح.")
+            st.success("👑 تم تفعيل الصلاحية الأبدية للمطور ومدير المنصة بنجاح.")
             st.rerun()
             
         elif input_code in MONTH_CODES or input_code in THREE_MONTH_CODES:
@@ -152,16 +167,20 @@ if not st.session_state['authenticated']:
                 st.session_state['user_role'] = "PATIENT"
                 st.session_state['expiry_display'] = expiration_date.strftime('%Y-%m-%d')
                 st.session_state['badge'] = "باقة شهر تفعيل مكثف" if days_allowed == 30 else "باقة 3 شهور عكس مسار السكري"
-                st.success(f"✅ تم تفعيل الكود بنجاح! باقة [{st.session_state['badge']}] بدأت الآن وصالحة حتى: {st.session_state['expiry_display']}")
+                st.success(f"✅ تم تفعيل الكود بنجاح! باقة [{st.session_state['badge']}]")
                 st.rerun()
             else:
-                st.error("🚨 حظر متكامل: انتهت صلاحية هذا الكود تماماً وتم قفل الحساب تدميراً ذاتياً.")
+                st.error("🚨 حظر متكامل: انتهت صلاحية هذا الكود تماماً.")
         else:
-            st.error("❌ الكود غير صحيح، أو تم حظره، أو لم يتم تفعيله في السجلات المركزية لعام 2026.")
+            st.error("❌ الكود غير صحيح، أو تم حظره.")
     st.stop()
 
-st.sidebar.markdown(f"👤 **الدور الحركي:** {st.session_state['badge']}")
-st.sidebar.warning(f"⏰ **انتهاء الصلاحية:** {st.session_state['expiry_display']}")
+# عرض شارات الهوية الآمنة في أعلى الصفحة الرئيسية بدلاً من القائمة الجانبية لمنع تداخل الأسطر على الموبايل
+st.markdown(f"""
+<div class="identity-bar">
+    👤 <b>الدور الحركي الحالي:</b> {st.session_state['badge']} &nbsp;|&nbsp; ⏰ <b>انتهاء الصلاحية الأيضية:</b> {st.session_state['expiry_display']}
+</div>
+""", unsafe_allow_html=True)
 
 # ==============================================================================
 # 3️⃣ دليل الدواء المصري المحدث 2026 (توسيع المصفوفة حتى 15 نوع دواء متزامن)
@@ -182,7 +201,7 @@ EGYPTIAN_DRUG_DB = {
     "ozempic": {"ar": "أوزمبيك", "group": "محفزات الشبع ومبطئات تفريغ المعدة (GLP-1)", "risk": "إبطاء حركة الأمعاء وتفريغ المعدة، يحتاج لتعديل جودة المغذيات لتجنب خسارة الكتلة العضلية."},
     "mounjaro": {"ar": "مونجارو", "group": "محفزات الشبع ومبطئات تفريغ المعدة (GLP-1/GIP)", "risk": "تحفيز قوي للشبع، يتطلب تأميناً بروتينياً حرجاً لمنع الهدم العضلي القسري."},
     "glucophage": {"ar": "جلوكوفاج", "group": "منظمات الإنتاج الكبدي للجلوكوز", "risk": "يقلل إنتاج الجلوكوز الكبدي، قد يستنزف فيتامين B12 على المدى الطويل ويحتاج لمقاصة مكملات."},
-    "cydophage": {"ar": "سيدوفاج", "group": "منظمات الإنتاج الكبدي للجلوكوز", "risk": "تنظيم كبدي للجلوكوز, يتطلب دعم فيتامين B12 لحماية الأعصاب المحيطية."}
+    "cydophage": {"ar": "سيدوفاج", "group": "منظمات الإنتاج الكبدي للجلوكوز", "risk": "تنظيم كبدي للجلوكوز، يتطلب دعم فيتامين B12 لحماية الأعصاب المحيطية."}
 }
 
 selected_drugs_list = st.multiselect(
@@ -208,7 +227,7 @@ if uploaded_skin_img is not None:
     skin_findings = [
         "1. الشواك الأسود (Acanthosis nigricans): رصد مؤكد وتصبغات مخملية داكنة وسميكة في طيات الرقبة والإبط تشير لفرط إنسولين تعويضي حاد وفقاً لبروتوكول ADA.",
         "2. الزوائد الجلدية (Skin tags): رصد زوائد صغيرة نسيجية حول العنق وتحت الإبط ناتجة عن تحفيز مستقبلات IGF-1 الخلوية.",
-        "3. حب الشباب (Acne): رصد بثور متجمعة ومتركزة في منطقة الذقن والفك السفلي تومئ باضطراب أندروجينيأيضي مصاحب للمقاومة.",
+        "3. حب الشباب (Acne): رصد بثور متجمعة ومتركزة في منطقة الذقن والفك السفلي تومئ باضطراب أندروجيني أكتيبي مصاحب للمقاومة.",
         "4. اسمرار الوجه: تصبغات داكنة عشوائية ناتجة عن تنشيط الخلايا الصبغية بفعل المتلازمة الأيضية.",
         "5. جفاف الجلد: رصد تشققات وجفاف ملحوظ في البشرة نتيجة تراجع التروية الدقيقة بفعل لزوجة الجلوكوز الحجمية.",
         "6. بطء التئام الجروح: تأخر نسيجي مرصود في شفاء البثور البسيطة على سطح البشرة."
@@ -339,12 +358,11 @@ if st.button("🚀 تفعيل محرك الترميم الخلوي وإصدار 
         st.write("* احظر تماماً الطهي بالسمن النباتي أو الزيوت المهدرجة لحماية جدران الخلايا وغشائها الدهني المصاب بالالتهابات الأيضية.")
 
     # ==============================================================================
-    # 7️⃣ محرك بناء وتوليد التقرير الطبي الشامل - تم التعديل لمنع التراص الطولي والظل
+    # 7️⃣ محرك بناء وتوليد التقرير الطبي الشامل
     # ==============================================================================
     st.write("---")
     st.markdown("<h3 style='color:#d4af37; text-align:right;'>📋 التقرير الطبي السريري الموجه للطبيب المعالج</h3>", unsafe_allow_html=True)
     
-    # تحويل مصفوفة الجلد إلى نصوص واضحة بدون استخدام دوال دمج قد تسبب انضغاط المحاذاة
     skin_report_str = ""
     if skin_findings:
         for finding in skin_findings:
@@ -355,7 +373,6 @@ if st.button("🚀 تفعيل محرك الترميم الخلوي وإصدار 
     drugs_report_str = ", ".join(selected_drugs_list) if selected_drugs_list else "لا يوجد تداخلات حرجة مرصودة"
     organs_report_str = ", ".join(organs_at_risk) if organs_at_risk else "آمن ومستقر بالكامل تحت البروتوكول الحالي"
 
-    # صياغة التقرير بأسلوب تجميع السلاسل المباشر والآمن تماماً
     report_text = (
         "=======================================================\n"
         "           CELLREVIVE AI - INTEGRATED MEDICAL REPORT\n"
@@ -385,7 +402,6 @@ if st.button("🚀 تفعيل محرك الترميم الخلوي وإصدار 
         "=======================================================\n"
     )
     
-    # عرض صندوق النص بارتفاع مناسب ومحمي تماماً من الانضغاط العرضي
     st.text_area(
         label="معاينة مستند التقرير الطبي المتكامل الموجه قبل التحميل والطباعة البصرية والورقية:",
         value=report_text,
