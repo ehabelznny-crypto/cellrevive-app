@@ -12,7 +12,6 @@ import os
 import base64
 
 # استيراد مكتبة التشفير لحماية البيانات بمعايير HIPAA الدولية
-# ملاحظة: في بيئة التشغيل، إذا لم تكن المكتبة مثبتة يتم تثبيتها عبر: pip install cryptography
 try:
     from cryptography.fernet import Fernet
 except ImportError:
@@ -22,12 +21,12 @@ except ImportError:
 # ==============================================================================
 # 0️⃣ منظومة التشفير السيادية (HIPAA Data Protection Engine)
 # ==============================================================================
-# توليد أو استدعاء مفتاح التشفير الثابت لحماية قاعدة البيانات
+# استدعاء أو توليد مفتاح التشفير الثابت لحماية قاعدة البيانات
 if "ENCRYPTION_KEY" in st.secrets:
     KEY = st.secrets["ENCRYPTION_KEY"].encode()
 else:
-    # مفتاح افتراضي آمن للتشغيل المحلي (يُفضل وضعه في Secrets عند النشر العالمي)
-    KEY = b'SetupYourSovereignKeyHere12345678=+' 
+    # مفتاح سيادي عسكري حقيقي ومطابق تماماً لمواصفات 32 url-safe base64-encoded bytes
+    KEY = b'v-X7F5_0xZ8Wk1P_M9q2B6n4T_c8K3j5L7m9N1v3X5Q=' 
 
 cipher_suite = Fernet(KEY)
 
@@ -166,8 +165,8 @@ def get_patient_data(code):
         return {
             'fbg': row[0], 'ppbg': row[1], 'rbg': row[2], 'hba1c': row[3], 'weight': row[4], 'waist': row[5],
             'severity_score': row[6], 
-            'skin_analysis': decrypt_data(row[7]), # فك التشفير الآمن عند العرض
-            'selected_drugs': decrypt_data(row[8]), # فك التشفير الآمن
+            'skin_analysis': decrypt_data(row[7]), 
+            'selected_drugs': decrypt_data(row[8]), 
             'creatinine': row[9], 'age': row[10], 'gender': row[11], 'country': row[12] or 'Egypt'
         }
     return None
@@ -176,7 +175,7 @@ def save_patient_data(code, data):
     conn = sqlite3.connect('cellrevive_sovereign.db')
     cursor = conn.cursor()
     
-    # تشفير النصوص الحساسة والتقارير الطبية قبل الحفظ امتثالاً لـ HIPAA
+    # تشفير النصوص الحساسة والتقارير الدوائية قبل الحفظ للامتثال الأمني الدولي
     encrypted_skin = encrypt_data(data['skin_analysis'])
     encrypted_drugs = encrypt_data(data['selected_drugs'])
     
@@ -246,9 +245,9 @@ def calculate_glucose_variability(code):
     values = [row[2] for row in logs]
     mean = sum(values) / len(values)
     variance = sum((x - mean) ** 2 for x in values) / len(values)
-    sd = math.sqrt(variance) # الانحراف المعياري
+    sd = math.sqrt(variance)
     
-    cv = (sd / mean) * 100 if mean > 0 else 0.0 # معامل التذبذب المئوي
+    cv = (sd / mean) * 100 if mean > 0 else 0.0
     
     if cv < 15.0:
         status = "✅ مستقر ومثالي للترميم الخلوي"
@@ -264,7 +263,7 @@ def calculate_glucose_variability(code):
 # ==============================================================================
 def analyze_with_gemini(images, prompt):
     if not GEMINI_API_KEY:
-        return "⚠️ يرجى إدخال مفتاح API من قبل إدارة النظام لتفعيل الرؤية الحية الحركية."
+        return "⚠️ يرجى إدخل مفتاح API من قبل إدارة النظام لتفعيل الرؤية الحية الحركية."
     try:
         system_instruction = """
         بصفتك كبير مستشاري الطب الأيضي والترميم الخلوي المعتمد لدى ADA و EASD لعام 2026. 
