@@ -19,7 +19,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# إدارة وتأمين الـ API Key لـ Gemini (قراءة تلقائية من السيرفر أو إدخال يدوي مؤمن)
+# إدارة وتأمين الـ API Key لـ Gemini
 if "GEMINI_API_KEY" in st.secrets:
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=GEMINI_API_KEY)
@@ -29,6 +29,7 @@ elif "api_key_input" in st.session_state and st.session_state.api_key_input:
 else:
     GEMINI_API_KEY = ""
 
+# هندسة التصميم الفاخر (Premium Dark Theme CSS)
 st.markdown("""
     <style>
     .stApp { background-color: #040d1a; color: #ffffff !important; }
@@ -55,8 +56,6 @@ st.markdown("""
         50% { border-color: #aa1111; }
         100% { border-color: #ff4b4b; }
     }
-    .main-title { color: #d4af37; text-align: center; font-size: 28px; font-weight: bold; text-shadow: 2px 2px 4px #000; }
-    .sub-title { color: #ffffff; text-align: center; font-size: 16px; margin-bottom: 30px; opacity: 0.9; }
     label, p, span { color: #ffffff !important; font-weight: 500 !important; }
     .stButton>button {
         background: linear-gradient(90deg, #d4af37, #aa8422);
@@ -72,7 +71,22 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# 2️⃣ إدارة قاعدة البيانات المطورة ديناميكياً (SQLite Engine)
+# 2️⃣ الهوية البصرية الرسمية للمنصة (الاسم الإنجليزي والتعريف المتقن)
+# ==============================================================================
+st.markdown("""
+    <div style="text-align: center; padding: 20px; margin-bottom: 30px;">
+        <h1 style="color: #d4af37; font-family: 'Arial', sans-serif; font-size: 38px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; text-shadow: 3px 3px 6px rgba(0,0,0,0.9);">
+            🧬 CELLREVIVE AI
+        </h1>
+        <p style="color: #ffffff !important; font-family: 'Cairo', sans-serif; font-size: 19px; font-weight: 600; opacity: 0.95; line-height: 1.6; max-width: 800px; margin: 0 auto; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
+            المنصة المتكاملة للترميم الخلوي وعكس مسار مقاومة الإنسولين والسكري من النوع الثاني
+        </p>
+        <hr style="border: 0; height: 1px; background: linear-gradient(90deg, transparent, #d4af37, transparent); margin-top: 20px;">
+    </div>
+""", unsafe_allow_html=True)
+
+# ==============================================================================
+# 3️⃣ إدارة قاعدة البيانات المطورة ديناميكياً (SQLite Engine)
 # ==============================================================================
 def init_db():
     conn = sqlite3.connect('cellrevive_sovereign.db')
@@ -161,7 +175,7 @@ def get_all_glucose_logs(code):
     return rows
 
 # ==============================================================================
-# 3️⃣ الدليل الاستراتيجي للأدوية والمقاصة التغذوية
+# 4️⃣ الدليل الاستراتيجي للأدوية والمقاصة التغذوية
 # ==============================================================================
 EGYPTIAN_DRUG_DB = {
     "Cidophage (سيدوفاج)": {"supp": "Methyl B12 (1000mcg) + CoQ10", "reason": "استنزاف ب12 الحاد وتأثر الميتوكوندريا خلوياً"},
@@ -180,7 +194,7 @@ EGYPTIAN_DRUG_DB = {
 }
 
 # ==============================================================================
-# 4️⃣ الحاسبات الطبية السريرية الصارمة الديناميكية
+# 5️⃣ الحاسبات الطبية السريرية الصارمة الديناميكية
 # ==============================================================================
 def calculate_homa_ir(fbg, fasting_insulin=12.0):
     return (fbg * fasting_insulin) / 405
@@ -193,7 +207,7 @@ def calculate_egfr(age, weight, creatinine, gender):
     return min(round(val, 2), 150.0)
 
 # ==============================================================================
-# 5️⃣ محرك الرؤية الحاسوبية ومعالجة الصور المتعددة
+# 6️⃣ محرك الرؤية الحاسوبية ومعالجة الصور المتعددة
 # ==============================================================================
 def analyze_with_gemini(images, prompt):
     if not GEMINI_API_KEY:
@@ -238,20 +252,20 @@ def check_emergency_status(value, context_phrase=""):
             """, unsafe_allow_html=True)
 
 # ==============================================================================
-# 6️⃣ بوابة الوصول الرقمية وجدولة الأكواد المحدثة
+# 7️⃣ بوابة الوصول الرقمية وجدولة الأكواد الـ 24 المعتمدة
 # ==============================================================================
 MASTER_CODE = "CR-EMPEROR-EHAB-2026"
 
-# الأكواد التأسيسية السابقة
+# الأكواد التأسيسية القديمة
 CORE_CODES = ["CR-PATIENT-77", "CR-PATIENT-99", "CR-PATIENT-101", "CR-SOHAG-2026"]
 
 # توليد 10 أكواد لنظام الشهر (1 Month Plan)
-MONTH_PLAN_CODES = [f"CR-1M-{i:02d}" for i in range(1, 11)]  # تنتج: CR-1M-01 إلى CR-1M-10
+MONTH_PLAN_CODES = [f"CR-1M-{i:02d}" for i in range(1, 11)]
 
 # توليد 10 أكواد لنظام الـ 3 أشهر (3 Months Plan)
-QUARTER_PLAN_CODES = [f"CR-3M-{i:02d}" for i in range(1, 11)]  # تنتج: CR-3M-01 إلى CR-3M-10
+QUARTER_PLAN_CODES = [f"CR-3M-{i:02d}" for i in range(1, 11)]
 
-# دمج كافة الأكواد المصرح لها بالدخول في مصفوفة واحدة موحدة
+# الدمج الشامل لجميع الأكواد المسموح بها للمرضى
 VALID_PATIENT_CODES = CORE_CODES + MONTH_PLAN_CODES + QUARTER_PLAN_CODES
 
 if 'auth_code' not in st.session_state: st.session_state.auth_code = ""
@@ -259,8 +273,8 @@ if 'is_auth' not in st.session_state: st.session_state.is_auth = False
 if 'role' not in st.session_state: st.session_state.role = None
 
 if not st.session_state.is_auth:
-    st.markdown('<div class="main-title">🧬 CELLREVIVE AI • المنصة المتكاملة للترميم الخلوي وعكس مسار مقاومة الانسولين والسكري من النوع الثاني</div>', unsafe_allow_html=True)
-    input_code = st.text_input("أدخل كود الوصول الآمن:", type="password")
+    st.markdown('<div style="text-align:center; color:#d4af37; font-size:20px; font-weight:bold; margin-bottom:15px;">🔐 بوابـة العبـور الرقمية الآمنة</div>', unsafe_allow_html=True)
+    input_code = st.text_input("أدخل كود الوصول المخصص لك:", type="password")
     if st.button("تفعيل بروتوكول الاتصال المشفر"):
         if input_code == MASTER_CODE:
             st.session_state.is_auth, st.session_state.role, st.session_state.auth_code = True, "doctor", MASTER_CODE
@@ -269,7 +283,7 @@ if not st.session_state.is_auth:
             st.session_state.is_auth, st.session_state.role, st.session_state.auth_code = True, "patient", input_code
             st.rerun()
         else:
-            st.error("الكود غير صحيح. يرجى مراجعة إدارة العيادة.")
+            st.error("الكود غير صحيح. يرجى مراجعة الإدارة الصحية للتأكد من تفعيل اشتراكك.")
     st.stop()
 
 current_code = st.session_state.auth_code
@@ -280,16 +294,15 @@ p_data = get_patient_data(current_code) or {
 }
 
 # ==============================================================================
-# 7️⃣ لوحة تحكم الطبيب المعالج العليا (د. إيهاب حشمت)
+# 8️⃣ لوحة تحكم الطبيب المعالج العليا (د. إيهاب حشمت)
 # ==============================================================================
 if st.session_state.role == "doctor":
-    st.markdown('<div class="main-title">🧬 CellRevive AI - التحكم السيادي الإكلينيكي</div>', unsafe_allow_html=True)
+    st.markdown('<h3 style="color:#d4af37; text-align:center; margin-bottom:20px;">🛡️ لوحة التحكم السيادية الإكلينيكية</h3>', unsafe_allow_html=True)
     
     st.sidebar.markdown("### 🔐 الإشراف الأمني")
     st.session_state.api_key_input = st.sidebar.text_input("Gemini API Key", type="password", value=GEMINI_API_KEY)
     
-    # اختيار المريض يضم الآن جميع المشتركين الجدد والقدامى مصنفين ومفرودين بالكامل
-    target_patient = st.selectbox("اختر كود المريض للتأسيس الصارم:", VALID_PATIENT_CODES)
+    target_patient = st.selectbox("اختر كود المريض المراد تأسيسه أو تعديله:", VALID_PATIENT_CODES)
     current_p_data = get_patient_data(target_patient) or p_data
     
     with st.expander("📝 ضبط البيانات الديموغرافية، المخبرية والفسيولوجية بدقة 100%", expanded=True):
@@ -317,16 +330,14 @@ if st.session_state.role == "doctor":
             'selected_drugs': ",".join(mod_drugs), 'creatinine': mod_creatinine, 'age': int(mod_age), 'gender': mod_gender
         }
         save_patient_data(target_patient, updated_data)
-        st.success(f"تم تشفير وتثبيت مؤشرات المريض {target_patient} الأكاديمية بنجاح.")
+        st.success(f"تم تشفير وتثبيت مؤشرات المريض {target_patient} الأكاديمية بنجاح في قاعدة البيانات.")
 
 # ==============================================================================
-# 8️⃣ واجهة المريض التفاعلية + محرك التحليلات والحاسبات الطبية الديناميكية
+# 9️⃣ واجهة المريض التفاعلية ومستودع التحليلات الفورية لقمع السكر
 # ==============================================================================
 if st.session_state.role == "patient":
-    # تمييز نوع الاشتراك للمريض في العنوان ترحيباً به وبناء على كوده
-    plan_text = "نظام الشهر" if "1M" in current_code else "نظام الـ 3 أشهر" if "3M" in current_code else "النظام التأسيسي الآمن"
-    st.markdown(f'<div class="main-title">🧬 منظومة الترميم الخلوي وعكس الأمراض الأيضية</div>', unsafe_allow_html=True)
-    st.markdown(f'<p style="text-align:center; color:#d4af37 !important; font-size:14px;">مرحباً بك في لوحة تحكمك الحية لمتابعة ({plan_text})</p>', unsafe_allow_html=True)
+    plan_text = "نظام الشهر السريع" if "1M" in current_code else "نظام الـ 3 أشهر الممتد" if "3M" in current_code else "النظام التأسيسي الآمن"
+    st.markdown(f'<p style="text-align:center; color:#d4af37 !important; font-size:16px; margin-top:-20px;">مرحباً بك في لوحة تحكمك الحية لمتابعة ({plan_text})</p>', unsafe_allow_html=True)
     
     check_emergency_status(p_data['fbg'], "قراءة الصائم المسجلة")
     check_emergency_status(p_data['ppbg'], "قراءة الفاطر المسجلة")
@@ -343,7 +354,7 @@ if st.session_state.role == "patient":
                     <span style="font-size:20px; font-weight:bold; color:#ff4b4b;">{round(calc_homa, 2)}</span>
                 </div>
                 <div class="metric-box" style="flex:1; min-width:140px;">
-                    <span style="font-size:12px; opacity:0.8;">كفاءة الفلترة الكلوية الديناميكية (eGFR)</span><br>
+                    <span style="font-size:12px; opacity:0.8;">كفاءة الفلترة الكلوية (eGFR)</span><br>
                     <span style="font-size:20px; font-weight:bold; color:#00ffcc;">{calc_egfr_val} mL/min</span>
                 </div>
                 <div class="metric-box" style="flex:1; min-width:140px;">
