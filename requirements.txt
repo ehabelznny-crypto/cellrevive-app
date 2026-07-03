@@ -1,28 +1,17 @@
 # ==============================================================================
-# 👑 CELLREVIVE AI - SOVEREIGN STABLE PRODUCTION DEPENDENCIES (2026)
+# 👑 CELLREVIVE AI - PRODUCTION DEPENDENCIES (CLEAN ARCHITECTURE 2026)
 # ==============================================================================
 
-# الإطار الأساسي ومعالجة البيانات
-streamlit>=1.58.0
-pandas>=2.2.0
-numpy>=1.26.0
-
-# الرسم البياني وتتبع الجلوكوز
-plotly>=5.24.0
-
-# محرك الرؤية والذكاء الاصطناعي (Gemini)
-google-generativeai>=0.8.0
-Pillow>=10.4.0
-
-# التشفير وحماية البيانات الطبية
-cryptography>=43.0.0
-
-# التقارير الطبية والخطوط العربية
-fpdf2>=2.8.1
-arabic-reshaper>=3.0.0
-python-bidi>=0.4.2
-
-# الاتصال السحابي وإدارة البيئة
-requests>=2.32.3
-openpyxl>=3.1.5
-python-dotenv>=1.0.1
+streamlit
+pandas
+numpy
+plotly
+google-generativeai
+Pillow
+cryptography
+fpdf2
+arabic-reshaper
+python-bidi
+requests
+openpyxl
+python-dotenv
