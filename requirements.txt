@@ -1,26 +1,30 @@
 # ==============================================================================
-# 👑 CELLREVIVE AI - PRODUCTION DEPENDENCIES (UPDATED 2026)
+# 👑 CELLREVIVE AI - PRODUCTION DEPENDENCIES (STABLE PRODUCTION 2026)
 # ==============================================================================
 
 # الإطار الأساسي للواجهة ومعالجة البيانات السيادية
-streamlit>=1.40.0
-pandas>=2.2.2
-numpy>=1.26.4
+streamlit==1.40.0
+pandas==2.2.2
+numpy==1.26.4
 
 # الرسم البياني التفاعلي وتتبع تذبذب الجلوكوز (Dynamic Plotly)
-plotly>=5.24.0
+plotly==5.24.0
 
 # محرك الرؤية الحاسوبية الاستباقي والذكاء الاصطناعي (Gemini 2.5)
-google-generativeai>=0.8.0
-Pillow>=10.4.0
+google-generativeai==0.8.0
+Pillow==10.4.0
 
 # التشفير وحماية البيانات الطبية الحساسة بمعايير HIPAA
-cryptography>=43.0.0
+cryptography==43.0.0
 
-# تفعيل محرك التقارير الطبية وتصدير ملفات الـ PDF الحقيقية للجوائز
-fpdf2>=2.8.1
+# تفعيل محرك التقارير الطبية وتصدير ملفات الـ PDF
+fpdf2==2.8.1
+
+# معالجة النصوص والخطوط العربية داخل تقارير الـ PDF (إضافية لضمان الجودة)
+arabic-reshaper>=3.0.0
+python-bidi>=0.4.2
 
 # الاتصال السحابي وبوابات الـ APIs لمستشعرات الـ CGM والبيئة
-requests>=2.32.3
-openpyxl>=3.1.5
-python-dotenv>=1.0.1
+requests==2.32.3
+openpyxl==3.1.5
+python-dotenv==1.0.1
