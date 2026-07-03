@@ -259,7 +259,7 @@ if 'is_auth' not in st.session_state: st.session_state.is_auth = False
 if 'role' not in st.session_state: st.session_state.role = None
 
 if not st.session_state.is_auth:
-    st.markdown('<div class="main-title">🧬 CELLREVIVE AI • بوابـة العبـور الرقمية السيادية</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-title">🧬 CELLREVIVE AI • المنصة المتكاملة للترميم الخلوي وعكس مسار مقاومة الانسولين والسكري من النوع الثاني</div>', unsafe_allow_html=True)
     input_code = st.text_input("أدخل كود الوصول الآمن:", type="password")
     if st.button("تفعيل بروتوكول الاتصال المشفر"):
         if input_code == MASTER_CODE:
