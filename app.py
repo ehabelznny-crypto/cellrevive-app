@@ -24,11 +24,9 @@ except ImportError:
 # ==============================================================================
 # 0️⃣ منظومة التشفير وحماية البيانات الطبية البيئية (HIPAA Safe Architecture)
 # ==============================================================================
-# حماية المنصة من الثغرات: يتم توليد مفتاح عشوائي مشفر في البيئة المحلية إن لم يكن متوفراً في الـ Secrets
 if "ENCRYPTION_KEY" in st.secrets:
     KEY = st.secrets["ENCRYPTION_KEY"].encode()
 else:
-    # إنتاج مفتاح تشفير آمن ديناميكي لحماية البيانات أثناء الجلسة الحالية وعزل الصلاحيات
     KEY = Fernet.generate_key()
 
 cipher_suite = Fernet(KEY)
@@ -292,7 +290,7 @@ def analyze_with_gemini(images, prompt):
         مهمتك الأساسية هي هندسة الوجبات هندسة استباقية صارمة لتسطيح منحنى السكر تماماً وتخفيض التذبذب (CV < 10%).
         عند تقديم نصائح التعديل والإضافة والمقاصة الغذائية، يجب الالتزام الصارم بالقواعد التالية لتسهيل التطبيق على المريض:
         - ترجمة الجرامات الطبية فوراً وبدقة إلى وحدات منزلية قياسية تقريبية متعارف عليها بين المرضى.
-        - استخدم التعبيرات التالية حصراً للكميات: (معيار كفة اليد بدون أصابع للبروتين، حجم عقلة الأصبع للدهون، ملعقة صغيرة، ملعقة كبيرة، حجم عبوة الكبريت الصغيرة للجبن، كوب كبير 240 مل، كوب صغير 120 مل).
+        - استخدم التعبيرات التالية حصراً للكميات: (معيار كفة اليد بدون أصابع للبروتين، حجم عقلة الأصبع للدهون، ملعقة صغيرة, ملعقة كبيرة، حجم عبوة الكبريت الصغيرة للجبن، كوب كبير 240 مل، كوب صغير 120 مل).
         - رتب تناول الوجبة إلزامياً: الألياف أولاً، ثم البروتين والدهون الصحية، ثم الكربوهيدرات المعقدة في النهاية لتأخير الامتصاص المعوي.
         - لا تقم بتغيير جرعات الأدوية الكيميائية، بل وجه المريض دائماً لمراجعة الدكتور إيهاب حشمت أو الطبيب المعالج للتحقق التام والرجوع لدليل الدستور الدوائي المصري وهيئة الدواء المصرية.
         """
@@ -406,7 +404,6 @@ if st.session_state.role == "doctor":
             egfr_calc = calculate_egfr(mod_age, mod_weight, mod_creatinine, mod_gender)
             cv_s, cv_st = calculate_glucose_variability(target_patient)
             
-            # توليد التقرير الـ PDF الفعلي لحصد الجوائز العالمية والتحقق الفوري
             pdf_path = generate_pdf_report(target_patient, current_p_data, homa_calc, egfr_calc, cv_s, cv_st, doctor_note)
             with open(pdf_path, "rb") as f:
                 st.download_button(label="📥 تحميل التقرير الطبي المعتمد PDF", data=f, file_name=f"CellRevive_Report_{target_patient}.pdf", mime="application/pdf")
@@ -433,4 +430,132 @@ if st.session_state.role == "patient":
     check_emergency_status(p_data['ppbg'], "قراءة الفاطر")
     
     calc_homa = calculate_homa_ir(p_data['fbg'])
-    calc_egfr_val = calculate_egfr(p_data['age'], p_data['weight'], p_data
+    calc_egfr_val = calculate_egfr(p_data['age'], p_data['weight'], p_data['creatinine'], p_data['gender'])
+    cv_score, cv_status = calculate_glucose_variability(current_code)
+    
+    if p_data['cgm_connected'] == 1:
+        st.markdown("""
+            <div class="premium-card" style="border-color: #00ffcc;">
+                <h3 style="color:#00ffcc !important; margin:0 0 10px 0;">🔌 بوابة مستشعر السكر المستمر النشط (Live CGM API Connection)</h3>
+                <p style="font-size:13px; margin:0; opacity:0.9;">
+                    تم ربط مستشعرات تتبع الجلوكوز بنجاح عبر بروتوكولات السحب الفوري (Streaming API). النظام يستقبل البيانات الحركية الفوقية ويحلل التذبذب لتسطيح منحنى الأيض مباشرة بموازاة معايير هيئة الدواء.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+    st.markdown(f"""
+        <div class="premium-card">
+            <h3 style="color:#d4af37 !important; margin:0 0 20px 0; font-size:18px;">📊 المؤشرات الفسيولوجية الأساسية المستخلصة والمخزنة (Clinical Biomarkers)</h3>
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+                <div class="metric-box" style="flex:1; min-width:140px;">
+                    <span style="font-size:12px; opacity:0.8; color:#f3e5ab !important;">مؤشر HOMA-IR الحسابي</span><br>
+                    <span style="font-size:22px; font-weight:900; color:#ff4b4b;">{round(calc_homa, 2)}</span>
+                </div>
+                <div class="metric-box" style="flex:1; min-width:140px;">
+                    <span style="font-size:12px; opacity:0.8; color:#f3e5ab !important;">كفاءة الفلترة الكلوية (eGFR)</span><br>
+                    <span style="font-size:22px; font-weight:900; color:#00ffcc;">{calc_egfr_val} mL/min</span>
+                </div>
+                <div class="metric-box" style="flex:1; min-width:140px;">
+                    <span style="font-size:12px; opacity:0.8; color:#f3e5ab !important;">تذبذب الجلوكوز الرياضي</span><br>
+                    <span style="font-size:18px; font-weight:900; color:#ffff00;">{cv_score}%</span><br>
+                    <span style="font-size:11px; opacity:0.9;">{cv_status}</span>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # عرض المنحنى البياني التفاعلي
+    st.markdown('<div class="premium-card"><h3>📈 مراقبة وتتبع تذبذب الجلوكوز المستمر للأعضاء</h3>', unsafe_allow_html=True)
+    raw_logs = get_all_glucose_logs(current_code)
+    if raw_logs:
+        df = pd.DataFrame(raw_logs, columns=["التوقيت", "نوع القراءة", "القيمة mg/dL"])
+        fig = px.line(df, x="التوقيت", y="القيمة mg/dL", color="نوع القراءة", title="مسار المنحنى الأيضي للحالة", markers=True)
+        fig.update_layout(template="plotly_dark", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.info("سجل تتبع التذبذب فارغ حالياً. قم بتدوين قراءات القياس بالأسفل لتغذية المحرك البياني.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # تسجيل القياسات اليدوية السريعة
+    with st.expander("📊 تدوين وتسجيل قراءة سكر فورية الآن بالملف الطبي", expanded=False):
+        col_g1, col_g2 = st.columns(2)
+        with col_g1: g_type = st.selectbox("توقيت ومناسبة القياس الحالية:", ["سكر صائم", "سكر فاطر (بعد ساعتين)", "سكر عشوائي"])
+        with col_g2: g_val = st.number_input("قيمة القياس من الجهاز مباشرة (mg/dL):", value=0.0, step=1.0)
+        if st.button("📝 تدوين وحفظ القراءة الفورية"):
+            if g_val > 0:
+                log_glucose(current_code, g_type, g_val)
+                temp_data = get_patient_data(current_code) or p_data
+                if g_type == "سكر صائم": temp_data['fbg'] = g_val
+                elif g_type == "سكر فاطر (بعد ساعتين)": temp_data['ppbg'] = g_val
+                else: temp_data['rbg'] = g_val
+                save_patient_data(current_code, temp_data)
+                st.success("تم تشفير وتدوين قراءتك الحالية في السجل بنجاح.")
+                st.rerun()
+
+    # 🌙 مختبر الصيام المطور وعداد الساعات الأيضي (Dynamic Fasting Core)
+    st.markdown('<div class="premium-card"><h3>🌙 مختبر الصيام المطور وعداد الساعات الأيضي (Dynamic Fasting Core)</h3>', unsafe_allow_html=True)
+    col_fast_type, col_fast_hours = st.columns([2, 1])
+    with col_fast_type:
+        active_fast_name = st.selectbox("اختر بروتوكول الصيام المطبق اليوم لضبط استجابة البنكرياس:", list(FASTING_PROTOCOLS_DB.keys()))
+    with col_fast_hours:
+        fasting_hours = st.number_input("عدد ساعات الانقطاع الفعلي الحالية عن الطعام والشراب:", min_value=0, max_value=24, value=16, step=1)
+        
+    fast_meta = FASTING_PROTOCOLS_DB[active_fast_name]
+    hours_bonus = max(0, (fasting_hours - 8) * 0.02) if fasting_hours > 0 else 0
+    total_sensitivity_boost = fast_meta["base_boost"] + hours_bonus
+
+    st.markdown(f"""
+        <div style="background: rgba(0, 255, 204, 0.05); border-right: 4px solid #00ffcc; padding: 10px; border-radius: 4px; margin-bottom: 5px; font-size:13px;">
+            • النمط النشط المعتمد: {fast_meta["desc"]}<br>
+            • معامل رفع حساسية الخلايا المحسوب نتيجة انقطاع {fasting_hours} ساعة: <span style="color:#ffff00;">+{round((total_sensitivity_boost - 1)*100)}%</span>
+        </div>
+    """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # 🔮 المحرك الكمي للأيض والتوقيت البيولوجي (Quantum Chrono-Sandbox)
+    st.markdown('<div class="premium-card"><h3>🔮 المحرك الكمي للأيض والتوقيت البيولوجي (Quantum Chrono-Sandbox)</h3>', unsafe_allow_html=True)
+    
+    st.markdown("<p style='color:#f3e5ab !important; font-size:14.5px; margin-bottom:5px;'>🕒 هندسة التوقيت والساعة البيولوجية للوجبة:</p>", unsafe_allow_html=True)
+    meal_time = st.time_input("حدد وقت تناول الوجبة المتوقع لضبط مقاومة الخلايا المحيطية:", value=datetime.now().time())
+    
+    if meal_time.hour >= 19 or meal_time.hour < 5:
+        chrono_factor = 1.35
+        chrono_alert = "⚠️ <b>تنبيه الساعة البيولوجية:</b> تناول الوجبة ليلاً يواجه فسيولوجياً بمقاومة إنسولين طرفية مرتفعة وهبوط طاقة الحرق الحيوية."
+    else:
+        chrono_factor = 1.0
+        chrono_alert = "☀️ <b>توقيت أيضي نهارى مثالي:</b> كفاءة التخلص الحركي من الجلوكوز في أعلى مستوياتها الحيوية."
+
+    if fasting_hours >= 16:
+        glycogen_status = f"🧹 <b>الجليكوجين الكبدي (مستنفد جزئياً بفعل صيام {fasting_hours} ساعة):</b> الكبد يمتص السكر الآن كإسفنجة لتخزينه أولاً، مما يقلل ذروة الصعود الدموي."
+    elif fasting_hours >= 12:
+        glycogen_status = "📊 <b>الجليكوجين الكبدي (متوسط الاستيعاب الأولي):</b> الكبد مهيأ جزئياً للمقاصة التخزينية."
+    else:
+        glycogen_status = "🚨 <b>الجليكوجين الكبدي (ممتلئ بالكامل):</b> الكبد لن يمتص أي فيض؛ الكربوهيدرات الزائدة ستتدفق فوراً ومباشرة للمجرى الدموي وتحدث طفرة حادة."
+
+    st.markdown(f"""
+        <div style="background: rgba(243, 229, 171, 0.05); padding: 10px; border-radius: 4px; font-size:13px; line-height:1.5; margin-bottom:15px;">
+            • {chrono_alert}<br> • {glycogen_status}
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<p style='color:#f3e5ab !important; font-size:14.5px; margin-bottom:5px;'>🍞 الكربوهيدرات (النوع والكمية الدقيقة بالوحدات المنزلية):</p>", unsafe_allow_html=True)
+    col_food_sel, col_food_qty = st.columns([2, 1])
+    
+    with col_food_sel:
+        selected_food = st.selectbox("اختر نوع الكربوهيدرات المراد اختبارها فسيولوجياً:", list(GI_FOOD_DATABASE.keys()))
+    with col_food_qty:
+        food_units = st.number_input("الكمية (بالوحدة المنزلية الموضحة):", min_value=0.5, max_value=10.0, value=1.0, step=0.5)
+
+    food_meta = GI_FOOD_DATABASE[selected_food]
+    net_carbs = food_meta["unit_carbs"] * food_units
+    base_gl = (food_meta["GI"] * net_carbs) / 100.0
+    adjusted_gl = (base_gl * chrono_factor) / total_sensitivity_boost
+    
+    st.markdown(f"#### 🧮 تقييم الحمل الجلايسيمي المعدل للحالة فسيولوجياً:")
+    if adjusted_gl < 10:
+        st.success(f"🟢 آمن جداً ({round(adjusted_gl, 2)}) - لن يسبب طفرة سكر بفضل هندسة وجبتك وصيامك المتقدم.")
+    elif adjusted_gl <= 20:
+        st.warning(f"⚠️ متوسط الأثر ({round(adjusted_gl, 2)}) - يفضل تقليل الكمية بمقدار نصف وحدة منزلية لتجنب تذبذب المنحنى.")
+    else:
+        st.error(f"🚨 حمل جلايسيمي مرتفع وخطر ({round(adjusted_gl, 2)}) - سيحدث طفرة صعود فورية. يُنصح بالاستبدال فوراً لخيار منخفض المؤشر الجلايسيمي.")
+    st.markdown('</div>', unsafe_allow_html=True)
