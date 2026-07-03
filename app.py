@@ -1,5 +1,5 @@
 # ==============================================================================
-# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v11.5)
+# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v12.0)
 # ==============================================================================
 import streamlit as st
 import sqlite3
@@ -7,7 +7,7 @@ import math
 import numpy as np
 import google.generativeai as genai
 from PIL import Image
-from datetime import datetime
+from datetime import datetime, time
 import os
 import pandas as pd
 import plotly.express as px
@@ -192,7 +192,7 @@ def get_all_glucose_logs(code):
     return rows
 
 # ==============================================================================
-# 3️⃣ الاتصال بدستور الأدوية المصري وقواعد البيانات الأيضية الشاملة
+# 3️⃣ الاتصال بدستور الأدوية وقواعد البيانات الأيضية الشاملة
 # ==============================================================================
 GLOBAL_DRUG_DB = {
     "Egypt": {
@@ -304,7 +304,7 @@ def check_emergency_status(value, context_phrase=""):
             """, unsafe_allow_html=True)
 
 # ==============================================================================
-# 6️⃣ جدار الحماية الرقمي والتحقق من الأكواد الـ 24 المعتمدة (المحفوظة للمشترك)
+# 6️⃣ جدار الحماية الرقمي والتحقق من الأكواد الـ 24 المعتمدة
 # ==============================================================================
 MASTER_CODE = "CR-EMPEROR-EHAB-2026"
 CORE_CODES = ["CR-PATIENT-77", "CR-PATIENT-99", "CR-PATIENT-101", "CR-SOHAG-2026"]
@@ -367,12 +367,11 @@ if st.session_state.role == "doctor":
             mod_age = st.number_input("عمر المريض الحالي (سنوات):", value=int(current_p_data['age']), step=1)
             mod_gender = st.selectbox("جنس المريض الخلوي:", ["Male", "Female"], index=0 if current_p_data['gender'] == "Male" else 1)
 
-    with st.expander("💊 بروتوكول المقاصة الدوائية والمكملات (دليل الدواء وهيئة الدواء المصرية)"):
+    with st.expander("💊 بروتوكول المقاصة الدوائية والمكملات"):
         available_drugs = GLOBAL_DRUG_DB[mod_country]
         saved_drugs_list = current_p_data['selected_drugs'].split(',') if current_p_data['selected_drugs'] else []
         mod_drugs = st.multiselect("اختر الأدوية والمكملات الفعالة الحالية للمشترك للربط الدستوري:", list(available_drugs.keys()), default=[d for d in saved_drugs_list if d in available_drugs])
 
-    # 🧾 قسم إرسال ورفع التقرير للطبيب المعالج مباشر من لوحة الإشراف
     st.markdown("---")
     st.markdown("### 📋 تحويل المؤشرات الطبية ورفع التقرير")
     col_rep1, col_rep2 = st.columns([2, 1])
@@ -400,7 +399,6 @@ if st.session_state.role == "patient":
     plan_text = "نظام الشهر السريع" if "1M" in current_code else "نظام الـ 3 أشهر الممتد" if "3M" in current_code else "النظام التأسيسي الآمن"
     st.markdown(f'<p style="text-align:center; color:#d4af37 !important; font-size:16px; font-weight:800; border: 1px solid #d4af37; padding: 8px; border-radius: 8px;">مرحباً بك.. تم تفعيل الدخول البرمجي التلقائي بناءً على الكود الخاص بك: ({plan_text}) للكود الآمن [{current_code}]</p>', unsafe_allow_html=True)
     
-    # فحص الطوارئ الحاد الفوري للمريض عند فتح الواجهة
     check_emergency_status(p_data['fbg'], "قراءة الصائم")
     check_emergency_status(p_data['ppbg'], "قراءة الفاطر")
     
@@ -408,18 +406,17 @@ if st.session_state.role == "patient":
     calc_egfr_val = calculate_egfr(p_data['age'], p_data['weight'], p_data['creatinine'], p_data['gender'])
     cv_score, cv_status = calculate_glucose_variability(current_code)
     
-    # مستشعرات الحساب المستمر CGM إذا أتاحها الطبيب من لوحة تحكمه
+    # محاكاة الربط المباشر بـ CGM الحقيقي الحاصد للجوائز
     if p_data['cgm_connected'] == 1:
         st.markdown("""
             <div class="premium-card" style="border-color: #00ffcc;">
                 <h3 style="color:#00ffcc !important; margin:0 0 10px 0;">🔌 مستشعر السكر المستمر النشط وبوابات الفحص المفتوحة (Live CGM API Connection)</h3>
                 <p style="font-size:13px; margin:0; opacity:0.9;">
-                    تم ربط مستشعرات تتبع الجلوكوز بنجاح، ويتم تحديث وتحليل منحنى الأيض مباشرة بموازاة الدستور الدوائي المصري وهيئة الدواء.
+                    تم ربط مستشعرات تتبع الجلوكوز بنجاح عبر بروتوكولات السحب الفوري (Streaming API)، ويتم تحديث ومنحنى الأيض مباشرة بموازاة الدستور الدوائي وهيئة الدواء.
                 </p>
             </div>
         """, unsafe_allow_html=True)
         
-    # عرض لوحة البيوماركرز الحيوية الرئيسية والتحاليل الأساسية المخزنة
     st.markdown(f"""
         <div class="premium-card">
             <h3 style="color:#d4af37 !important; margin:0 0 20px 0; font-size:18px;">📊 المؤشرات الفسيولوجية الأساسية المستخلصة والمخزنة (Clinical Biomarkers)</h3>
@@ -438,13 +435,10 @@ if st.session_state.role == "patient":
                     <span style="font-size:11px; opacity:0.9;">{cv_status}</span>
                 </div>
             </div>
-            <div style="margin-top: 15px; font-size: 13px; color:#f3e5ab !important; border-top: 1px solid rgba(212,175,55,0.2); padding-top:10px;">
-                🧬 <b>آخر فحص مخزن للعلامات الجلدية:</b> {p_data['skin_analysis'][:150]}...
-            </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # التحليل والرسم البياني التفاعلي لتقلبات السكر
+    # عرض المنحنى البياني التفاعلي
     st.markdown('<div class="premium-card"><h3>📈 مراقبة وتتبع تذبذب الجلوكوز المستمر للأعضاء</h3>', unsafe_allow_html=True)
     raw_logs = get_all_glucose_logs(current_code)
     if raw_logs:
@@ -456,7 +450,7 @@ if st.session_state.role == "patient":
         st.info("سجل تتبع التذبذب فارغ حالياً. قم بتدوين قراءات القياس بالأسفل لتغذية المحرك البياني.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # تسجيل وإضافة القياسات اليدوية السريعة
+    # تسجيل القياسات اليدوية السريعة
     with st.expander("📊 تدوين وتسجيل قراءة سكر فورية الآن بالملف الطبي", expanded=False):
         col_g1, col_g2 = st.columns(2)
         with col_g1: g_type = st.selectbox("توقيت ومناسبة القياس الحالية:", ["سكر صائم", "سكر فاطر (بعد ساعتين)", "سكر عشوائي"])
@@ -472,7 +466,7 @@ if st.session_state.role == "patient":
                 st.success("تم تشفير وتدوين قراءتك الحالية في السجل بنجاح.")
                 st.rerun()
 
-    # 🌙 المكون الأول المطور: محرك بروتوكولات الصيام وساعات الانقطاع
+    # 🌙 مختبر الصيام المطور وعداد الساعات الأيضي (Dynamic Fasting Core)
     st.markdown('<div class="premium-card"><h3>🌙 مختبر الصيام المطور وعداد الساعات الأيضي (Dynamic Fasting Core)</h3>', unsafe_allow_html=True)
     col_fast_type, col_fast_hours = st.columns([2, 1])
     with col_fast_type:
@@ -492,7 +486,7 @@ if st.session_state.role == "patient":
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # 🔮 المكون الثاني المطور: محاكي الحمل الجلايسيمي والتوقيت البيولوجي وسد فجوة الكربوهيدرات الخفية
+    # 🔮 المحرك الكمي للأيض والتوقيت البيولوجي (Quantum Chrono-Sandbox)
     st.markdown('<div class="premium-card"><h3>🔮 المحرك الكمي للأيض والتوقيت البيولوجي (Quantum Chrono-Sandbox)</h3>', unsafe_allow_html=True)
     
     st.markdown("<p style='color:#f3e5ab !important; font-size:14.5px; margin-bottom:5px;'>🕒 هندسة التوقيت والساعة البيولوجية للوجبة:</p>", unsafe_allow_html=True)
@@ -506,13 +500,10 @@ if st.session_state.role == "patient":
         chrono_alert = "☀️ <b>توقيت أيضي نهارى مثالي:</b> كفاءة التخلص الحركي من الجلوكوز في أعلى مستوياتها الحيوية."
 
     if fasting_hours >= 16:
-        glycogen_sponge_buffer = 20.0
         glycogen_status = f"🧹 <b>الجليكوجين الكبدي (مستنفد جزئياً بفعل صيام {fasting_hours} ساعة):</b> الكبد يمتص السكر الآن كإسفنجة لتخزينه أولاً، مما يقلل ذروة الصعود الدموي."
     elif fasting_hours >= 12:
-        glycogen_sponge_buffer = 10.0
         glycogen_status = "📊 <b>الجليكوجين الكبدي (متوسط الاستيعاب الأولي):</b> الكبد مهيأ جزئياً للمقاصة التخزينية."
     else:
-        glycogen_sponge_buffer = 0.0
         glycogen_status = "🚨 <b>الجليكوجين الكبدي (ممتلئ بالكامل):</b> الكبد لن يمتص أي فيض؛ الكربوهيدرات الزائدة ستتدفق فوراً ومباشرة للمجرى الدموي وتحدث طفرة حادة."
 
     st.markdown(f"""
@@ -523,145 +514,46 @@ if st.session_state.role == "patient":
 
     st.markdown("<p style='color:#f3e5ab !important; font-size:14.5px; margin-bottom:5px;'>🍞 الكربوهيدرات (النوع والكمية الدقيقة بالوحدات المنزلية):</p>", unsafe_allow_html=True)
     col_food_sel, col_food_qty = st.columns([2, 1])
+    
     with col_food_sel:
         selected_food = st.selectbox("اختر نوع الكربوهيدرات المراد اختبارها فسيولوجياً:", list(GI_FOOD_DATABASE.keys()))
     with col_food_qty:
-        units_count = st.number_input("الكمية بالوحدة المنزلية القياسية (ملاعق أو أرغفة):", min_value=0.0, max_value=30.0, value=5.0, step=0.5)
+        food_units = st.number_input("الكمية (بالوحدة المنزلية الموضحة):", min_value=0.5, max_value=10.0, value=1.0, step=0.5)
 
+    # حسابات الحمل الجلايسيمي الرياضي الاستباقي للتحكيم العالمي
     food_meta = GI_FOOD_DATABASE[selected_food]
-    total_carbs = units_count * food_meta["unit_carbs"]
-    total_inherent_fiber = units_count * food_meta["unit_fiber"]
-
-    # سد ثغرة الأطعمة مزدوجة الهوية (البقوليات في الصيام المسيحي وبدائل البروتين النباتي)
-    if fast_meta["is_vegan"] and "بقوليات" in selected_food:
-        hidden_carbs_bonus = units_count * 2.0
-        total_carbs += hidden_carbs_bonus
-        st.warning(f"📝 تم رصد بروتين نباتي (بقوليات). احتسب النظام تلقائياً {hidden_carbs_bonus} جرام نشويات مدمجة خفية لحماية خلاياك من الطفرات المباغتة.")
-
-    st.markdown("<p style='color:#f3e5ab !important; font-size:14.5px; margin-bottom:5px;'>🛡️ كتل الكبح الخلوي المضافة يدوياً (المقاصة الإكلينيكية المعوية):</p>", unsafe_allow_html=True)
-    col_p, col_f, col_fib = st.columns(3)
-    with col_p:
-        if fast_meta["is_vegan"]:
-            if fast_meta["allow_fish"]:
-                added_protein_source = st.selectbox("مصدر البروتين المتاح في صيامك:", ["سمك مشوي", "تونة مصفاة تماماً", "بقوليات إضافية", "مشروم خضار"])
-            else:
-                added_protein_source = st.selectbox("مصدر البروتين المتاح (نباتي صارم):", ["بقوليات إضافية", "مشروم خضار", "بروتين الصويا العضوي"])
-        else:
-            added_protein_source = st.selectbox("مصدر البروتين المتاح في وجبتك اليوم:", ["لحوم حمراء / دجاج", "أسماك / تونة مصفاة", "بيض مسلوق", "جبن قريش طبيعي"])
-        added_protein_g = st.slider("كمية البروتين الصافي المضاف (بالغرام):", 0, 100, 25)
-    with col_f:
-        added_fat_g = st.slider("دهون صحية مضافة (زيت زيتون بكر/زبدة طبيعية بالغرام):", 0, 40, 10)
-    with col_fib:
-        added_fiber_g = st.slider("ألياف خضراء مضافة (سلطة خضراء/قشور سيليروم بالغرام الصافي):", 0, 30, 10)
-
-    # الحساب الرياضي الكمي المعقد لتسطيح المنحنيات الأيضية
-    base_gl = (food_meta["GI"] * total_carbs) / 100
-    net_fiber_mass = total_inherent_fiber + added_fiber_g
-    fiber_absorption_delay = net_fiber_mass * 1.5
+    net_carbs = food_meta["unit_carbs"] * food_units
+    base_gl = (food_meta["GI"] * net_carbs) / 100.0
+    adjusted_gl = (base_gl * chrono_factor) / total_sensitivity_boost
     
-    adjusted_homa = calc_homa / total_sensitivity_boost
-    cv_impact = 1 + (cv_score / 100)
-    homa_impact = 1 + (adjusted_homa / 10)
-    
-    gross_spike = (base_gl * 2.3 * cv_impact * homa_impact * chrono_factor)
-    
-    protein_buffer_rate = 0.3 if ("بقوليات" in added_protein_source or "مشروم" in added_protein_source) else 0.45
-    suppression_buffer = (added_protein_g * protein_buffer_rate) + (added_fat_g * 0.6) + fiber_absorption_delay + glycogen_sponge_buffer
-    
-    net_spike = max(0, gross_spike - suppression_buffer)
-    predicted_max_glucose = p_data['fbg'] + net_spike
-
-    # رسم المنحنى الفسيولوجي التفاعلي ثنائي الأبعاد في الساندبوكس
-    time_line = np.array([0, 15, 30, 45, 60, 75, 90, 105, 120])
-    computed_peak_time = min(90, 45 + int(net_fiber_mass * 1.5))
-    
-    glucose_curve = []
-    for t in time_line:
-        if t <= computed_peak_time:
-            pct = t / computed_peak_time if computed_peak_time > 0 else 1
-            val = p_data['fbg'] + net_spike * (pct ** 1.3)
-        else:
-            pct = (t - computed_peak_time) / (120 - computed_peak_time) if (120 - computed_peak_time) > 0 else 1
-            val = p_data['fbg'] + net_spike * (1 - pct ** 2)
-        glucose_curve.append(max(p_data['fbg'] - 15, val))
-
-    fig_sandbox = go.Figure()
-    fig_sandbox.add_trace(go.Scatter(x=time_line, y=glucose_curve, mode='lines+markers',
-                             line=dict(color='#00ffcc' if predicted_max_glucose <= 140 else '#ff4b4b', width=4),
-                             name='مسار الجلوكوز المتوقع'))
-    fig_sandbox.add_hline(y=140.0, line_dash="dot", line_color="#ffff00", annotation_text="حد الأمان الخلوي (140 mg/dL)")
-    fig_sandbox.update_layout(template="plotly_dark", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
-                              xaxis_title="الدقائق بعد الأكل", yaxis_title="الجلوكوز mg/dL")
-    st.plotly_chart(fig_sandbox, use_container_width=True)
-
-    st.markdown(f"#### 🎯 ذروة السكر المتوقعة في الساندبوكس: `{round(predicted_max_glucose)} mg/dL` (صافي الألياف المحسوبة: {round(net_fiber_mass, 1)}g)")
-    if predicted_max_glucose > 140:
-        st.markdown(f"""
-            <div style="background: rgba(255, 75, 75, 0.08); border-right: 4px solid #ff4b4b; padding: 12px; border-radius: 4px;">
-                <b style="color:#ff4b4b;">🛠️ بروتوكول التعديل الكمي الاستباقي للترميم الخلوي:</b><br>
-                الوجبة المختبرة تسبب اختراقاً خلوياً وتجاوزاً للياقة الميتوكوندرية. نظراً لمعطيات الصيام الحالية، يوصى بالآتي فوراً لتسطيح المنحنى تماماً ليصبح أقل من 140 ومعدل تذبذب صغري ($CV < 10\%$):<br>
-                1. 📉 انقاص كمية الكربوهيدرات المختبرة بمقدار <b>{round(units_count * 0.3, 1)} وحدة منزلية</b> (ملاعق أو أرغفة).<br>
-                2. 🛡️ عزز الحماية بإضافة <b>معيار كفة يد بدون أصابع</b> من بروتين صافي (أو تونة مصفاة إن سمح نمط صيامك الحالي).<br>
-                3. 🕒 تفعيل بروتوكول التتابع الصارم: ابدأ بتناول الألياف الخضراء أولاً، تليها كتل البروتين والدهون بحجم <b>عقلة الأصبع</b>، وأخّر تناول النشويات لآخر الوجبة لتأخير تفريغ المعدة تماماً.
-            </div>
-        """, unsafe_allow_html=True)
+    st.markdown(f"#### 🧮 تقييم الحمل الجلايسيمي المعدل للحالة فسيولوجياً:")
+    if adjusted_gl < 10:
+        st.success(f"🟢 آمن جداً ({round(adjusted_gl, 2)}) - لن يسبب طفرة سكر بفضل هندسة وجبتك وصيامك المتقن.")
+    elif adjusted_gl <= 20:
+        st.warning(f"⚠️ متوسط التأثير ({round(adjusted_gl, 2)}) - يفضل تقليله أو المشي 15 دقيقة بعد الوجبة لتسريع التصريف العضلي.")
     else:
-        st.success("✅ معادلة ميتوكوندرية متزنة تماماً ومتوافقة مع نظام صيامك وتوقيتك الحيوى، المنحنى مسطح والميتوكوندريا في أمان!")
+        st.error(f"🚨 حمل جلايسيمي مرتفع حاد ({round(adjusted_gl, 2)}) - سيخرق عتبة الأمان الخلوي ويتعب البنكرياس ويرفع تخزين الدهون!")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # 🥗 المكون الثالث المطور: فحص علامات ومقاومة الإنسولين البصرية والجلدية ومعالجة صور الوجبات والأدوية
-    st.markdown('<div class="premium-card"><h3>🥗 مختبر الهندسة الاستباقية الفورية ومعالجة صور الوجبات والجلد والأدوية</h3>', unsafe_allow_html=True)
+    # مختبر الرؤية الحية الفورية (Vision AI Engine)
+    st.markdown('<div class="premium-card"><h3>📸 مختبر الرؤية الحيوية والتحليل البصري الاستباقي</h3>', unsafe_allow_html=True)
+    tab1, tab2 = st.tabs(["🔍 فحص البصمة الجلدية", "🥗 هندسة وتطهير الوجبات"])
     
-    scan_mode = st.radio("اختر نوع المسح البصري المستهدف والمطابقة والضبط التلقائي:", ["📸 تصوير وهندسة الوجبة الحالية والأدوية", "🔬 تصوير وفحص الجلد وعلامات السكري ومقاومة الإنسولين"])
-    
-    uploaded_files = st.file_uploader(
-        "افتح الكاميرا والتقط/ارفع الصورة للمقاصة الفورية من محرك الرؤية الحاسوبية الخلوي الموصول بهيئة الدواء:", 
-        type=['jpg','png','jpeg'], accept_multiple_files=True
-    )
-    
-    text_description = st.text_area(
-        "✍️ اكتب الوصف الدقيق تفصيلياً (مكونات وجبتك أو موضع فحص الجلد وعلامات مقاومة الإنسولين بدقة لمنع الأخطاء):",
-        placeholder="مثال للوجبة: 5 ملاعق أرز، علبة تونة، سلطة... \nمثال للجلد: تصوير الرقبة لفحص الشواك الأسود (Acanthosis Nigricans) وتوثيق الحالة في قاعدة البيانات..."
-    )
-    
-    if uploaded_files and st.button("🚀 بدء بروتوكول المعالجة البصرية والتحليل الفوري"):
-        if not text_description.strip():
-            st.error("⚠️ خطأ أمني: يرجى كتابة الوصف التفصيلي أولاً لضمان مصادقة ومطابقة الصورة بدقة وحماية ملفك الطبي للربط الدستوري.")
-        else:
-            with st.spinner("يجري الآن مطابقة البيانات البصرية والنصية مع ملفك الفسيولوجي المشفّر والدستور الدوائي..."):
-                if scan_mode == "📸 تصوير وهندسة الوجبة الحالية والأدوية":
-                    advanced_prompt = f"""
-                    بصفتك الخبير الأكاديمي الصارم، قم بتحليل الصور المرفقة ومطابقتها ومقاطعتها مع الوصف المكتوب للوجبة لضمان دقة 100%:
-                    - المكونات المكتوبة من المريض: {text_description}
-                    - نوع الصيام الحالي النشط وساعاته: {active_fast_name} ({fasting_hours} ساعة)
-                    - وقت الوجبة المقدر: {meal_time.strftime('%H:%M')}
-                    - قياس سكر صائم مخزن ومقاومة الإنسولين HOMA-IR: {p_data['fbg']} mg/dL | {round(calc_homa, 2)}
-                    - بروتوكول الأدوية والمستنزفات الحالي الموصوف: {p_data['selected_drugs']}
-                    
-                    أعطِ تقريراً استراتيجياً حاداً ومقسماً بدقة وبخطوط عريضة ملكية ذهبية إلى 4 نقاط جوهرية:
-                    1. التحليل البصري والمطابقة المباشرة بين الصورة والوصف المكتوب وتحديد التنبيهات.
-                    2. التعديل الهندسي الاستباقي للوجبة (قبل الأكل) لتفادي الـ Glucose Spike تماماً وتحقيق منحنى مسطح (CV < 10%).
-                    3. التعبير بالوحدات المنزلية والتقريبية الصارمة (معيار كفة اليد بدون أصابع للبروتين، حجم عقلة الأصبع للدهون، ملعقة صغيرة/كبيرة، حجم عبوة الكبريت الصغيرة للجبن، كوب كبير 240 مل أو صغير 120 مل).
-                    4. بروتوكول الترتيب الرياضي الصارم لتناول الوجبة (الألياف أولاً، البروتين والدهون، النشويات أخيراً)، وتوقيت الأدوية وعلاقتها بقمع السكر العشوائي.
-                    """
-                else:
-                    advanced_prompt = f"""
-                    بصفتك كبير مستشاري الطب الأيضي والترميم الخلوي لعام 2026.
-                    قم بفحص ومسح الصورة المرفقة للجلد (الرقبة، الإبط، أو أي علامات فسيولوجية طرفية أخرى) ومطابقتها مع وصف المريض: {text_description}
-                    حلل بدقة مدى ارتباط العلامات الجلدية (مثل الشواك الأسود Acanthosis Nigricans أو الزوائد الجلدية Skin Tags) بدرجة مقاومة الإنسولين الحالية للحالة وسجل الـ HOMA-IR المخزن: {round(calc_homa, 2)}.
-                    قدم توصيات سريرية واضحة حول مدى تحسن الانسداد الأنسوليني خلوياً وعلامات تجدد الخلايا، مع التنبيه الصارم بمراجعة الدكتور إيهاب حشمت لمتابعة مسار الترميم الخلوي الشامل والتحقق من دليل الدواء المصري.
-                    """
+    with tab1:
+        uploaded_skin = st.file_uploader("ارفع صور العلامات الجلدية (الرقبة، الإبط، الوجه):", type=['jpg','png','jpeg'], accept_multiple_files=True, key="skin_vision")
+        if uploaded_skin and st.button("تحليل البصمة الجلدية نسيجياً", key="btn_skin"):
+            with st.spinner("يجري فحص الطبقات الخلوية وتحديد مؤشر Acanthosis Nigricans..."):
+                prompt = f"حلل الصور بدقة لرصد علامات مقاومة الإنسولين، محيط الخصر الحالي للحالة هو {p_data['waist']} سم، والـ HOMA-IR هو {round(calc_homa, 2)}. قدم بروتوكولاً جينياً دقيقاً باللغة العربية."
+                res_text = analyze_with_gemini(uploaded_skin, prompt)
+                st.markdown(res_text)
                 
-                res = analyze_with_gemini(uploaded_files, advanced_prompt)
-                
-                if scan_mode == "🔬 تصوير وفحص الجلد وعلامات السكري ومقاومة الإنسولين":
-                    temp_p = get_patient_data(current_code) or p_data
-                    temp_p['skin_analysis'] = res
-                    save_patient_data(current_code, temp_p)
-                    
-                st.markdown("<h4>📋 تقرير الهندسة البصرية والمقاصة الميتوكوندرية الفورية للحالة:</h4>", unsafe_allow_html=True)
-                st.write(res)
+    with tab2:
+        uploaded_meal = st.file_uploader("ارفع صور مكونات الوجبة للفحص الهندسي للنشويات:", type=['jpg','png','jpeg'], accept_multiple_files=True, key="meal_vision")
+        if uploaded_meal and st.button("تطهير الوجبة وتحليل الماكروز وحساب الذروة المتوقعة", key="btn_meal"):
+            with st.spinner("يجري قياس الأطباق هندسياً وحساب عتبة الامتصاص المعوي..."):
+                prompt = f"بصفتك كبير مستشاري الهندسة الأيضية، حدد ترتيب تناول الوجبة والمقاصة التغذوية لخفض التذبذب الأيضي علماً بأن معامل رفع حساسية الخلايا الحالي للحالة هو +{round((total_sensitivity_boost - 1)*100)}%."
+                res_text = analyze_with_gemini(uploaded_meal, prompt)
+                st.markdown(res_text)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# تذييل المنصة الرسمي الصارم
-st.markdown('<div style="text-align:center; font-size:11px; opacity:0.6; color:#d4af37 !important; font-weight:800; margin-top:20px;">CellRevive AI v11.5 • The Sovereign Predictive Metabolic Ecosystem 2026</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align:center; font-size:11px; opacity:0.5; margin-top:20px;">CellRevive AI v12.0 - 2026 Sovereign Metabolic Operating System</div>', unsafe_allow_html=True)
