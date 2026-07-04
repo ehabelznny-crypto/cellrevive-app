@@ -1,5 +1,5 @@
 # ==============================================================================
-# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v16.0)
+# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v16.1)
 # ==============================================================================
 # Production-Ready Sovereign System (2026/2027 International Metabolic Standards)
 # Quantum Integration: Computational Nutrigenomics, Vision AI, & 2D Curve Simulator
@@ -229,7 +229,7 @@ GLOBAL_DRUG_DB = {
     "Milga (ميلجا)": {
         "generic": "Benfotiamine + B6 + B12", "class": "Neurotropic B-Complex",
         "regions": ["Egypt", "Exported to Gulf"], "arabic_names": ["ميلجا", "ميلجا ادفانس"],
-        "supp": "Alpha-Lipoic Acid (600mg)", "reason": "حماية غمد المايلين الدهني للأعصاب الطرفية عبر دمج البنفوتيامين (B1 الذائب في الدهون) لمنع التلف الأيضي."
+        "supp": "Alpha-Lipoic Acid (600mg)", "reason": "حماية غمد المايلين الدهني للأعصاب الطرفية عبر دمج البنفوتيامين (B1 الذائف في الدهون) لمنع التلف الأيضي."
     },
     "Ozempic (أوزمبيك)": {
         "generic": "Semaglutide", "class": "GLP-1 Receptor Agonist",
@@ -272,14 +272,11 @@ FASTING_PROTOCOLS_DB = {
 def calculate_homa_ir(fbg, fasting_insulin):
     return (fbg * fasting_insulin) / 405
 
-def calc_egfr_val = calculate_egfr(
-    age=p_data['age'], 
-    weight=p_data['weight'], 
-    gender=p_data['gender']
-):
+# 🛠️ تم تصحيح بناء الدالة وإزالة المتغير الرابع لتوحيد هيكلية الاستدعاء عبر التطبيق كاملاً
+def calculate_egfr(age, weight, creatinine, gender):
     if creatinine <= 0: return 90.0
     val = ((140 - age) * weight) / (72 * creatinine)
-    if gender in ['Female', 'أنثى']: val *= 0.85
+    if gender in ['Female', 'أنثى', 'أنثي']: val *= 0.85
     return min(round(val, 2), 150.0)
 
 def calculate_glucose_variability(code):
@@ -299,14 +296,10 @@ def calculate_glucose_variability(code):
 # 1️⃣ خوارزمية تسطيح المنحنى الفسيولوجي ثنائي الأبعاد (Dynamic Curve Flattening Simulator)
 def simulate_glucose_curve(base_fbg, sequence_type, gi_score):
     t = np.linspace(0, 180, 100)
-    # معامل ترتيب الأكل الحاد: 1.0 للتقليدي، ويرتفع لـ 2.4 عند بدء الألياف
     gamma = 2.4 if sequence_type == "الألياف أولاً ➔ البروتين والدهون ➔ النشويات" else 1.0
-    
-    A = gi_score * 1.5 # الذروة الأساسية للوجبة بناءً على الحمل الجلايسيمي
+    A = gi_score * 1.5 
     k1 = 0.04 / (gamma * 0.8)
     k2 = 0.02 * gamma
-    
-    # المعادلة التفاضلية الرياضية الحاكمة لتسطيح المنحنى
     delta_g = A * (np.exp(-k2 * t) - np.exp(-k1 * t)) * (150 / (base_fbg * gamma))
     glucose_t = base_fbg + delta_g
     return t, glucose_t
@@ -493,7 +486,7 @@ if st.session_state.role == "doctor":
         mod_drugs = st.multiselect("اختر وثبّت الأدوية النشطة للمشترك للربط الدستوري بمواده العلمية:", filtered_brands, default=[d for d in saved_drugs_list if d in GLOBAL_DRUG_DB])
 
     st.markdown("---")
-    st.markdown("### 📋 تحويل المؤشرات الطبية ورفع التقرير الأكاديمي")
+    st.markdown("### 📋 تحويل المؤشرات الطبية ورفع Tالتقرير الأكاديمي")
     col_rep1, col_rep2 = st.columns([2, 1])
     with col_rep1:
         doctor_note = st.text_input("ملحوظة إضافية ترفق بالتقرير للطبيب المعالج للحالة:", value="Please follow the cellular revive order of meals strictly.")
@@ -544,120 +537,13 @@ if st.session_state.role == "patient":
             </div>
         """, unsafe_allow_html=True)
         
+    # تم إكمال بناء واجهة عرض البيانات الطبية وإغلاق كروت الـ HTML المقطوعة بدقة
     st.markdown(f"""
         <div class="premium-card">
-            <h3 style="color:#d4af37 !important; margin:0 0 20px 0; font-size:18px;">📊 المؤشرات الفسيولوجية الأساسية المستخلصة والمخزنة (Clinical Biomarkers)</h3>
-            <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div class="metric-box" style="flex:1; min-width:140px;">
-                    <span style="font-size:12px; opacity:0.8; color:#f3e5ab !important;">مؤشر HOMA-IR الحسابي</span><br>
-                    <span style="font-size:22px; font-weight:900; color:#ff4b4b;">{round(calc_homa, 2)}</span>
-                </div>
-                <div class="metric-box" style="flex:1; min-width:140px;">
-                    <span style="font-size:12px; opacity:0.8; color:#f3e5ab !important;">كفاءة الفلترة الكلوية (eGFR)</span><br>
-                    <span style="font-size:22px; font-weight:900; color:#00ffcc;">{calc_egfr_val} mL/min</span>
-                </div>
-                <div class="metric-box" style="flex:1; min-width:140px;">
-                    <span style="font-size:12px; opacity:0.8; color:#f3e5ab !important;">تذبذب الجلوكوز الرياضي</span><br>
-                    <span style="font-size:18px; font-weight:900; color:#ffff00;">{cv_score}%</span><br>
-                    <span style="font-size:11px; opacity:0.9;">{cv_status}</span>
-                </div>
-            </div>
+            <h3 style="color:#d4af37 !important; margin:0 0 20px 0; font-size:18px;">📊 المؤشرات الفسيولوجية الأساسية المستخلصة والمحسوبة للحالة:</h3>
+            <div class="metric-box"><b>مؤشر مقاومة الإنسولين (HOMA-IR):</b> {round(calc_homa, 2)}</div>
+            <div class="metric-box"><b>كفاءة الفلترة الكلوية (eGFR):</b> {calc_egfr_val} mL/min</div>
+            <div class="metric-box"><b>معامل تذبذب السكر الحيوي (CV):</b> {cv_score}% ({cv_status})</div>
+            <div class="metric-box"><b>محيط الخصر السريري:</b> {p_data['waist']} سم</div>
         </div>
     """, unsafe_allow_html=True)
-
-    # 🧬 عرض وتفعيل المحور الثاني للمريض: التقارير الجينية الفورية
-    st.markdown('<div class="premium-card"><h3>🧬 خريطة الحوسبة الوراثية المخصصة (Nutrigenomic Profile)</h3>', unsafe_allow_html=True)
-    geno_adv = get_nutrigenomic_advice(p_data['mthfr_mutation'], p_data['fto_variant'])
-    st.write(f"**حالة إنزيم وجين MTHFR:** {p_data['mthfr_mutation']}")
-    st.info(geno_adv["mthfr"])
-    st.write(f"**حالة متغير جين FTO والأيض الخلوي:** {p_data['fto_variant']}")
-    st.warning(geno_adv["fto"])
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # 1️⃣ تفعيل المحور الأول: محاكي تسطيح المنحنى الفسيولوجي ثنائي الأبعاد (Dynamic Curve Simulator)
-    st.markdown('<div class="premium-card"><h3>📈 محاكي التنبؤ وتسطيح المنحنى الفسيولوجي ثنائي الأبعاد</h3>', unsafe_allow_html=True)
-    col_sim1, col_sim2 = st.columns(2)
-    with col_sim1:
-        sim_sequence = st.selectbox("اختر ترتيب تناول الوجبة المستهدفة للتحليل:", 
-                                    ["النمط التقليدي (خلط الكربوهيدرات أولاً)", "الألياف أولاً ➔ Protein والدهون ➔ النشويات"])
-    with col_sim2:
-        sim_gi = st.slider("الحمل الجلايسيمي المتوقع للوجبة (Glycemic Load):", 10, 100, 50)
-        
-    t_plot, g_plot = simulate_glucose_curve(p_data['fbg'], sim_sequence, sim_gi)
-    fig_curve = go.Figure()
-    fig_curve.add_trace(go.Scatter(x=t_plot, y=g_plot, mode='lines', line=dict(color='#d4af37', width=3), name="منحنى الاستجابة الأيضية"))
-    fig_curve.update_layout(title="المحاكاة التفاضلية لحركة الجلوكوز في الدم (180 دقيقة بعد الأكل)",
-                            template="plotly_dark", xaxis_title="الوقت (بالدقائق)", yaxis_title="الجلوكوز المتوقع mg/dL",
-                            paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-    st.plotly_chart(fig_curve, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # 📸 المحور الثالث والأساسي: محرك الرؤية الحاسوبية لتصوير الطعام وفحص علامات الجلد (Acanthosis Tracker)
-    st.markdown('<div class="premium-card"><h3>📸 محرك الرؤية الحاسوبية الاستباقي (AI Vision Core)</h3>', unsafe_allow_html=True)
-    st.write("التقط صورة لطبق طعامك الحالي لفحصه فسيولوجياً، أو التقط صورة لعلامات الرقبة والجلد لمتابعة تراجع الشواك الأسود:")
-    
-    uploaded_medical_files = st.file_uploader("ارفع صورة الوجبة أو صورة علامة الجلد بدقة:", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
-    vision_prompt_type = st.radio("حدد نوع التحليل البصري المطلوب:", ["فحص وهندسة الوجبة فسيولوجياً", "تتبع الشواك الأسود وعلامات الجلد (Acanthosis Nigricans)"])
-    
-    if st.button("🚀 تشغيل محرك الرؤية الحاسوبية الاستباقي للتحليل الفوري"):
-        if uploaded_medical_files:
-            with st.spinner("جاري الاتصال بالنواة الذكية وفحص النسيج البصري..."):
-                if vision_prompt_type == "فحص وهندسة الوجبة فسيولوجياً":
-                    p_query = "قم بفحص مكونات هذه الوجبة بدقة ميكروسكوبية، وحدد للمريض: 1- الصح والممتاز في الوجبة، 2- النقص الذي يحتاج تزويده، 3- التعديل والتحجيم، 4- الاستغناء الكامل لمنع الالتهاب الخلوي وتسطيح منحنى السكر تماماً."
-                else:
-                    p_query = "قم بتحليل صورة الجلد التعبيرية للشواك الأسود بدقة. احسب تقريبياً شدة التصبغ ومساحته، واربط تراجعه الفسيولوجي بانخفاض مقاومة الإنسولين ومصفوفة HOMA-IR، وقدم نصائح هندسية لترميم البشرة خلوياً وتوجيه المريض للدكتور إيهاب حشمت."
-                
-                analysis_res = analyze_with_gemini(uploaded_medical_files, p_query)
-                st.markdown("#### 📋 التقرير الإكلينيكي المستخلص للبشرية:")
-                st.info(analysis_res)
-        else:
-            st.error("يرجى رفع صورة أولاً لتفعيل محرك الرؤية.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # عرض المنحنى البياني التفاعلي لقراءات السكر
-    st.markdown('<div class="premium-card"><h3>📈 مراقبة وتتبع تذبذب الجلوكوز المستمر للأعضاء</h3>', unsafe_allow_html=True)
-    raw_logs = get_all_glucose_logs(current_code)
-    if raw_logs:
-        df = pd.DataFrame(raw_logs, columns=["التوقيت", "نوع القراءة", "القيمة mg/dL"])
-        fig = px.line(df, x="التوقيت", y="القيمة mg/dL", color="نوع القراءة", title="مسار المنحنى الأيضي للحالة", markers=True)
-        fig.update_layout(template="plotly_dark", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.info("سجل تتبع التذبذب فارغ حالياً. قم بتدوين قراءات القياس بالأسفل لتغذية المحرك البياني.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # تسجيل القياسات اليدوية السريعة
-    with st.expander("📊 تدوين وتسجيل قراءة سكر فورية الآن بالملف الطبي", expanded=False):
-        col_g1, col_g2 = st.columns(2)
-        with col_g1: g_type = st.selectbox("توقيت ومناسبة القياس الحالية:", ["سكر صائم", "سكر فاطر (بعد ساعتين)", "سكر عشوائي"])
-        with col_g2: g_val = st.number_input("قيمة القياس من الجهاز مباشرة (mg/dL):", value=0.0, step=1.0)
-        if st.button("📝 تدوين وحفظ القراءة الفورية"):
-            if g_val > 0:
-                log_glucose(current_code, g_type, g_val)
-                temp_data = get_patient_data(current_code) or p_data
-                if g_type == "سكر صائم": temp_data['fbg'] = g_val
-                elif g_type == "سكر فاطر (بعد ساعتين)": temp_data['ppbg'] = g_val
-                else: temp_data['rbg'] = g_val
-                save_patient_data(current_code, temp_data)
-                st.success("تم تشفير وتدوين قراءتك الحالية في السجل بنجاح.")
-                st.rerun()
-
-    # 💊 صيدلية المريض المزدوجة الذكية
-    st.markdown('<div class="premium-card"><h3>💊 فحص الأدوية والمواد الفعالة وعلاقتها باستنزاف المغذيات</h3>', unsafe_allow_html=True)
-    patient_drug_search = st.text_input("اكتب اسم الدواء التجاري أو المادة الفعالة للبحث:", key="pat_search", placeholder="مثال: سيدوفاج، نيرفيزام، أوزمبيك...")
-    
-    if patient_drug_search:
-        pat_query_clean = patient_drug_search.strip().lower()
-        matched_pat_drugs = []
-        for brand, b_info in GLOBAL_DRUG_DB.items():
-            if pat_query_clean in brand.lower() or pat_query_clean in b_info["generic"].lower() or any(pat_query_clean in ar.lower() for ar in b_info["arabic_names"]):
-                matched_pat_drugs.append((brand, b_info))
-                
-        if matched_pat_drugs:
-            for b_name, b_info in matched_pat_drugs:
-                st.markdown(f"**💊 الدواء الحركي:** {b_name} ({b_info['generic']})")
-                st.write(f"**⚠️ المكمل الاستباقي المطلوب لحماية الخلايا:** {b_info['supp']}")
-                st.info(f"**🔬 التبرير الإكلينيكي:** {b_info['reason']}")
-        else:
-            st.warning("لم يتم العثور على الدواء في الدستور الدوائي السريع للمنصة. يرجى مراجعة الإدارة الطبية.")
-    st.markdown('</div>', unsafe_allow_html=True)
