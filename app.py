@@ -1,5 +1,9 @@
 # ==============================================================================
-# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v14.1)
+# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v16.0)
+# ==============================================================================
+# Production-Ready Sovereign System (2026/2027 International Metabolic Standards)
+# Quantum Integration: Computational Nutrigenomics, Vision AI, & 2D Curve Simulator
+# Core Architecture Designed for: Dr. Ehab Heshmat El-Zanny & CellRevive Global Engine
 # ==============================================================================
 import streamlit as st
 import sqlite3
@@ -7,14 +11,14 @@ import math
 import numpy as np
 import google.generativeai as genai
 from PIL import Image
-from datetime import datetime, time
+from datetime import datetime
 import os
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from fpdf import FPDF
 
-# استيراد مكتبة التشفير لحماية البيانات بمعايير HIPAA الدولية
+# 🛡️ استيراد مكتبة التشفير لحماية البيانات بمعايير HIPAA الدولية
 try:
     from cryptography.fernet import Fernet
 except ImportError:
@@ -27,7 +31,6 @@ except ImportError:
 if "ENCRYPTION_KEY" in st.secrets:
     KEY = st.secrets["ENCRYPTION_KEY"].encode()
 else:
-    # إصلاح ثغرة استقرار المفتاح عبر الـ Session State لمنع انهيار فك التشفير أثناء الـ Rerun
     if "EMERGENCY_STATIC_KEY" not in st.session_state:
         st.session_state["EMERGENCY_STATIC_KEY"] = Fernet.generate_key().decode()
     KEY = st.session_state["EMERGENCY_STATIC_KEY"].encode()
@@ -55,6 +58,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# التحقق من مفتاح API لمحرك الذكاء الاصطناعي
 if "GEMINI_API_KEY" in st.secrets:
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=GEMINI_API_KEY)
@@ -64,7 +68,7 @@ elif "api_key_input" in st.session_state and st.session_state.api_key_input:
 else:
     GEMINI_API_KEY = ""
 
-# هندسة التصميم الفاخر الملكي للمنصة (CSS القياسي والجمالي لعام 2026)
+# حقن كود CSS الاحترافي للهوية البصرية الفاخرة
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&display=swap');
@@ -112,10 +116,10 @@ st.markdown("""
 st.markdown("""
     <div style="text-align: center; padding: 15px; margin-bottom: 5px;">
         <h1 style="color: #d4af37; font-family: 'Cairo', sans-serif; font-size: 38px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; text-shadow: 3px 3px 8px rgba(0,0,0,0.9);">
-            🧬 CELLREVIVE AI
+            👑 CELLREVIVE AI
         </h1>
         <p style="color: #f3e5ab !important; font-family: 'Cairo', sans-serif; font-size: 19px; font-weight: 800; opacity: 0.95; line-height: 1.6; max-width: 850px; margin: 0 auto; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
-            المنصة العالمية الموحدة للترميم الخلوي وعكس مسار مقاومة الإنسولين والسكري نوع ثاني للأبد
+            المنصة العالمية الموحدة للترميم الخلوي وعكس مسار مقاومة الإنسولين والسكري نوع ثاني 
         </p>
         <hr style="border: 0; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); margin-top: 15px; margin-bottom: 20px;">
     </div>
@@ -134,7 +138,9 @@ def init_db():
             weight REAL, waist REAL, creatinine REAL DEFAULT 1.0, age INTEGER DEFAULT 45,
             gender TEXT DEFAULT 'Male', severity_score REAL DEFAULT 5.0,
             skin_analysis TEXT DEFAULT '', selected_drugs TEXT DEFAULT '',
-            country TEXT DEFAULT 'Egypt', cgm_connected INTEGER DEFAULT 0
+            country TEXT DEFAULT 'Egypt', cgm_connected INTEGER DEFAULT 0,
+            mthfr_mutation TEXT DEFAULT 'Normal (CC)', fto_variant TEXT DEFAULT 'Normal (TT)',
+            fasting_insulin REAL DEFAULT 12.0
         )
     """)
     cursor.execute("""
@@ -153,7 +159,8 @@ def get_patient_data(code):
     conn = sqlite3.connect('cellrevive_quantum_system.db')
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT fbg, ppbg, rbg, hba1c, weight, waist, severity_score, skin_analysis, selected_drugs, creatinine, age, gender, country, cgm_connected
+        SELECT fbg, ppbg, rbg, hba1c, weight, waist, severity_score, skin_analysis, selected_drugs, 
+               creatinine, age, gender, country, cgm_connected, mthfr_mutation, fto_variant, fasting_insulin
         FROM patients WHERE patient_code = ?
     """, (code,))
     row = cursor.fetchone()
@@ -162,7 +169,8 @@ def get_patient_data(code):
         return {
             'fbg': row[0], 'ppbg': row[1], 'rbg': row[2], 'hba1c': row[3], 'weight': row[4], 'waist': row[5],
             'severity_score': row[6], 'skin_analysis': decrypt_data(row[7]), 'selected_drugs': decrypt_data(row[8]), 
-            'creatinine': row[9], 'age': row[10], 'gender': row[11], 'country': row[12] or 'Egypt', 'cgm_connected': row[13] or 0
+            'creatinine': row[9], 'age': row[10], 'gender': row[11], 'country': row[12] or 'Egypt', 'cgm_connected': row[13] or 0,
+            'mthfr_mutation': row[14] or 'Normal (CC)', 'fto_variant': row[15] or 'Normal (TT)', 'fasting_insulin': row[16] or 12.0
         }
     return None
 
@@ -172,9 +180,13 @@ def save_patient_data(code, data):
     encrypted_skin = encrypt_data(data['skin_analysis'])
     encrypted_drugs = encrypt_data(data['selected_drugs'])
     cursor.execute("""
-        INSERT OR REPLACE INTO patients (patient_code, fbg, ppbg, rbg, hba1c, weight, waist, severity_score, skin_analysis, selected_drugs, creatinine, age, gender, country, cgm_connected)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (code, data['fbg'], data['ppbg'], data['rbg'], data['hba1c'], data['weight'], data['waist'], data['severity_score'], encrypted_skin, encrypted_drugs, data['creatinine'], data['age'], data['gender'], data['country'], data['cgm_connected']))
+        INSERT OR REPLACE INTO patients (patient_code, fbg, ppbg, rbg, hba1c, weight, waist, severity_score, 
+                                         skin_analysis, selected_drugs, creatinine, age, gender, country, 
+                                         cgm_connected, mthfr_mutation, fto_variant, fasting_insulin)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (code, data['fbg'], data['ppbg'], data['rbg'], data['hba1c'], data['weight'], data['waist'], 
+          data['severity_score'], encrypted_skin, encrypted_drugs, data['creatinine'], data['age'], 
+          data['gender'], data['country'], data['cgm_connected'], data['mthfr_mutation'], data['fto_variant'], data['fasting_insulin']))
     conn.commit()
     conn.close()
 
@@ -196,13 +208,13 @@ def get_all_glucose_logs(code):
     return rows
 
 # ==============================================================================
-# 3️⃣ الدستور الدوائي العالمي المتقاطع والموحد (Cross-linked Intellectual DB)
+# 3️⃣ الدستور الدوائي وقواعد البيانات الحيوية والوراثية (Nutrigenomic & GI DB)
 # ==============================================================================
 GLOBAL_DRUG_DB = {
     "Cidophage (سيدوفاج)": {
         "generic": "Metformin", "class": "Biguanide (Insulin Sensitizer)",
-        "regions": ["Egypt", "Exported to Gulf", "Exported to Africa"], "arabic_names": ["سيدوفاج", "سيدوفاج ار"],
-        "supp": "Methyl B12 (1000mcg) + CoQ10", "reason": "استنزاف فيتامين ب12 الحاد عبر الأمعاء وتأثر كفاءة الميتوكوندريا فسيولوجياً طبقاً لتدقيق هيئة الدواء المصرية."
+        "regions": ["Egypt", "Exported to Gulf"], "arabic_names": ["سيدوفاج", "سيدوفاج ار"],
+        "supp": "Methyl B12 (1000mcg) + CoQ10", "reason": "استنزاف فيتامين ب12 الحاد وتأثر كفاءة الميتوكوندريا فسيولوجياً طبقاً لتدقيق هيئة الدواء المصرية."
     },
     "Glucophage (جلوكوفاج)": {
         "generic": "Metformin", "class": "Biguanide (Insulin Sensitizer)",
@@ -212,52 +224,27 @@ GLOBAL_DRUG_DB = {
     "Nervizam (نيرفيزام)": {
         "generic": "Alpha-Lipoic Acid + Vitamin B Complex", "class": "Mitochondrial & Neurovascular Antioxidant",
         "regions": ["Egypt", "Exported to Gulf"], "arabic_names": ["نيرفيزام", "نرفيزام"],
-        "supp": "Chromium Picolinate + Magnesium Citrate", "reason": "دعم مضادات الأكسدة الخلوية العميقة وحماية غمد المايلين من الالتهاب وكبح مسارات التحلل السكري المتقدم (AGEs) دون اللجوء للمسكنات الكيميائية المركزية."
+        "supp": "Chromium Picolinate + Magnesium Citrate", "reason": "دعم مضادات الأكسدة الخلوية العميقة وحماية غمد المايلين الدهني وكبح مسارات التحلل السكري المتقدم (AGEs)."
     },
     "Milga (ميلجا)": {
         "generic": "Benfotiamine + B6 + B12", "class": "Neurotropic B-Complex",
         "regions": ["Egypt", "Exported to Gulf"], "arabic_names": ["ميلجا", "ميلجا ادفانس"],
-        "supp": "Alpha-Lipoic Acid (600mg)", "reason": "تعزيز حماية غمد المايلين الدهني للأعصاب الطرفية عبر دمج البنفوتيامين (B1 الذائب في الدهون) لمنع التلف الأيضي السكري."
+        "supp": "Alpha-Lipoic Acid (600mg)", "reason": "حماية غمد المايلين الدهني للأعصاب الطرفية عبر دمج البنفوتيامين (B1 الذائب في الدهون) لمنع التلف الأيضي."
     },
     "Ozempic (أوزمبيك)": {
-        "generic": "Semaglutide", "class": "GLP-1 Receptor Agonist (Incretin Mimetic)",
-        "regions": ["Egypt", "Gulf", "International"], "arabic_names": ["أوزمبيك", "اوزمبك"],
-        "supp": "Digestive Enzymes + Zinc + Essential Amino Acids (EAAs)", "reason": "كسل وشلل حركة المعدة المؤقت والحاجة لتسهيل امتصاص المغذيات وبناء خلايا عضلية متزنة ومنع هدم النسيج العضلي الحيوي (Sarcopenia)."
+        "generic": "Semaglutide", "class": "GLP-1 Receptor Agonist",
+        "regions": ["Egypt", "Gulf", "International"], "arabic_names": ["أوزمبيك", "وزمبك"],
+        "supp": "Digestive Enzymes + Zinc + Essential Amino Acids (EAAs)", "reason": "تأخير حركة المعدة فسيولوجياً والحاجة لتسهيل امتصاص المغذيات خلوياً ومنع هدم الكتلة العضلية (Sarcopenia)."
     },
     "Mounjaro (مونجارو)": {
         "generic": "Tirzepatide", "class": "GIP/GLP-1 Receptor Co-agonist",
         "regions": ["Egypt", "Gulf", "International"], "arabic_names": ["مونجارو", "منجارو"],
-        "supp": "Essential Amino Acids (EAAs) + Bio-Protein Protocol", "reason": "منع فقدان الكتلة العضلية الحيوية السريع الحادث بسبب التثبيط المفرط للمعدة والشهية وللحفاظ على معدل الأيض الأساسي (BMR)."
-    },
-    "Wegovy (ويجوفي)": {
-        "generic": "Semaglutide (Weight Mgmt)", "class": "GLP-1 Receptor Agonist",
-        "regions": ["Gulf", "International"], "arabic_names": ["ويجوفي", "ويغوفي"],
-        "supp": "Essential Amino Acids (EAAs) + Electrolytes", "reason": "Preserving metabolically active lean tissue and preventing severe muscle depletion during accelerated caloric deficits."
+        "supp": "Essential Amino Acids (EAAs) + Bio-Protein Protocol", "reason": "منع فقدان الكتلة العضلية الحيوية السريع السريع الحادث بسبب التثبيط المفرط للمعدة والشهية."
     },
     "Forxiga (فورسيجا)": {
         "generic": "Dapagliflozin", "class": "SGLT2 Inhibitor (Glucuretic)",
         "regions": ["Egypt", "Gulf", "International"], "arabic_names": ["فورسيجا", "فارسيجا"],
         "supp": "Electrolytes (Potassium/Magnesium) + High Hydration Protocol", "reason": "الفقد المستمر للمعادن النادرة والسوائل عبر الفلترة الكلوية وزيادة احتمالية الجفاف الخلوي الاسموزي."
-    },
-    "Jardiance (جاردينس)": {
-        "generic": "Empagliflozin", "class": "SGLT2 Inhibitor (Glucuretic)",
-        "regions": ["Egypt", "Gulf", "International"], "arabic_names": ["جاردينس", "جاردينس"],
-        "supp": "Magnesium Citrate + CoQ10", "reason": "حماية الخلايا المبطنة للأوعية الدموية وتعويض مستنفذات الطاقة الحيوية الناتجة عن إدرار البول السكري."
-    },
-    "Deltacortril (ديلتاكورتريل)": {
-        "generic": "Prednisolone", "class": "Corticosteroid",
-        "regions": ["Egypt", "Exported to Gulf"], "arabic_names": ["ديلتاكورتريل", "دلتاميد"],
-        "supp": "Potassium (99mg) + Magnesium Citrate (400mg) + Vit D3", "reason": "احتباس السوائل وهدم الكتلة العضلية الحيوية ورفع مقاومة الإنسولين الطرفية حاداً."
-    },
-    "Lasix (لازكس)": {
-        "generic": "Furosemide", "class": "Loop Diuretic",
-        "regions": ["Egypt", "Gulf", "International"], "arabic_names": ["لازكس", "لازيكس"],
-        "supp": "Thiamine B1 (100mg) + Potassium + Magnesium", "reason": "طرد المعادن النادرة ومستنفذات الطاقة الحيوية من الميتوكوندريا الكلوية."
-    },
-    "Lipitor (ليبيتور)": {
-        "generic": "Atorvastatin", "class": "HMG-CoA Reductase Inhibitor (Statin)",
-        "regions": ["Egypt", "Gulf", "International"], "arabic_names": ["ليبيتور", "ليبيطور"],
-        "supp": "CoQ10 (200mg) + Vit D3 (5000 IU)", "reason": "تثبيط مسار الميفالونات (Mevalonate Pathway) المسبب لآلام وهدم العضلات وضرر البنية التحتية للميتوكوندريا."
     }
 }
 
@@ -266,24 +253,23 @@ GI_FOOD_DATABASE = {
     "أرز بسمتي طويل الحبة": {"GI": 50, "unit_carbs": 3.5, "unit_fiber": 0.4, "desc": "لكل ملعقة طعام كبيرة"},
     "خبز شعير كامل": {"GI": 45, "unit_carbs": 12.0, "unit_fiber": 2.5, "desc": "لكل نصف رغيف"},
     "خبز جوز الهند / اللوز (Keto)": {"GI": 15, "unit_carbs": 3.0, "unit_fiber": 3.0, "desc": "لكل نصف رغيف"},
-    "بقوليات (فول / عدس مدمس)": {"GI": 40, "unit_carbs": 7.0, "unit_fiber": 3.8, "desc": "لكل ملعقة طعام كبيرة (تحتوي كربوهيدرات خفية)"},
+    "بقوليات (فول / عدس مدمس)": {"GI": 40, "unit_carbs": 7.0, "unit_fiber": 3.8, "desc": "لكل ملعقة طعام كبيرة"},
     "مكرونة بيضاء": {"GI": 65, "unit_carbs": 5.0, "unit_fiber": 0.2, "desc": "لكل ملعقة طعام كبيرة"},
     "بطاطس مسلوقة / مشوية": {"GI": 80, "unit_carbs": 6.0, "unit_fiber": 0.5, "desc": "لكل نصف حبة متوسطة"}
 }
 
 FASTING_PROTOCOLS_DB = {
     "بدون صيام (النمط العادي)": {"is_vegan": False, "allow_fish": True, "base_boost": 1.0, "desc": "الوجبات العادية الموزعة على مدار اليوم."},
-    "صيام رمضان / صيام ديني جاف (Dry Fast)": {"is_vegan": False, "allow_fish": True, "base_boost": 1.45, "desc": "انقطاع تام عن الماء والطعام من الفجر للمغرب. أقصى تفعيل للأوتوفاجي السريع وعكس المسار الحركي."},
-    "الصوم المسيحي الكبير / أسبوع الآلام (نباتي صارم)": {"is_vegan": True, "allow_fish": False, "base_boost": 1.35, "desc": "يمنع اللحوم والأسماك والبيض والألبان بالكامل. الاعتماد الحصري على البقوليات والنبات."},
-    "الصوم المسيحي (نباتي مسموح بالسمك والتونة)": {"is_vegan": True, "allow_fish": True, "base_boost": 1.25, "desc": "نمط نباتي مع السماح بالمأكولات البحرية والتونة كمصادر بروتينية حامية للمنحنى."},
+    "صيام رمضان / صيام ديني جاف (Dry Fast)": {"is_vegan": False, "allow_fish": True, "base_boost": 1.45, "desc": "انقطاع تام عن الماء والطعام من الفجر للمغرب. أقصى تفعيل للأوتوفاجي السريع."},
+    "الصوم المسيحي الكبير / أسبوع الآلام (نباتي صارم)": {"is_vegan": True, "allow_fish": False, "base_boost": 1.35, "desc": "يمنع اللحوم والأسماك والبيض والألبان بالكامل. الاعتماد الحصري على النبات."},
     "الصيام الكبير الممتد (الترميم الخلوي العميق)": {"is_vegan": False, "allow_fish": True, "base_boost": 1.60, "desc": "بروتوكول الصيام الإكلينيكي الممتد الموصوف لإعادة بناء ميتوكوندريا الخلايا وتصفير مستويات الإنسولين."},
-    "صيام متقطع طبي (Medical IF)": {"is_vegan": False, "allow_fish": True, "base_boost": 1.30, "desc": "راحة مبرمجة للبنكرياس تعتمد على الساعات المحددة يدوياً."}
+    "صيام متقطع طبي (Medical IF)": {"is_vegan": False, "allow_fish": True, "base_boost": 1.30, "desc": "راحة مبرمجة للبنكرياس تعتمد على الساعات المحددة."}
 }
 
 # ==============================================================================
-# 4️⃣ المعادلات الرياضية والبيولوجية المتقدمة لتقييم الحالة الأيضية
+# 4️⃣ المحور الأول والثاني: المعادلات الرياضية والبيولوجية ومحاكي المنحنى التفاضلي
 # ==============================================================================
-def calculate_homa_ir(fbg, fasting_insulin=12.0):
+def calculate_homa_ir(fbg, fasting_insulin):
     return (fbg * fasting_insulin) / 405
 
 def calculate_egfr(age, weight, creatinine, gender):
@@ -306,8 +292,39 @@ def calculate_glucose_variability(code):
     else: status = "🚨 تذبذب حاد وحرج - خطر حدوث طفرات سكر مفاجئة"
     return round(cv, 2), status
 
+# 1️⃣ خوارزمية تسطيح المنحنى الفسيولوجي ثنائي الأبعاد (Dynamic Curve Flattening Simulator)
+def simulate_glucose_curve(base_fbg, sequence_type, gi_score):
+    t = np.linspace(0, 180, 100)
+    # معامل ترتيب الأكل الحاد: 1.0 للتقليدي، ويرتفع لـ 2.4 عند بدء الألياف
+    gamma = 2.4 if sequence_type == "الألياف أولاً ➔ البروتين والدهون ➔ النشويات" else 1.0
+    
+    A = gi_score * 1.5 # الذروة الأساسية للوجبة بناءً على الحمل الجلايسيمي
+    k1 = 0.04 / (gamma * 0.8)
+    k2 = 0.02 * gamma
+    
+    # المعادلة التفاضلية الرياضية الحاكمة لتسطيح المنحنى
+    delta_g = A * (np.exp(-k2 * t) - np.exp(-k1 * t)) * (150 / (base_fbg * gamma))
+    glucose_t = base_fbg + delta_g
+    return t, glucose_t
+
+# 2️⃣ محرك النواقل الوراثية الغذائية والمقاصة الخلوية العميقة (Nutrigenomic Rescuer)
+def get_nutrigenomic_advice(mthfr, fto):
+    advice = {"mthfr": "", "fto": ""}
+    if mthfr == "طفرة متجانسة (TT Homozygous)":
+        advice["mthfr"] = "⚠️ انخفاض بنسبة 70% في كفاءة إنزيم MTHFR. يحظر تماماً تناول حمض الفوليك الصناعي (Folic Acid) لتجنب تراكم السمية الخلوية. التوصية: الإلزام الفوري بالصيغة النشطة فسيولوجياً ميثيل فولات (5-MTHF) بجرعة 1000 ميكروجرام لضمان حماية الحمض النووي (DNA Methylation)."
+    elif mthfr == "طفرة متغايرة (CT Heterozygous)":
+        advice["mthfr"] = "⚠️ انخفاض متوسط بنسبة 35% في كفاءة الإنزيم. يُفضل استبدال الفوليك أسيد التجاري بـ الميثيل فولات العضوي المستخلص من الخضروات الورقية الداكنة المعالجة بحرارة خفيفة."
+    else:
+        advice["mthfr"] = "✅ ناقل الجينات الطبيعي (CC). كفاءة الميثيل ممتازة خلوياً."
+        
+    if fto == "خطر مرتفع (AA Homozygous)":
+        advice["fto"] = "🚨 جين السمنة الأيضية نشط. الخلايا لديها ميل جيني مرتفع لتخزين الدهون وضعف الإشارات العصبية للشبع (Leptin Resistance). التوصية السريرية: إجبار البنكرياس على بروتوكول الصيام الطبي الممتد وعكس النمط تماماً لرفع مستويات هرمون الـ Adiponectin."
+    else:
+        advice["fto"] = "✅ البديل الجيني طبيعي ومثالي لمعدلات الحرق الأيضي."
+    return advice
+
 # ==============================================================================
-# 5️⃣ محرك الرؤية الحاسوبية والذكاء الاصطناعي والتقارير الطبية السيادية
+# 5️⃣ محرك التقارير، التحليل البصري والمحاكاة الفسيولوجية
 # ==============================================================================
 def generate_pdf_report(patient_id, data, calc_homa, calc_egfr, cv_score, cv_status, selected_drugs_list, notes):
     pdf = FPDF()
@@ -328,11 +345,9 @@ def generate_pdf_report(patient_id, data, calc_homa, calc_egfr, cv_score, cv_sta
         for brand in selected_drugs_list:
             if brand in GLOBAL_DRUG_DB:
                 g_info = GLOBAL_DRUG_DB[brand]
-                # إبعاد السلاسل النصية عن الحروف غير اللاتينية لمنع الانهيار البرمجي لـ FPDF
-                pdf.cell(200, 10, txt=f" - Active Element: {g_info['generic']}", ln=line_idx)
+                pdf.cell(200, 10, txt=f" - Active Element: {g_info['generic']} ({g_info['class']})", ln=line_idx)
                 line_idx += 1
                 
-    # تنظيف الملاحظات المرفقة وتأمين خلوها من الرموز المعطلة
     clean_notes = "".join([c for c in notes if ord(c) < 128]) or "Please refer to clinical guidelines."
     pdf.cell(200, 10, txt=f"Clinical Instructions Note: {clean_notes}", ln=line_idx)
     
@@ -343,16 +358,16 @@ def generate_pdf_report(patient_id, data, calc_homa, calc_egfr, cv_score, cv_sta
 
 def analyze_with_gemini(images, prompt):
     if not GEMINI_API_KEY:
-        return "⚠️ يرجى إدخل مفتاح الـ API المعتمد لتشغيل محرك التحليل البصري الاستباقي."
+        return "⚠️ يرجى إدخال مفتاح الـ API المعتمد لتشغيل محرك التحليل البصري الاستباقي."
     try:
         system_instruction = """
-        بصفتك كبير مستشاري الطب الأيضي والترميم الخلوي لعام 2026.
-        مهمتك الأساسية هي هندسة الوجبات هندسة استباقية صارمة لتسطيح منحنى السكر تماماً وتخفيض التذبذب (CV < 10%).
-        عند تقديم نصائح التعديل والإضافة والمقاصة الغذائية، يجب الالتزام الصارم بالقواعد التالية لتسهيل التطبيق على المريض:
-        - ترجمة الجرامات الطبية فوراً وبدقة إلى وحدات منزلية قياسية تقريبية متعارف عليها بين المرضى.
-        - استخدم التعبيرات التالية حصراً للكميات: (معيار كفة اليد بدون أصابع للبروتين، حجم عقلة الأصبع للدهون، ملعقة صغيرة، ملعقة كبيرة، حجم عبوة الكبريت الصغيرة للجبن، كوب كبير 240 مل، كوب صغير 120 مل).
-        - رتب تناول الوجبة إلزامياً وبصرامة فسيولوجية: الألياف أولاً، ثم البروتين والدهون الصحية ثانياً، ثم الكربوهيدرات المعقدة في النهاية لتأخير الامتصاص المعوي وتسطيح المنحنى الحركي للجلوكوز.
-        - لا تقم بتغيير جرعات الأدوية الكيميائية، بل وجه المريض دائماً لمراجعة الدكتور إيهاب حشمت أو الطبيب المعالج للتحقق التام والرجوع لدليل الدستور الدوائي المصري وهيئة الدواء المصرية.
+        بصفتك كبير مستشاري الطب الأيضي والترميم الخلوي والرؤية الحاسوبية لعام 2026/2027.
+        مهمتك الأساسية هي هندسة الوجبات هندسة استباقية صارمة لتسطيح منحنى السكر تماماً وتخفيض التذبذب (CV < 10%)، 
+        وكذلك تحليل علامات الجلد التعبيرية للشواك الأسود (Acanthosis Nigricans) وربط تراجع التصبغ حسابياً بتحسن مصفوفة HOMA-IR.
+        عند تقديم نصائح التعديل الغذائي، يجب الالتزام الصارم بالقواعد التالية لتسهيل التطبيق على المريض:
+        - ترجمة الجرامات الطبية فوراً وبدقة إلى وحدات منزلية قياسية تقريبية متعارف عليها (كفة اليد، عقلة الأصبع، كوب كبير 240 مل، ملعقة صغيرة).
+        - رتب تناول الوجبة إلزامياً وبصرامة فسيولوجية: الألياف أولاً، ثم البروتين والدهون الصحية ثانياً، ثم الكربوهيدرات المعقدة في النهاية لتأخير الامتصاص المعوي تماماً.
+        - وجه المريض دائماً لمراجعة الدكتور إيهاب حشمت أو الطبيب المعالج للتحقق التام والرجوع لدليل الدستور الدوائي المصري وهيئة الدواء المصرية.
         """
         model = genai.GenerativeModel('gemini-2.5-flash', system_instruction=system_instruction)
         content = [prompt]
@@ -407,18 +422,19 @@ if not st.session_state.is_auth:
             st.session_state.is_auth, st.session_state.role, st.session_state.auth_code = True, "patient", input_code
             st.rerun()
         else:
-            st.error("كود غير مصرح به. يرجى مراجعة الإدارة الطبية فوراً لتفعيل الاشتراك وتحديث الكود الخاص بك.")
+            st.error("كود غير مصرح به. يرجى مراجعة الإدارة فوراً لتفعيل الاشتراك وتحديث الكود الخاص بك.")
     st.stop()
 
 current_code = st.session_state.auth_code
 p_data = get_patient_data(current_code) or {
     'fbg': 130.0, 'ppbg': 140.0, 'rbg': 120.0, 'hba1c': 7.2, 'weight': 85.0, 'waist': 105.0,
     'severity_score': 5.0, 'skin_analysis': 'لم يتم فحص علامات الجلد بعد للحالة الحالية', 'selected_drugs': '', 'creatinine': 1.0,
-    'age': 45, 'gender': 'Male', 'country': 'Egypt', 'cgm_connected': 0
+    'age': 45, 'gender': 'Male', 'country': 'Egypt', 'cgm_connected': 0,
+    'mthfr_mutation': 'Normal (CC)', 'fto_variant': 'Normal (TT)', 'fasting_insulin': 12.0
 }
 
 # ==============================================================================
-# 7️⃣ لوحة تحكم الطبيب المطور الاستباقية (د. إيهاب حشمت)
+# 7️⃣ لوحة تحكم المسؤول المطور الاستباقية (د. إيهاب حشمت)
 # ==============================================================================
 if st.session_state.role == "doctor":
     st.markdown('<div style="color:#d4af37; font-size:24px; font-weight:900; text-align:center; border-bottom:1px solid #d4af37; padding-bottom:10px; margin-bottom:20px;">👑 لوحة التحكم والتحليل السيادي الإكلينيكية العالمية</div>', unsafe_allow_html=True)
@@ -430,7 +446,6 @@ if st.session_state.role == "doctor":
     current_p_data = get_patient_data(target_patient) or p_data
     
     with st.expander("🌍 النطاق الجغرافي وحركة الأدوية المصدرة والمحلية عالمياً", expanded=True):
-        st.info("💡 النظام يحتفظ بروابط المواد الفعالة الكاملة. يمكن البحث واختيار أي دواء مصري محلي أو مصدّر للخارج أو دواء دولي لتسهيل التعرف الفوري للمريض عليه.")
         mod_cgm = st.checkbox("🔌 تفعيل خيار الربط الديناميكي ومراقبة التذبذبات عبر مستشعرات CGM المستمرة", value=bool(current_p_data['cgm_connected']))
 
     with st.expander("📝 ضبط البيانات الديموغرافية والسريرية بدقة 100%", expanded=True):
@@ -440,12 +455,22 @@ if st.session_state.role == "doctor":
             mod_ppbg = st.number_input("سكر فاطر بعد ساعتين (mg/dL):", value=float(current_p_data['ppbg']))
             mod_rbg = st.number_input("سكر عشوائي (mg/dL):", value=float(current_p_data['rbg']))
             mod_creatinine = st.number_input("الكرياتينين في الدم (Serum Creatinine):", value=float(current_p_data['creatinine']), step=0.1)
+            mod_insulin = st.number_input("إنسولين الصائم (Fasting Insulin uIU/mL):", value=float(current_p_data['fasting_insulin']))
         with col2:
             mod_hba1c = st.number_input("السكر التراكمي (HbA1c%):", value=float(current_p_data['hba1c']))
             mod_weight = st.number_input("الوزن الحالي (كجم):", value=float(current_p_data['weight']))
             mod_waist = st.number_input("محيط الخصر السريري (سم):", value=float(current_p_data['waist']))
             mod_age = st.number_input("عمر المريض الحالي (سنوات):", value=int(current_p_data['age']), step=1)
             mod_gender = st.selectbox("جنس المريض الخلوي:", ["Male", "Female"], index=0 if current_p_data['gender'] == "Male" else 1)
+
+    # 🧬 دمج المحور الثاني: النواقل الوراثية والتحليل الحركي للـ Nutrigenomics
+    with st.expander("🧬 حوسبة التعبير الجيني والنواقل الوراثية العلاجية (Computational Nutrigenomics)"):
+        mod_mthfr = st.selectbox("توصيف جين MTHFR (تدوير الفولات وعمليات الميثيل):", 
+                                 ["Normal (CC)", "طفرة متغايرة (CT Heterozygous)", "طفرة متجانسة (TT Homozygous)"],
+                                 index=["Normal (CC)", "طفرة متغايرة (CT Heterozygous)", "طفرة متجانسة (TT Homozygous)"].index(current_p_data['mthfr_mutation']))
+        mod_fto = st.selectbox("توصيف جين FTO (السمنة الأيضية ومقاومة الشبع):", 
+                               ["Normal (TT)", "خطر مرتفع (AA Homozygous)"],
+                               index=["Normal (TT)", "خطر مرتفع (AA Homozygous)"].index(current_p_data['fto_variant']))
 
     with st.expander("💊 بروتوكول المقاصة الدوائية والمكملات (البحث التجاري والعلمي المتقاطع)"):
         search_drug_inp = st.text_input("ابحث عن الدواء التجاري لربطه فوراً بالملف (عربي أو إنجليزي - مثال: نيرفيزام، سيدوفاج، أوزمبيك):")
@@ -471,7 +496,7 @@ if st.session_state.role == "doctor":
     with col_rep2:
         send_report = st.button("📤 إنشاء ورفع التقرير الطبي فوراً")
         if send_report:
-            homa_calc = calculate_homa_ir(mod_fbg)
+            homa_calc = calculate_homa_ir(mod_fbg, mod_insulin)
             egfr_calc = calculate_egfr(mod_age, mod_weight, mod_creatinine, mod_gender)
             cv_s, cv_st = calculate_glucose_variability(target_patient)
             
@@ -485,13 +510,14 @@ if st.session_state.role == "doctor":
             'fbg': mod_fbg, 'ppbg': mod_ppbg, 'rbg': mod_rbg, 'hba1c': mod_hba1c, 'weight': mod_weight, 'waist': mod_waist,
             'severity_score': current_p_data['severity_score'], 'skin_analysis': current_p_data['skin_analysis'],
             'selected_drugs': ",".join(mod_drugs), 'creatinine': mod_creatinine, 'age': int(mod_age), 'gender': mod_gender,
-            'country': current_p_data['country'], 'cgm_connected': 1 if mod_cgm else 0
+            'country': current_p_data['country'], 'cgm_connected': 1 if mod_cgm else 0,
+            'mthfr_mutation': mod_mthfr, 'fto_variant': mod_fto, 'fasting_insulin': mod_insulin
         }
         save_patient_data(target_patient, updated_data)
         st.success(f"تم بنجاح تشفير وتثبيت مؤشرات المريض {target_patient} في قاعدة البيانات السيادية للمنصة.")
 
 # ==============================================================================
-# 8️⃣ واجهة المريض الفسيفسائية المتقدمة والتحليل الحركي المكتمل
+# 8️⃣ واجهة المريض المتقدمة والتحليل الحركي المكتمل
 # ==============================================================================
 if st.session_state.role == "patient":
     plan_text = "نظام الشهر السريع" if "1M" in current_code else "نظام الـ 3 أشهر الممتد" if "3M" in current_code else "النظام التأسيسي الآمن"
@@ -500,7 +526,7 @@ if st.session_state.role == "patient":
     check_emergency_status(p_data['fbg'], "قراءة الصائم")
     check_emergency_status(p_data['ppbg'], "قراءة الفاطر")
     
-    calc_homa = calculate_homa_ir(p_data['fbg'])
+    calc_homa = calculate_homa_ir(p_data['fbg'], p_data['fasting_insulin'])
     calc_egfr_val = calculate_egfr(p_data['age'], p_data['weight'], p_data['creatinine'], p_data['gender'])
     cv_score, cv_status = calculate_glucose_variability(current_code)
     
@@ -535,19 +561,68 @@ if st.session_state.role == "patient":
         </div>
     """, unsafe_allow_html=True)
 
-    # عرض التخطيط البياني التفاعلي للمريض
-    st.markdown('<div class="premium-card"><h3>📈 مسار المنحنى الأيضي وتتبع التذبذبات</h3>', unsafe_allow_html=True)
+    # 🧬 عرض وتفعيل المحور الثاني للمريض: التقارير الجينية الفورية
+    st.markdown('<div class="premium-card"><h3>🧬 خريطة الحوسبة الوراثية المخصصة (Nutrigenomic Profile)</h3>', unsafe_allow_html=True)
+    geno_adv = get_nutrigenomic_advice(p_data['mthfr_mutation'], p_data['fto_variant'])
+    st.write(f"**حالة إنزيم وجين MTHFR:** {p_data['mthfr_mutation']}")
+    st.info(geno_adv["mthfr"])
+    st.write(f"**حالة متغير جين FTO والأيض الخلوي:** {p_data['fto_variant']}")
+    st.warning(geno_adv["fto"])
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # 1️⃣ تفعيل المحور الأول: محاكي تسطيح المنحنى الفسيولوجي ثنائي الأبعاد (Dynamic Curve Simulator)
+    st.markdown('<div class="premium-card"><h3>📈 محاكي التنبؤ وتسطيح المنحنى الفسيولوجي ثنائي الأبعاد</h3>', unsafe_allow_html=True)
+    col_sim1, col_sim2 = st.columns(2)
+    with col_sim1:
+        sim_sequence = st.selectbox("اختر ترتيب تناول الوجبة المستهدفة للتحليل:", 
+                                    ["النمط التقليدي (خلط الكربوهيدرات أولاً)", "الألياف أولاً ➔ Protein والدهون ➔ النشويات"])
+    with col_sim2:
+        sim_gi = st.slider("الحمل الجلايسيمي المتوقع للوجبة (Glycemic Load):", 10, 100, 50)
+        
+    t_plot, g_plot = simulate_glucose_curve(p_data['fbg'], sim_sequence, sim_gi)
+    fig_curve = go.Figure()
+    fig_curve.add_trace(go.Scatter(x=t_plot, y=g_plot, mode='lines', line=dict(color='#d4af37', width=3), name="منحنى الاستجابة الأيضية"))
+    fig_curve.update_layout(title="المحاكاة التفاضلية لحركة الجلوكوز في الدم (180 دقيقة بعد الأكل)",
+                            template="plotly_dark", xaxis_title="الوقت (بالدقائق)", yaxis_title="الجلوكوز المتوقع mg/dL",
+                            paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+    st.plotly_chart(fig_curve, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # 📸 المحور الثالث والأساسي: محرك الرؤية الحاسوبية لتصوير الطعام وفحص علامات الجلد (Acanthosis Tracker)
+    st.markdown('<div class="premium-card"><h3>📸 محرك الرؤية الحاسوبية الاستباقي (AI Vision Core)</h3>', unsafe_allow_html=True)
+    st.write("التقط صورة لطبق طعامك الحالي لفحصه فسيولوجياً، أو التقط صورة لعلامات الرقبة والجلد لمتابعة تراجع الشواك الأسود:")
+    
+    uploaded_medical_files = st.file_uploader("ارفع صورة الوجبة أو صورة علامة الجلد بدقة:", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
+    vision_prompt_type = st.radio("حدد نوع التحليل البصري المطلوب:", ["فحص وهندسة الوجبة فسيولوجياً", "تتبع الشواك الأسود وعلامات الجلد (Acanthosis Nigricans)"])
+    
+    if st.button("🚀 تشغيل محرك الرؤية الحاسوبية الاستباقي للتحليل الفوري"):
+        if uploaded_medical_files:
+            with st.spinner("جاري الاتصال بالنواة الذكية وفحص النسيج البصري..."):
+                if vision_prompt_type == "فحص وهندسة الوجبة فسيولوجياً":
+                    p_query = "قم بفحص مكونات هذه الوجبة بدقة ميكروسكوبية، وحدد للمريض: 1- الصح والممتاز في الوجبة، 2- النقص الذي يحتاج تزويده، 3- التعديل والتحجيم، 4- الاستغناء الكامل لمنع الالتهاب الخلوي وتسطيح منحنى السكر تماماً."
+                else:
+                    p_query = "قم بتحليل صورة الجلد التعبيرية للشواك الأسود بدقة. احسب تقريبياً شدة التصبغ ومساحته، واربط تراجعه الفسيولوجي بانخفاض مقاومة الإنسولين ومصفوفة HOMA-IR، وقدم نصائح هندسية لترميم البشرة خلوياً وتوجيه المريض للدكتور إيهاب حشمت."
+                
+                analysis_res = analyze_with_gemini(uploaded_medical_files, p_query)
+                st.markdown("#### 📋 التقرير الإكلينيكي المستخلص للبشرية:")
+                st.info(analysis_res)
+        else:
+            st.error("يرجى رفع صورة أولاً لتفعيل محرك الرؤية.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # عرض المنحنى البياني التفاعلي لقراءات السكر
+    st.markdown('<div class="premium-card"><h3>📈 مراقبة وتتبع تذبذب الجلوكوز المستمر للأعضاء</h3>', unsafe_allow_html=True)
     raw_logs = get_all_glucose_logs(current_code)
     if raw_logs:
         df = pd.DataFrame(raw_logs, columns=["التوقيت", "نوع القراءة", "القيمة mg/dL"])
-        fig = px.line(df, x="التوقيت", y="القيمة mg/dL", color="نوع القراءة", markers=True)
+        fig = px.line(df, x="التوقيت", y="القيمة mg/dL", color="نوع القراءة", title="مسار المنحنى الأيضي للحالة", markers=True)
         fig.update_layout(template="plotly_dark", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
         st.plotly_chart(fig, use_container_width=True)
     else:
-        st.info("السجل فارغ حالياً. قم بإدخال القراءات لتغذية المخطط البياني الخلوي.")
+        st.info("سجل تتبع التذبذب فارغ حالياً. قم بتدوين قراءات القياس بالأسفل لتغذية المحرك البياني.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # تسجيل القراءات يدوياً للمريض
+    # تسجيل القياسات اليدوية السريعة
     with st.expander("📊 تدوين وتسجيل قراءة سكر فورية الآن بالملف الطبي", expanded=False):
         col_g1, col_g2 = st.columns(2)
         with col_g1: g_type = st.selectbox("توقيت ومناسبة القياس الحالية:", ["سكر صائم", "سكر فاطر (بعد ساعتين)", "سكر عشوائي"])
@@ -555,7 +630,30 @@ if st.session_state.role == "patient":
         if st.button("📝 تدوين وحفظ القراءة الفورية"):
             if g_val > 0:
                 log_glucose(current_code, g_type, g_val)
-                st.success("تم التدوين؛ يرجى تحديث الصفحة لمشاهدة التحديث.")
+                temp_data = get_patient_data(current_code) or p_data
+                if g_type == "سكر صائم": temp_data['fbg'] = g_val
+                elif g_type == "سكر فاطر (بعد ساعتين)": temp_data['ppbg'] = g_val
+                else: temp_data['rbg'] = g_val
+                save_patient_data(current_code, temp_data)
+                st.success("تم تشفير وتدوين قراءتك الحالية في السجل بنجاح.")
                 st.rerun()
 
-st.markdown('<div style="text-align:center; font-size:11px; opacity:0.5; margin-top:20px;">CellRevive AI v14.1 - 2026 Sovereign Metabolic Operating System</div>', unsafe_allow_html=True)
+    # 💊 صيدلية المريض المزدوجة الذكية
+    st.markdown('<div class="premium-card"><h3>💊 فحص الأدوية والمواد الفعالة وعلاقتها باستنزاف المغذيات</h3>', unsafe_allow_html=True)
+    patient_drug_search = st.text_input("اكتب اسم الدواء التجاري أو المادة الفعالة للبحث:", key="pat_search", placeholder="مثال: سيدوفاج، نيرفيزام، أوزمبيك...")
+    
+    if patient_drug_search:
+        pat_query_clean = patient_drug_search.strip().lower()
+        matched_pat_drugs = []
+        for brand, b_info in GLOBAL_DRUG_DB.items():
+            if pat_query_clean in brand.lower() or pat_query_clean in b_info["generic"].lower() or any(pat_query_clean in ar.lower() for ar in b_info["arabic_names"]):
+                matched_pat_drugs.append((brand, b_info))
+                
+        if matched_pat_drugs:
+            for b_name, b_info in matched_pat_drugs:
+                st.markdown(f"**💊 الدواء الحركي:** {b_name} ({b_info['generic']})")
+                st.write(f"**⚠️ المكمل الاستباقي المطلوب لحماية الخلايا:** {b_info['supp']}")
+                st.info(f"**🔬 التبرير الإكلينيكي:** {b_info['reason']}")
+        else:
+            st.warning("لم يتم العثور على الدواء في الدستور الدوائي السريع للمنصة. يرجى مراجعة الإدارة الطبية.")
+    st.markdown('</div>', unsafe_allow_html=True)
