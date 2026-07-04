@@ -1,7 +1,7 @@
 # ==============================================================================
 # 👑 CELLREVIVE AI - PRODUCTION DEPENDENCIES (EMPEROR EDITION v16.0)
 # ==============================================================================
-# Locked Stable Versions for Seamless Deployment on Streamlit Cloud & Python 3.14+
+# Locked Stable Versions for Seamless Deployment on Streamlit Cloud
 # Designed specifically for: Dr. Ehab Heshmat El-Zanny & CellRevive Global Engine
 # ==============================================================================
 
@@ -10,9 +10,9 @@ pandas==2.2.2
 numpy==1.26.4
 plotly==5.22.0
 google-generativeai==0.8.3
-Pillow==10.3.0
+Pillow==10.4.0
 cryptography==42.0.8
-fpdf==1.7.2
+fpdf2==2.7.9
 arabic-reshaper==3.0.0
 python-bidi==0.4.2
 requests==2.32.3
