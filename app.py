@@ -1,5 +1,5 @@
 # ==============================================================================
-# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v18.0)
+# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v18.5)
 # ==============================================================================
 # Production-Ready Sovereign System (2026/2027 International Metabolic Standards)
 # Under Direct Clinical Supervision of: Dr. Ehab Heshmat El-Zanny
@@ -71,7 +71,7 @@ else:
 
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=600;800;900&display=swap');
     
     .stApp { background-color: #040d1a; color: #ffffff !important; font-family: 'Cairo', sans-serif !important; }
     [data-testid="stMainBlockContainer"] { direction: rtl !important; text-align: right !important; }
@@ -127,11 +127,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# 2️⃣ منظومة قاعدة البيانات المحدثة إحصائياً (SQLite Research Engine)
+# 2️⃣ منظومة قاعدة البيانات المحدثة والمحمية إحصائياً (SQLite Research Engine)
 # ==============================================================================
 def init_db():
     conn = sqlite3.connect('cellrevive_quantum_system.db')
     cursor = conn.cursor()
+    # 1. إنشاء الجداول الأساسية
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS patients (
             patient_code TEXT PRIMARY KEY,
@@ -151,6 +152,18 @@ def init_db():
             FOREIGN KEY(patient_code) REFERENCES patients(patient_code)
         )
     """)
+    
+    # 2. 🛡️ التحديث التلقائي الهيكلي (Migration Safe Script) لمنع الاعتراض والأعطال البرمجية
+    cursor.execute("PRAGMA table_info(patients)")
+    columns = [col[1] for col in cursor.fetchall()]
+    
+    if 'fasting_insulin' not in columns:
+        cursor.execute("ALTER TABLE patients ADD COLUMN fasting_insulin REAL DEFAULT 12.0")
+    if 'hscrp' not in columns:
+        cursor.execute("ALTER TABLE patients ADD COLUMN hscrp REAL DEFAULT 1.0")
+    if 'compliance_score' not in columns:
+        cursor.execute("ALTER TABLE patients ADD COLUMN compliance_score INTEGER DEFAULT 100")
+        
     conn.commit()
     conn.close()
 
@@ -229,14 +242,12 @@ def calculate_egfr(age, weight, creatinine, gender):
     return min(round(val, 2), 150.0)
 
 def calculate_biological_age(age, hba1c, homa_ir, hscrp, waist):
-    # خوارزمية تقدير الشيخوخة الخلوية المبنية على الالتهاب الميتابوليزمي (Inflammaging)
     base_shift = 0.0
     if hba1c > 5.6: base_shift += (hba1c - 5.6) * 3.5
     if homa_ir > 1.9: base_shift += (homa_ir - 1.9) * 2.0
     if hscrp > 1.0: base_shift += (hscrp - 1.0) * 1.5
     if waist > 94: base_shift += (waist - 94) * 0.15
     bio_age = age + base_shift
-    # تأثير بروتوكولات طول العمر والترميم الخلوي في كبح الهدم
     return round(bio_age, 1)
 
 def calculate_glucose_variability(code):
@@ -284,7 +295,7 @@ GLOBAL_DRUG_DB = {
     "Milga (ميلجا)": {
         "generic": "Benfotiamine + B6 + B12", "class": "Neurotropic B-Complex",
         "regions": ["Egypt", "Exported to Gulf"], "arabic_names": ["ميلجا", "ميلجا ادفانس"],
-        "supp": "Alpha-Lipoic Acid (600mg)", "reason": "حماية غمد المايلين الدهني للأعصاب الطرفية عبر دمج البنفوتيامين (B1 الذائف في الدهون) لمنع التلف الأيضي."
+        "supp": "Alpha-Lipoic Acid (600mg)", "reason": "حماية غمد المايلين الدهني للأعصاب الطرفية عبر دمج البنفوتيامين (B1 الذائب في الدهون) لمنع التلف الأيضي."
     },
     "Ozempic (أوزمبيك)": {
         "generic": "Semaglutide", "class": "GLP-1 Receptor Agonist",
@@ -367,7 +378,6 @@ if st.session_state.role == "doctor":
         mod_drugs = st.multiselect("الأدوية الحالية للمقاصة:", list(GLOBAL_DRUG_DB.keys()))
         
         if st.button("💾 تشفير وتثبيت البيانات الحيوية للمشترك"):
-            homa = calculate_homa_ir(mod_fbg, mod_insulin)
             updated_data = {
                 'fbg': mod_fbg, 'ppbg': mod_ppbg, 'rbg': current_p_data['rbg'], 'hba1c': mod_hba1c, 'weight': mod_weight, 'waist': mod_waist,
                 'severity_score': current_p_data['severity_score'], 'skin_analysis': current_p_data['skin_analysis'],
@@ -394,7 +404,7 @@ if st.session_state.role == "doctor":
             st.info("لا توجد بيانات كافية في مستودع الأبحاث حالياً لتوليد المنحنيات المجمعة.")
 
 # ==============================================================================
-# 7️⃣ شاشة المشرك المتقدمة وطب طول العمر وتصفير الكورتيزول والتلعيب
+# 7️⃣ شاشة المشترك المتقدمة وطب طول العمر وتصفير الكورتيزول والتلعيب
 # ==============================================================================
 if st.session_state.role == "patient":
     st.markdown(f'<p style="text-align:center; color:#d4af37 !important; font-size:16px; font-weight:800; border: 1px solid #d4af37; padding: 8px; border-radius: 8px;">مرحباً بك في لوحتك العلاجية المخصصة تحت إشراف د. إيهاب حشمت الظني</p>', unsafe_allow_html=True)
@@ -408,7 +418,7 @@ if st.session_state.role == "patient":
             <h3 style="color:#d4af37 !important; margin:0 0 15px 0; font-size:18px;">🧬 مجهر طول العمر وعمر الخلايا (Biological Longevity Core)</h3>
             <div style="display:flex; justify-content:space-around; text-align:center;">
                 <div><span style="font-size:14px; opacity:0.8;">العمر الزمني (البطاقة):</span><br><b style="font-size:24px; color:#ffffff;">{p_data['age']} سنة</b></div>
-                <div><span style="font-size:14px; opacity:0.8;">العمر البيولوجي (الخلايا):</span><br><b style="font-size:24px; color:#ff4b4b if bio_age_calc > p_data['age'] else #00ffcc;">{bio_age_calc} سنة</b></div>
+                <div><span style="font-size:14px; opacity:0.8;">العمر البيولوجي (الخلايا):</span><br><b style="font-size:24px; color:#00ffcc;">{bio_age_calc} سنة</b></div>
             </div>
             <p style="font-size:12.5px; margin-top:10px; line-height:1.5; opacity:0.9; text-align:justify;">
                 *العمر البيولوجي يتم حسابه بدقة عبر خوارزمية الربط الميتابوليزمي والالتهاب الخلوي المسرع للشيخوخة. هدف بروتوكول عكس مسار المرض مع الدكتور إيهاب هو خفض عمر خلاياك لتصبح أصغر من عمرك الزمني!
@@ -481,7 +491,6 @@ if st.session_state.role == "patient":
         </div>
     """, unsafe_allow_html=True)
 
-    # الأنظمة الكلاسيكية دون مساس
     with st.expander("🥗 محاكي تسطيح منحنى الجلوكوز التفاعلي ثنائي الأبعاد (2D Curve Simulator)"):
         sel_food = st.selectbox("اختر المكون النشوي:", list(GI_FOOD_DATABASE.keys()))
         sel_seq = st.selectbox("اختر الترتيب الفسيولوجي لتناول الوجبة:", ["النشويات أولاً", "الألياف أولاً ➔ البروتين والدهون ➔ النشويات"])
