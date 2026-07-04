@@ -1,8 +1,9 @@
 # ==============================================================================
-# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v16.1)
+# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v17.0)
 # ==============================================================================
 # Production-Ready Sovereign System (2026/2027 International Metabolic Standards)
-# Quantum Integration: Computational Nutrigenomics, Vision AI, & 2D Curve Simulator
+# Quantum Integration: Computational Nutrigenomics, Neuro-Endocrine Stress Shield,
+# Vision AI, 2D Curve Simulator, & Advanced Micro-Movement Glucose Sinking Protocols
 # Core Architecture Designed for: Dr. Ehab Heshmat El-Zanny & CellRevive Global Engine
 # ==============================================================================
 import streamlit as st
@@ -267,12 +268,11 @@ FASTING_PROTOCOLS_DB = {
 }
 
 # ==============================================================================
-# 4️⃣ المحور الأول والثاني: المعادلات الرياضية والبيولوجية ومحاكي المنحنى التفاضلي
+# 4️⃣ المعادلات الرياضية والبيولوجية ومحاكي المنحنى التفاضلي
 # ==============================================================================
 def calculate_homa_ir(fbg, fasting_insulin):
     return (fbg * fasting_insulin) / 405
 
-# 🛠️ تم تصحيح بناء الدالة وإزالة المتغير الرابع لتوحيد هيكلية الاستدعاء عبر التطبيق كاملاً
 def calculate_egfr(age, weight, creatinine, gender):
     if creatinine <= 0: return 90.0
     val = ((140 - age) * weight) / (72 * creatinine)
@@ -293,7 +293,6 @@ def calculate_glucose_variability(code):
     else: status = "🚨 تذبذب حاد وحرج - خطر حدوث طفرات سكر مفاجئة"
     return round(cv, 2), status
 
-# 1️⃣ خوارزمية تسطيح المنحنى الفسيولوجي ثنائي الأبعاد (Dynamic Curve Flattening Simulator)
 def simulate_glucose_curve(base_fbg, sequence_type, gi_score):
     t = np.linspace(0, 180, 100)
     gamma = 2.4 if sequence_type == "الألياف أولاً ➔ البروتين والدهون ➔ النشويات" else 1.0
@@ -304,7 +303,6 @@ def simulate_glucose_curve(base_fbg, sequence_type, gi_score):
     glucose_t = base_fbg + delta_g
     return t, glucose_t
 
-# 2️⃣ محرك النواقل الوراثية الغذائية والمقاصة الخلوية العميقة (Nutrigenomic Rescuer)
 def get_nutrigenomic_advice(mthfr, fto):
     advice = {"mthfr": "", "fto": ""}
     if mthfr == "طفرة متجانسة (TT Homozygous)":
@@ -312,7 +310,7 @@ def get_nutrigenomic_advice(mthfr, fto):
     elif mthfr == "طفرة متغايرة (CT Heterozygous)":
         advice["mthfr"] = "⚠️ انخفاض متوسط بنسبة 35% في كفاءة الإنزيم. يُفضل استبدال الفوليك أسيد التجاري بـ الميثيل فولات العضوي المستخلص من الخضروات الورقية الداكنة المعالجة بحرارة خفيفة."
     else:
-        advice["mthfr"] = "✅ ناقل الجينات الطبيعي (CC). كفاءة الميثيل ممتازة خلوياً."
+        advice["mthfr"] = "✅ ناقل الجينات الطبيعي (CC). كفاءة Mثييل ممتازة خلوياً."
         
     if fto == "خطر مرتفع (AA Homozygous)":
         advice["fto"] = "🚨 جين السمنة الأيضية نشط. الخلايا لديها ميل جيني مرتفع لتخزين الدهون وضعف الإشارات العصبية للشبع (Leptin Resistance). التوصية السريرية: إجبار البنكرياس على بروتوكول الصيام الطبي الممتد وعكس النمط تماماً لرفع مستويات هرمون الـ Adiponectin."
@@ -460,7 +458,6 @@ if st.session_state.role == "doctor":
             mod_age = st.number_input("عمر المريض الحالي (سنوات):", value=int(current_p_data['age']), step=1)
             mod_gender = st.selectbox("جنس المريض الخلوي:", ["Male", "Female"], index=0 if current_p_data['gender'] == "Male" else 1)
 
-    # 🧬 دمج المحور الثاني: النواقل الوراثية والتحليل الحركي للـ Nutrigenomics
     with st.expander("🧬 حوسبة التعبير الجيني والنواقل الوراثية العلاجية (Computational Nutrigenomics)"):
         mod_mthfr = st.selectbox("توصيف جين MTHFR (تدوير الفولات وعمليات الميثيل):", 
                                  ["Normal (CC)", "طفرة متغايرة (CT Heterozygous)", "طفرة متجانسة (TT Homozygous)"],
@@ -486,7 +483,7 @@ if st.session_state.role == "doctor":
         mod_drugs = st.multiselect("اختر وثبّت الأدوية النشطة للمشترك للربط الدستوري بمواده العلمية:", filtered_brands, default=[d for d in saved_drugs_list if d in GLOBAL_DRUG_DB])
 
     st.markdown("---")
-    st.markdown("### 📋 تحويل المؤشرات الطبية ورفع Tالتقرير الأكاديمي")
+    st.markdown("### 📋 تحويل المؤشرات الطبية ورفع التقرير الأكاديمي")
     col_rep1, col_rep2 = st.columns([2, 1])
     with col_rep1:
         doctor_note = st.text_input("ملحوظة إضافية ترفق بالتقرير للطبيب المعالج للحالة:", value="Please follow the cellular revive order of meals strictly.")
@@ -514,7 +511,7 @@ if st.session_state.role == "doctor":
         st.success(f"تم بنجاح تشفير وتثبيت مؤشرات المريض {target_patient} في قاعدة البيانات السيادية للمنصة.")
 
 # ==============================================================================
-# 8️⃣ واجهة المريض المتقدمة والتحليل الحركي المكتمل
+# 8️⃣ واجهة المريض المتقدمة والتحليل الحركي والنفسي-العصبي المتكامل
 # ==============================================================================
 if st.session_state.role == "patient":
     plan_text = "نظام الشهر السريع" if "1M" in current_code else "نظام الـ 3 أشهر الممتد" if "3M" in current_code else "النظام التأسيسي الآمن"
@@ -537,7 +534,6 @@ if st.session_state.role == "patient":
             </div>
         """, unsafe_allow_html=True)
         
-    # تم إكمال بناء واجهة عرض البيانات الطبية وإغلاق كروت الـ HTML المقطوعة بدقة
     st.markdown(f"""
         <div class="premium-card">
             <h3 style="color:#d4af37 !important; margin:0 0 20px 0; font-size:18px;">📊 المؤشرات الفسيولوجية الأساسية المستخلصة والمحسوبة للحالة:</h3>
@@ -547,3 +543,111 @@ if st.session_state.role == "patient":
             <div class="metric-box"><b>محيط الخصر السريري:</b> {p_data['waist']} سم</div>
         </div>
     """, unsafe_allow_html=True)
+
+    # 🛡️ المحور العصبي-الغدّي الجديد: رادار الكورتيزول والأدرينالين متعدد الاختيارات
+    st.markdown("""
+        <div class="premium-card" style="border-color: #e0a96d;">
+            <h3 style="color:#e0a96d !important; margin:0 0 10px 0; font-size:18px;">🧠 رادار المحور العصبي والضغط الكظري (Neuro-Endocrine Stress Shield)</h3>
+            <p style="font-size:13px; margin:0; opacity:0.85; line-height:1.5;">
+                أثبتت الهيئات الدولية للسكري (ADA/EASD) أن التوتر والضغط النفسي يفرزان الكورتيزول والأدرينالين، مما يحفز الكبد على إطلاق الجلوكوز المخزن (Glycogenolysis) ورفع السكر حتى بدون أكل. يرجى تحديد كل الأعراض التي تعاني منها بدقة:
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("### 📋 اختر كل العبارات التي توصف حالتك الحالية بدقة (يمكنك اختيار عدة خيارات):")
+    
+    stress_options = [
+        "🔄 أستيقظ من النوم متعباً ومجهداً وكأنني لم أنم تماماً (مؤشر ذروة كورتيزول مسطحة خاطئة)",
+        "🧠 أجد صعوبة بالغة في الدخول في النوم وعقلي لا يتوقف عن التفكير والتحليل ليلاً",
+        "⚡ أشعر بخفقان سريع مفاجئ في القلب أو شد حاد في عضلات الرقبة والكتفين عند التوتر (استثارة أدرينالين)",
+        "🍪 تهاجمني رغبة مفاجئة وشرهة لا يمكن كبحها لتناول السكريات أو المعجنات عند الضغط العصبي",
+        "📉 أشعر بخمول تام وضبابية ذهنية (Brain Fog) وضيق تنفس عند مواجهة المشاكل العائلية أو المهنية",
+        "تنفسي سطحي وسريع، وأواجه صعوبة في أخذ نفس عميق ومستقر في أوقات العمل المفاجئة"
+    ]
+    
+    selected_stress = st.multiselect("مؤشرات الضغط النفسي والبدني التراكمي:", stress_options)
+    
+    if selected_stress:
+        score_count = len(selected_stress)
+        st.markdown(f"""
+            <div style="background: rgba(224,169,109,0.1); border-right: 4px solid #e0a96d; padding:15px; margin:15px 0; border-radius:4px;">
+                <h4 style="color:#e0a96d; margin:0 0 5px 0;">🕵️ التحليل الحركي للغدد الصماء:</h4>
+                <p style="margin:0; font-size:14px;">تم رصد <b>{score_count} مؤشرات استثارة هرمونية نشطة</b>. كيميائياً فسيولوجياً، هذا يؤكد تحفيز مسار الـ HPA-Axis وإفراز الكورتيزول والأدرينالين الذي يرفع مقاومة الخلايا للإنسولين.</p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+            <div class="premium-card" style="border-color: #00ffcc; background: linear-gradient(145deg, #052620, #031411);">
+                <h4 style="color:#00ffcc !important; margin:0 0 15px 0; font-size:16px;">🛡️ بروتوكول تصفير الكورتيزول الفوري (Vagus Nerve Reset Protocol):</h4>
+                <p style="font-size:14px; line-height:1.6;">
+                    توجيهات إكلينيكية حازمة ومبهجة لكسر طفرة الهرمونات الهدامة فوراً، اختر آلية واحدة وطبقها الآن:
+                    <br><br>
+                    ⚫ <b>العلاج بالضحك الاستباقي:</b> استمع إلى نكتة، اضحك من قلبك، أو شاهد مشهداً كوميدياً فوراً. الضحك يحفز إفراز الإندورفين الذي يخفض الكورتيزول مصل الحركية بنسبة 39%.
+                    <br><br>
+                    ⚫ <b>تمارين التنفس المربع الصارم (Box Breathing):</b> خذ شهيقاً عميقاً في 4 ثوانٍ، اكتم الهواء 4 ثوانٍ، أخرج زفيراً بطيئاً في 4 ثوانٍ، اكتم الرئة فارغة 4 ثوانٍ. (كرر الدورة 5 مرات لتفعيل العصب الحائر وتصفير الأدرينالين الشرياني).
+                    <br><br>
+                    ⚫ <b>الترميم السمعي الراقي:</b> استمع إلى موسيقى راقية بطيئة جداً (Slow/Ambient) في غرفة هادئة لمدة 5 دقائق لخفض الاستثارة السمبثاوية وضغط الدم.
+                    <br><br>
+                    ⚫ <b>الهروب البيئي والتمشي المفتوح:</b> اخرج فوراً من مكان التوتر وتمشّ في مساحة مفتوحة خضراء أو متسعة، لتخفيض إشارات الخوف الصادرة من الأميغدالا (Amygdala).
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # 🌿 المحور الحركي والعشبي الجديد: هندسة خفض الجلوكوز ما بعد الوجبة
+    st.markdown("""
+        <div class="premium-card" style="border-color: #8fce00;">
+            <h3 style="color:#8fce00 !important; margin:0 0 15px 0; font-size:18px;">🌿 المقاصة الغذائية والحركية المجهرية (Glucose Sinking & Phytotherapy)</h3>
+            <h4 style="color:#ffffff; font-size:15px; margin:0 0 5px 0;">🏃 1. المجهود الحركي الذكي (بدون إرهاق أو رفض عقلي):</h4>
+            <p style="font-size:13.5px; line-height:1.6; opacity:0.9;">
+                طبقاً لأحدث التوجيهات الطبية، لا تحتاج إلى تمارين شاقة بعد الأكل بل تحتاج لتفعيل مستقبلات الجلوكوز العضلية مباشرة عبر:
+                <br>
+                • <b>تمرين كبش السكر (Soleus Pushups):</b> أثناء جلوسك على المكتب أو الأريكة بعد الوجبة، قم برفع كعبيك لأعلى مع تثبيت مقدمة القدم على الأرض ثم خفضهما. استمر لمدة 10 دقائق. هذه العضلة تستهلك جلوكوز الدم كوقود مباشر دون الحاجة لإفراز إنسولين إضافي!
+                <br>
+                • <b>المشي الماسي الخفيف (Diamond Walk):</b> تمشّى داخل المنزل أو المكتب لمدة 12 دقيقة فقط، بمعدل خطوة واحدة هادئة كل ثانية، بعد الوجبة بـ 15 دقيقة لفتح قنوات <b>GLUT-4</b> العضلية وسحب السكر الزائد.
+            </p>
+            <h4 style="color:#ffffff; font-size:15px; margin:15px 0 5px 0;">☕ 2. دستور الوصفات العشبية الأكاديمية المعتمدة لخفض السكر:</h4>
+            <p style="font-size:13.5px; line-height:1.6; opacity:0.9;">
+                مستخلصات نباتية ثبت بالدليل القاطع أثرها على الميتابوليزم، تستخدم تحت الإشراف المباشر <b>للدكتور إيهاب حشمت</b>:
+                <br>
+                • <b>منقوع القرفة السيالانية النقية (Ceylon Cinnamon):</b> نصف ملعقة صغيرة (حوالي 2 جرام) تذاب في كوب ماء دافئ قبل الوجبة الرئيسية بـ 20 دقيقة. (تنبيه: يحظر استخدام قرفة كاسيا التجارية الرخيصة لتجنب مادة الكومارين الضارة بالكبد).
+                <br>
+                • <b>مستخلص أوراق الزيتون المصفى (Olive Leaf Extract):</b> كوب واحد دافئ غني بمادة <i>Oleuropein</i> التي تبطئ إنزيمات هضم الكربوهيدرات معاً وتمنع القفزات المفاجئة للسكر.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # 🔬 الأنظمة الأساسية السابقة المكتملة دون أي مساس أو تعديل
+    with st.expander("🧬 حوسبة التعبير الجيني الخاص بك (Nutrigenomic Profile)"):
+        st.markdown(f"<b>توصيف جين MTHFR الفعلي لديك:</b> {p_data['mthfr_mutation']}")
+        st.markdown(f"<b>توصيف جين FTO الفعلي لديك:</b> {p_data['fto_variant']}")
+        adv = get_nutrigenomic_advice(p_data['mthfr_mutation'], p_data['fto_variant'])
+        st.info(adv["mthfr"])
+        st.info(adv["fto"])
+
+    with st.expander("🥗 محاكي تسطيح منحنى الجلوكوز التفاعلي ثنائي الأبعاد (2D Curve Simulator)"):
+        sel_food = st.selectbox("اختر المكون النشوي المراد هندسته خلوياً:", list(GI_FOOD_DATABASE.keys()))
+        sel_seq = st.selectbox("اختر الترتيب الفسيولوجي لتناول هذه الوجبة الحالية:", 
+                               ["النشويات أولاً (النمط التقليدي الخاطئ)", "الألياف أولاً ➔ البروتين والدهون ➔ النشويات"])
+        
+        food_gi = GI_FOOD_DATABASE[sel_food]["GI"]
+        t_vec, g_vec = simulate_glucose_curve(p_data['fbg'], sel_seq, food_gi)
+        
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=t_vec, y=g_vec, mode='lines', name='منحنى استجابة الجلوكوز المتوقع',
+                                 line=dict(color='#d4af37' if "الألياف" in sel_seq else '#ff4b4b', width=3)))
+        fig.update_layout(title="🧬 محاكاة حركية للسكر في الدم على مدار 180 دقيقة بعد الوجبة",
+                          xaxis_title="الوقت بالدقائق", yaxis_title="مستوى الجلوكوز (mg/dL)",
+                          template="plotly_dark", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+        st.plotly_chart(fig, use_container_width=True)
+
+    with st.expander("📸 بوابة الفحص البصري وليد الذكاء الاصطناعي (Vision AI Module)"):
+        uploaded_files = st.file_uploader("ارفع صورة الوجبة لهندستها أو صورة تصبغات الرقبة لتحليل الشواك الأسود:", accept_multiple_files=True, type=['jpg', 'jpeg', 'png'])
+        vision_prompt = st.text_area("اكتب استفسارك الطبي أو اترك المحرك يحلل الصورة استباقياً طبقاً لتوجيهات الدكتور إيهاب:", 
+                                     value="قم بتحليل هذه الصورة بدقة ميكروسكوبية، ورتب الوجبة فسيولوجياً مع تحويل الجرامات الطبية فوراً إلى وحدات منزلية قياسية (كفة اليد، ملعقة، كوب).")
+        if st.button("🚀 بدء التحليل البصري الاستباقي العالي الدقة"):
+            if uploaded_files:
+                with st.spinner("جاري معالجة الصورة ضوئياً وحوسبة البيانات..."):
+                    res = analyze_with_gemini(uploaded_files, vision_prompt)
+                    st.markdown(f"<div style='background:#07162c; padding:15px; border-radius:8px; border:1px solid #d4af37;'>{res}</div>", unsafe_allow_html=True)
+            else:
+                st.warning("يرجى رفع صورة واحدة على الأقل لتفعيل محرك الرؤية الحاسوبية.")
