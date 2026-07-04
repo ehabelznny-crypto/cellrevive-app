@@ -272,7 +272,11 @@ FASTING_PROTOCOLS_DB = {
 def calculate_homa_ir(fbg, fasting_insulin):
     return (fbg * fasting_insulin) / 405
 
-def calculate_egfr(age, weight, creatinine, gender):
+def calc_egfr_val = calculate_egfr(
+    age=p_data['age'], 
+    weight=p_data['weight'], 
+    gender=p_data['gender']
+):
     if creatinine <= 0: return 90.0
     val = ((140 - age) * weight) / (72 * creatinine)
     if gender in ['Female', 'أنثى']: val *= 0.85
