@@ -19,12 +19,80 @@ import plotly.express as px
 import plotly.graph_objects as go
 from fpdf import FPDF
 
+# 🛡️ الإعداد الموحد والأول للمنصة - يمنع تماماً خطأ التكرار (StreamlitAPIException)
+st.set_page_config(
+    page_title="CellRevive AI - Dr. Ehab Heshmat El-Zanny",
+    page_icon="🧬",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
+
 # 🛡️ استيراد مكتبة التشفير لحماية البيانات بمعايير HIPAA الدولية
 try:
     from cryptography.fernet import Fernet
 except ImportError:
     os.system('pip install cryptography')
     from cryptography.fernet import Fernet
+
+# ==============================================================================
+# 🛡️ نظام الحماية الرقمي وإخلاء المسؤولية القانوني الصارم (Disclaimer System)
+# ==============================================================================
+# تهيئة حالة جلسة العمل للموافقة القانونية لمنع تخطي الشاشة
+if 'disclaimer_agreed' not in st.session_state:
+    st.session_state.disclaimer_agreed = False
+
+if not st.session_state.disclaimer_agreed:
+    # تحسين المظهر الخاص بشاشة إخلاء المسؤولية لتتوافق مع تصميم المنصة الفخم
+    st.markdown("""
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=600;800;900&display=swap');
+        .stApp { background-color: #040d1a; color: #ffffff !important; font-family: 'Cairo', sans-serif !important; }
+        .disclaimer-container {
+            background: linear-gradient(145deg, #0a1f38, #07162c);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 50px;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+            direction: rtl;
+            text-align: right;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="disclaimer-container">
+        <h2 style="color: #d4af37; text-align: center; margin-bottom: 25px;">🛡️ CellRevive AI - نظام الحماية وإخلاء المسؤولية القانوني</h2>
+        <p style="color: #ff4b4b; font-weight: 800; font-size: 16px;">يرجى قراءة والموافقة على الشروط القانونية والسريرية المعتمدة لفتح المنظومة الأيضية:</p>
+        <hr style="border-color: #d4af37;">
+        
+        <h4 style="color: #f3e5ab;">⚠️ تنبيه وإخلاء مسؤولية قانوني / Legal Disclaimer</h4>
+        
+        <p style="line-height: 1.8; text-align: justify;">
+        <b>باللغة العربية:</b><br>
+        هذا التطبيق هو منصة محاكاة رقمية وأداة تعليمية وتثقيفية تهدف إلى دعم الصحة الأيضية ونمط الحياة وتحسين كفاءة الخلايا، تحت إشراف صيدلي متخصص في التغذية العلاجية وطب طول العمر. 
+        المعلومات، والبروتوكولات، والنتائج الاسترشادية الصادرة عن this البرنامج <b>لا تعتبر تشخيصاً طبياً، أو وصفة علاجية، ولا تغني بأي حال من الأحوال عن استشارة الطبيب البشري المعالج</b> أو تعديل الأدوية الموصوفة من قبله دون الرجوع إليه. استخدامك لهذا التطبيق يعني موافقتك الكاملة على أنك المسؤول الأول عن إدارتك لصحتك بالتنسيق مع فريقك الطبي المعالج.
+        </p>
+        
+        <hr style="border-color: rgba(212, 175, 55, 0.3);">
+        
+        <p style="line-height: 1.8; text-align: justify; direction: ltr; text-align: left;">
+        <b>In English:</b><br>
+        This application (CellRevive AI) is a digital simulation model and an educational tool designed to support metabolic health and cellular function under clinical pharmacy guidance. 
+        The information and simulated outcomes provided <b>DO NOT constitute medical advice, diagnosis, or prescription, and are NOT a substitute for professional medical consultation by a licensed physician</b>. By checking the box below and entering the platform, you acknowledge full responsibility for your health management in coordination with your primary healthcare provider.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.write("")
+    agree_check = st.checkbox("لقد قرأت النص أعلاه وأوافق تماماً على هذه الشروط القانونية / I have read and agree to these terms.")
+    
+    if agree_check:
+        if st.button("انطلق إلى المنصة / Enter Platform 🚀"):
+            st.session_state.disclaimer_agreed = True
+            st.rerun()
+            
+    st.stop() # إيقاف تنفيذ باقي الكود نهائياً حتى تتم الموافقة القانونية
 
 # ==============================================================================
 # 0️⃣ منظومة التشفير وحماية البيانات الطبية البيئية (HIPAA Safe Architecture)
@@ -50,15 +118,8 @@ def decrypt_data(crypto_str):
         return "🛡️ [بيانات مشفرة ومحمية بيئياً]"
 
 # ==============================================================================
-# 1️⃣ الإعدادات وتصميم الواجهة الفاخرة السيادية (Premium 2026 Gold Design)
+# 1️⃣ تصميم الواجهة الفاخرة السيادية (Premium 2026 Gold Design)
 # ==============================================================================
-st.set_page_config(
-    page_title="CellRevive AI - Dr. Ehab Heshmat El-Zanny",
-    page_icon="🧬",
-    layout="centered",
-    initial_sidebar_state="collapsed"
-)
-
 # التحقق من مفتاح API لمحرك الذكاء الاصطناعي
 if "GEMINI_API_KEY" in st.secrets:
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
@@ -119,7 +180,7 @@ st.markdown("""
             👑 CELLREVIVE AI
         </h1>
         <p style="color: #f3e5ab !important; font-family: 'Cairo', sans-serif; font-size: 17px; font-weight: 800; opacity: 0.95; line-height: 1.6; max-width: 850px; margin: 0 auto; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
-            تحت إشراف: د/ إيهاب حشمت الظني <br>
+            Under Supervision of: Dr. Ehab Heshmat El-Zanny <br>
             صيدلي وأخصائي الترميم الخلوي وطب طول العمر وعكس مسار السكري من النوع الثاني
         </p>
         <hr style="border: 0; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); margin-top: 15px; margin-bottom: 20px;">
@@ -132,7 +193,6 @@ st.markdown("""
 def init_db():
     conn = sqlite3.connect('cellrevive_quantum_system.db')
     cursor = conn.cursor()
-    # 1. إنشاء الجداول الأساسية
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS patients (
             patient_code TEXT PRIMARY KEY,
@@ -153,7 +213,6 @@ def init_db():
         )
     """)
     
-    # 2. 🛡️ التحديث التلقائي الهيكلي (Migration Safe Script) لمنع الاعتراض والأعطال البرمجية
     cursor.execute("PRAGMA table_info(patients)")
     columns = [col[1] for col in cursor.fetchall()]
     
