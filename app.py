@@ -1,7 +1,7 @@
 # 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v18.5)
 # ==============================================================================
 # Production-Ready Sovereign System (2026/2027 International Metabolic Standards)
-# Under Direct Clinical Supervision of: Dr. Ehab Heshmat El-Zanny
+# Under Direct Clinical Supervision of: Dr. Ehab Heshmat El-Znny
 # Clinical Pharmacist & Cellular Restoration, Longevity Medicine, & T2D Reversal Specialist
 # HIPAA Safe Architecture | Computational Nutrigenomics | Longevity Core | Vagus Reset
 # ==============================================================================
@@ -23,7 +23,7 @@ from fpdf import FPDF
 # 0️⃣ التهيئة الأولى وإعدادات الصفحة السيادية الفاخرة (يجب أن تكون في البداية تماماً)
 # ==============================================================================
 st.set_page_config(
-    page_title="CellRevive AI - Dr. Ehab Heshmat El-Zanny",
+    page_title="CellRevive AI - Dr. Ehab Heshmat El-Znny",
     page_icon="🧬",
     layout="centered",
     initial_sidebar_state="collapsed"
@@ -36,39 +36,125 @@ except ImportError:
     os.system('pip install cryptography')
     from cryptography.fernet import Fernet
 
-# 1. تهيئة حالة جلسة العمل للموافقة القانونية
+# 👑 تطبيق التصاميم الفاخرة للواجهة الملكية واتجاه الكتابة لليمين (Premium Gold & RTL Design)
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=600;800;900&display=swap');
+    
+    /* الخلفية المظلمة الفاخرة والخط السيادي */
+    .stApp { 
+        background-color: #040d1a; 
+        color: #ffffff !important; 
+        font-family: 'Cairo', sans-serif !important; 
+    }
+    
+    /* إجبار الاتجاه من اليمين إلى اليسار لجميع العناصر */
+    [data-testid="stMainBlockContainer"], .stTabs, div, p, span, label, h1, h2, h3, h4, h5, h6 { 
+        direction: rtl !important; 
+        text-align: right !important; 
+    }
+    
+    /* الكروت الملكية المحاطة بالإطار الذهبي */
+    .premium-card {
+        background: linear-gradient(145deg, #0a1f38, #07162c);
+        border: 2px solid #d4af37;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+    }
+    
+    /* كروت التنبيهات الحرجة الطارئة */
+    .emergency-card {
+        background: linear-gradient(145deg, #4a0d0d, #2a0505);
+        border: 2px solid #ff4b4b;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        animation: pulse 2s infinite;
+        box-shadow: 0 0 20px rgba(255, 75, 75, 0.4);
+    }
+    @keyframes pulse {
+        0% { border-color: #ff4b4b; }
+        50% { border-color: #aa1111; }
+        100% { border-color: #ff4b4b; }
+    }
+    
+    /* توحيد ألوان النصوص والخطوط العريضة */
+    label, p, span, h3, h4 { 
+        color: #ffffff !important; 
+        font-weight: 600 !important; 
+    }
+    
+    /* الأزرار الذهبية الفاخرة المتوهجة */
+    .stButton>button {
+        background: linear-gradient(90deg, #f3e5ab, #d4af37, #aa8422) !important;
+        color: #040d1a !important;
+        border-radius: 12px !important;
+        font-weight: 900 !important;
+        font-size: 16px !important;
+        height: 3.2em;
+        width: 100%;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4) !important;
+        transition: all 0.3s ease;
+    }
+    .stButton>button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6) !important;
+    }
+    
+    /* صناديق القياسات والمؤشرات الحركية */
+    .metric-box { 
+        border-right: 4px solid #d4af37; 
+        padding-right: 15px; 
+        margin: 10px 0; 
+    }
+    
+    /* تحسين مظهر التنسيقات الداخلية والمدخلات */
+    .stTextInput>div>div>input, .stNumberInput>div>div>input, .stSelectbox>div>div>div {
+        background-color: #07162c !important;
+        color: #ffffff !important;
+        border: 1px solid #d4af37 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# 1️⃣ تحضير وإدارة حالة جلسة العمل للموافقة القانونية أولاً
 if 'disclaimer_agreed' not in st.session_state:
     st.session_state.disclaimer_agreed = False
 
-# 2. عرض شاشة إخلاء المسؤولية إذا لم تتم الموافقة بعد
+# 2️⃣ عرض شاشة إخلاء المسؤولية القانونية بالشكل الفاخر المحمي
 if not st.session_state.disclaimer_agreed:
-    st.title("🛡️ CellRevive AI - نظام الحماية وإخلاء المسؤولية")
-    st.warning("يرجى قراءة والموافقة على الشروط القانونية أدناه لبدء استخدام المنظومة الأيضية.")
-    
     st.markdown("""
-    ### ⚠️ تنبيه وإخلاء مسؤولية قانوني / Legal Disclaimer
+        <div class="emergency-card" style="margin-top: 30px;">
+            <h2 style="color: #ff4b4b !important; text-align: center !important; font-weight: 900;">🛡️ نظام الحماية وإخلاء المسؤولية القانونية / Legal Disclaimer</h2>
+            <hr style="border-color: #ff4b4b;">
+            <p style="font-size: 16px; line-height: 1.7; text-align: justify !important;">
+                <b>باللغة العربية:</b><br>
+                هذا التطبيق هو منصة محاكاة رقمية وأداة تعليمية وتثقيفية تهدف إلى دعم الصحة الأيضية ونمط الحياة وتحسين كفاءة الخلايا. 
+                المعلومات والبروتوكولات الصادرة عن هذا البرنامج <b>لا تعتبر تشخيصاً طبياً، أو وصفة علاجية، ولا تغني بأي حال من الأحوال عن استشارة الطبيب البشري المعالج</b> أو تعديل الأدوية الموصوفة دون الرجوع إليه.
+            </p>
+            <hr style="border-color: #ff4b4b; opacity: 0.3;">
+            <p style="font-size: 15px; line-height: 1.6; text-align: left !important; direction: ltr !important;">
+                <b>In English:</b><br>
+                This application is a digital simulation model and an educational tool designed to support metabolic health. 
+                The information provided <b>DO NOT constitute medical advice, diagnosis, or prescription, and are NOT a substitute for professional medical consultation by a licensed physician</b>.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
     
-    **باللغة العربية:**
-    هذا التطبيق هو منصة محاكاة رقمية وأداة تعليمية وتثقيفية تهدف إلى دعم الصحة الأيضية ونمط الحياة وتحسين كفاءة الخلايا. 
-    المعلومات والبروتوكولات الصادرة عن هذا البرنامج **لا تعتبر تشخيصاً طبياً، أو وصفة علاجية، ولا تغني بأي حال من الأحوال عن استشارة الطبيب البشري المعالج** أو تعديل الأدوية الموصوفة دون الرجوع إليه.
-    
-    ---
-    **In English:**
-    This application is a digital simulation model and an educational tool designed to support metabolic health. 
-    The information provided **DO NOT constitute medical advice, diagnosis, or prescription, and are NOT a substitute for professional medical consultation by a licensed physician**.
-    """)
-    
-    agree_check = st.checkbox("لقد قرأت النص أعلاه وأوافق تماماً على هذه الشروط القانونية / I have read and agree to these terms.")
+    agree_check = st.checkbox("لقد قرأت النص أعلاه وأوافق تماماً على هذه الشروط القانونية الصارمة / I agree completely.")
     
     if agree_check:
-        if st.button("انطلق إلى المنصة / Enter Platform 🚀"):
+        if st.button("الانطلاق وبدء الاتصال بالمنصة الخلوية 🚀"):
             st.session_state.disclaimer_agreed = True
             st.rerun()
             
-    st.stop() # إيقاف التنفيذ حتى تتم الموافقة القانونية أولاً
+    st.stop() # يمنع استكمال تحميل بقية العناصر حتى يتم تأكيد الحماية الطبية
 
 # ==============================================================================
-# 1️⃣ منظومة التشفير وحماية البيانات الطبية البيئية (HIPAA Safe Architecture)
+# 3️⃣ منظومة التشفير وحماية البيانات الطبية البيئية (HIPAA Safe Architecture)
 # ==============================================================================
 if "ENCRYPTION_KEY" in st.secrets:
     KEY = st.secrets["ENCRYPTION_KEY"].encode()
@@ -90,7 +176,7 @@ def decrypt_data(crypto_str):
     except Exception:
         return "🛡️ [بيانات مشفرة ومحمية بيئياً]"
 
-# التحقق من مفتاح API لمحرك الذكاء الاصطناعي
+# التحقق السريع من مفاتيح محرك الذكاء الاصطناعي
 if "GEMINI_API_KEY" in st.secrets:
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=GEMINI_API_KEY)
@@ -100,57 +186,13 @@ elif "api_key_input" in st.session_state and st.session_state.api_key_input:
 else:
     GEMINI_API_KEY = ""
 
-# تطبيق التصاميم الفاخرة للواجهة (Premium Gold Design)
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=600;800;900&display=swap');
-    
-    .stApp { background-color: #040d1a; color: #ffffff !important; font-family: 'Cairo', sans-serif !important; }
-    [data-testid="stMainBlockContainer"] { direction: rtl !important; text-align: right !important; }
-    .premium-card {
-        background: linear-gradient(145deg, #0a1f38, #07162c);
-        border: 2px solid #d4af37;
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 20px;
-        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
-    }
-    .emergency-card {
-        background: linear-gradient(145deg, #4a0d0d, #2a0505);
-        border: 2px solid #ff4b4b;
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 20px;
-        animation: pulse 2s infinite;
-        box-shadow: 0 0 20px rgba(255, 75, 75, 0.4);
-    }
-    @keyframes pulse {
-        0% { border-color: #ff4b4b; }
-        50% { border-color: #aa1111; }
-        100% { border-color: #ff4b4b; }
-    }
-    label, p, span, h3, h4 { color: #ffffff !important; font-weight: 600 !important; }
-    .stButton>button {
-        background: linear-gradient(90deg, #f3e5ab, #d4af37, #aa8422);
-        color: #040d1a !important;
-        border-radius: 12px !important;
-        font-weight: 900 !important;
-        font-size: 16px !important;
-        height: 3.2em;
-        width: 100%;
-        border: none;
-        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-    }
-    .metric-box { border-right: 4px solid #d4af37; padding-right: 15px; margin: 10px 0; }
-    </style>
-""", unsafe_allow_html=True)
-
+# الهيدر الملكي الثابت للمنصة
 st.markdown("""
     <div style="text-align: center; padding: 15px; margin-bottom: 5px;">
-        <h1 style="color: #d4af37; font-family: 'Cairo', sans-serif; font-size: 38px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; text-shadow: 3px 3px 8px rgba(0,0,0,0.9);">
+        <h1 style="color: #d4af37; font-family: 'Cairo', sans-serif; font-size: 38px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; text-shadow: 3px 3px 8px rgba(0,0,0,0.9); text-align: center !important;">
             👑 CELLREVIVE AI
         </h1>
-        <p style="color: #f3e5ab !important; font-family: 'Cairo', sans-serif; font-size: 17px; font-weight: 800; opacity: 0.95; line-height: 1.6; max-width: 850px; margin: 0 auto; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+        <p style="color: #f3e5ab !important; font-family: 'Cairo', sans-serif; font-size: 17px; font-weight: 800; opacity: 0.95; line-height: 1.6; max-width: 850px; margin: 0 auto; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); text-align: center !important;">
             تحت إشراف: د/ إيهاب حشمت الظني <br>
             صيدلي وأخصائي الترميم الخلوي وطب طول العمر وعكس مسار السكري من النوع الثاني
         </p>
@@ -159,7 +201,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# 2️⃣ منظومة قاعدة البيانات المحدثة والمحمية إحصائياً (SQLite Research Engine)
+# 4️⃣ منظومة قاعدة البيانات المحدثة والمحمية إحصائياً (SQLite Research Engine)
 # ==============================================================================
 def init_db():
     conn = sqlite3.connect('cellrevive_quantum_system.db')
@@ -260,7 +302,7 @@ def get_anonymized_research_data():
     return df
 
 # ==============================================================================
-# 3️⃣ المحرك الحسابي المتقدم للمؤشرات وطول العمر (Biological Age Engine)
+# 5️⃣ المحرك الحسابي المتقدم للمؤشرات وطول العمر (Biological Age Engine)
 # ==============================================================================
 def calculate_homa_ir(fbg, fasting_insulin):
     return (fbg * fasting_insulin) / 405
@@ -304,7 +346,7 @@ def simulate_glucose_curve(base_fbg, sequence_type, gi_score):
     return t, glucose_t
 
 # ==============================================================================
-# 4️⃣ قواعد البيانات الدستورية للأدوية والأطعمة (Global Pharma & GI DB)
+# 6️⃣ قواعد البيانات الدستورية للأدوية والأطعمة (Global Pharma & GI DB)
 # ==============================================================================
 GLOBAL_DRUG_DB = {
     "Cidophage (سيدوفاج)": {
@@ -342,7 +384,7 @@ GI_FOOD_DATABASE = {
 }
 
 # ==============================================================================
-# 5️⃣ إدارة الحماية الرقمية والامتثال الدولي (HIPAA Security Codes)
+# 7️⃣ إدارة الحماية الرقمية والامتثال الدولي (HIPAA Security Codes)
 # ==============================================================================
 MASTER_CODE = "CR-EMPEROR-EHAB-2026"
 CORE_CODES = ["CR-PATIENT-77", "CR-PATIENT-99", "CR-PATIENT-101", "CR-SOHAG-2026"]
@@ -353,7 +395,12 @@ if 'is_auth' not in st.session_state: st.session_state.is_auth = False
 if 'role' not in st.session_state: st.session_state.role = None
 
 if not st.session_state.is_auth:
-    st.markdown('<div style="text-align:center; color:#d4af37; font-size:22px; font-weight:900; margin-bottom:15px;">🔐 بروتوكول العبور الرقمي والاتصال المشفّر للمنصة</div>', unsafe_allow_html=True)
+    st.markdown("""
+        <div class="premium-card" style="margin-top: 20px;">
+            <div style="text-align:center; color:#d4af37; font-size:22px; font-weight:900; margin-bottom:15px;">🔐 بروتوكول العبور الرقمي والاتصال المشفّر للمنصة</div>
+        </div>
+    """, unsafe_allow_html=True)
+    
     input_code = st.text_input("أدخل كود العضوية المحفوظ على موبايلك للولوج السريع:", type="password")
     if st.button("تأكيد الاتصال والمصادقة الحيوية"):
         if input_code == MASTER_CODE:
@@ -375,10 +422,14 @@ p_data = get_patient_data(current_code) or {
 }
 
 # ==============================================================================
-# 6️⃣ شاشة المشرف السيادي (د. إيهاب حشمت الظني) & المجهر الإحصائي
+# 8️⃣ شاشة المشرف السيادي (د. إيهاب حشمت الظني) & المجهر الإحصائي
 # ==============================================================================
 if st.session_state.role == "doctor":
-    st.markdown('<div style="color:#d4af37; font-size:24px; font-weight:900; text-align:center; border-bottom:1px solid #d4af37; padding-bottom:10px; margin-bottom:20px;">👑 لوحة القيادة وطب طول العمر السيادية - د. إيهاب حشمت</div>', unsafe_allow_html=True)
+    st.markdown("""
+        <div style="color:#d4af37; font-size:24px; font-weight:900; text-align:center; border-bottom:2px solid #d4af37; padding-bottom:10px; margin-bottom:20px;">
+            👑 لوحة القيادة وطب طول العمر السيادية - د. إيهاب حشمت
+        </div>
+    """, unsafe_allow_html=True)
     
     st.sidebar.markdown("### 🔐 الإشراف الأمني")
     st.session_state.api_key_input = st.sidebar.text_input("Gemini API Key", type="password", value=GEMINI_API_KEY)
@@ -386,26 +437,34 @@ if st.session_state.role == "doctor":
     tab_manage, tab_research = st.tabs(["📝 إدارة ملفات المشتركين", "🔬 المجهر الإحصائي ومستودع الأدلة السريرية"])
     
     with tab_manage:
+        st.markdown('<div class="premium-card">', unsafe_allow_html=True)
         target_patient = st.selectbox("اختر كود المشترك المراد فحص وهندسة ملفه الخلوي:", VALID_PATIENT_CODES)
         current_p_data = get_patient_data(target_patient) or p_data
+        st.markdown('</div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
+            st.markdown('<div class="premium-card">', unsafe_allow_html=True)
             mod_fbg = st.number_input("سكر صائم (mg/dL):", value=float(current_p_data['fbg']), key="dr_fbg")
             mod_ppbg = st.number_input("سكر فاطر ساعتين (mg/dL):", value=float(current_p_data['ppbg']), key="dr_ppbg")
             mod_insulin = st.number_input("إنسولين صائم (uIU/mL):", value=float(current_p_data['fasting_insulin']), key="dr_ins")
             mod_hscrp = st.number_input("مؤشر الالتهاب الخلوي (hs-CRP mg/L):", value=float(current_p_data['hscrp']), key="dr_crp")
             mod_age = st.number_input("العمر الزمني الحالي:", value=int(current_p_data['age']), key="dr_age")
+            st.markdown('</div>', unsafe_allow_html=True)
         with col2:
+            st.markdown('<div class="premium-card">', unsafe_allow_html=True)
             mod_hba1c = st.number_input("السكر التراكمي (HbA1c%):", value=float(current_p_data['hba1c']), key="dr_a1c")
             mod_weight = st.number_input("الوزن الحالي (كجم):", value=float(current_p_data['weight']), key="dr_wt")
             mod_waist = st.number_input("محيط الخصر السريري (سم):", value=float(current_p_data['waist']), key="dr_wst")
             mod_creatinine = st.number_input("الكرياتينين (mg/dL):", value=float(current_p_data['creatinine']), key="dr_creat")
             mod_gender = st.selectbox("الجنس الخلوي للمشترك:", ["Male", "Female"], index=0 if current_p_data['gender'] == "Male" else 1)
+            st.markdown('</div>', unsafe_allow_html=True)
             
+        st.markdown('<div class="premium-card">', unsafe_allow_html=True)
         mod_mthfr = st.selectbox("جين MTHFR:", ["Normal (CC)", "طفرة متغايرة (CT)", "طفرة متجانسة (TT)"])
         mod_fto = st.selectbox("جين FTO الأيضي:", ["Normal (TT)", "خطر مرتفع (AA)"])
         mod_drugs = st.multiselect("الأدوية الحالية للمقاصة:", list(GLOBAL_DRUG_DB.keys()))
+        st.markdown('</div>', unsafe_allow_html=True)
         
         if st.button("💾 تشفير وتثبيت البيانات الحيوية للمشترك"):
             updated_data = {
@@ -420,7 +479,8 @@ if st.session_state.role == "doctor":
             st.success("🟢 تم تشفير الملف وحفظه بأعلى معايير الحماية الرقمية بنجاح.")
             
     with tab_research:
-        st.markdown("### 📊 مستودع الأدلة السريرية الواقعية لتقديمها للمؤسسات الدولية (Real-World Evidence Generation)")
+        st.markdown('<div class="premium-card">', unsafe_allow_html=True)
+        st.markdown("### 📊 مستودع الأدلة السريرية الواقعية لتقديمها للمؤسسات الدولية (Real-World Evidence)")
         res_df = get_anonymized_research_data()
         if not res_df.empty:
             col_stat1, col_stat2, col_stat3 = st.columns(3)
@@ -432,12 +492,13 @@ if st.session_state.role == "doctor":
             st.plotly_chart(fig_hist, use_container_width=True)
         else:
             st.info("لا توجد بيانات كافية في مستودع الأبحاث حالياً لتوليد المنحنيات المجمعة.")
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # ==============================================================================
-# 7️⃣ شاشة المشترك المتقدمة وطب طول العمر وتصفير الكورتيزول والتلعيب
+# 9️⃣ شاشة المشترك المتقدمة وطب طول العمر وتصفير الكورتيزول والتلعيب
 # ==============================================================================
 if st.session_state.role == "patient":
-    st.markdown(f'<p style="text-align:center; color:#d4af37 !important; font-size:16px; font-weight:800; border: 1px solid #d4af37; padding: 8px; border-radius: 8px;">مرحباً بك في لوحتك العلاجية المخصصة تحت إشراف د. إيهاب حشمت الظني</p>', unsafe_allow_html=True)
+    st.markdown(f'<p style="text-align:center; color:#d4af37 !important; font-size:16px; font-weight:800; border: 2px solid #d4af37; padding: 8px; border-radius: 8px;">مرحباً بك في لوحتك العلاجية المخصصة تحت إشراف د. إيهاب حشمت الظني</p>', unsafe_allow_html=True)
     
     homa_calc = calculate_homa_ir(p_data['fbg'], p_data['fasting_insulin'])
     bio_age_calc = calculate_biological_age(p_data['age'], p_data['hba1c'], homa_calc, p_data['hscrp'], p_data['waist'])
@@ -522,6 +583,7 @@ if st.session_state.role == "patient":
     """, unsafe_allow_html=True)
 
     with st.expander("🥗 محاكي تسطيح منحنى الجلوكوز التفاعلي ثنائي الأبعاد (2D Curve Simulator)"):
+        st.markdown('<div class="premium-card">', unsafe_allow_html=True)
         sel_food = st.selectbox("اختر المكون النشوي:", list(GI_FOOD_DATABASE.keys()))
         sel_seq = st.selectbox("اختر الترتيب الفسيولوجي لتناول الوجبة:", ["النشويات أولاً", "الألياف أولاً ➔ البروتين والدهون ➔ النشويات"])
         food_gi = GI_FOOD_DATABASE[sel_food]["GI"]
@@ -529,4 +591,5 @@ if st.session_state.role == "patient":
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=t_vec, y=g_vec, mode='lines', name='منحنى استجابة الجلوكوز المتوقع', line=dict(color='#d4af37' if "الألياف" in sel_seq else '#ff4b4b', width=3)))
         fig.update_layout(template="plotly_dark", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True) 
+        st.markdown('</div>', unsafe_allow_html=True)
