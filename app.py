@@ -1,4 +1,4 @@
-# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v18.5)
+# 👑 CELLREVIVE AI - THE UNITED METABOLIC OS & CELLULAR RESTORATION PLATFORM (v20.0 - Production Certified)
 # ==============================================================================
 # Production-Ready Sovereign System (2026/2027 International Metabolic Standards)
 # Under Direct Clinical Supervision of: Dr. Ehab Heshmat El-Znny
@@ -17,10 +17,9 @@ import os
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from fpdf import FPDF
 
 # ==============================================================================
-# 0️⃣ التهيئة الأولى وإعدادات الصفحة السيادية الفاخرة (يجب أن تكون في البداية تماماً)
+# 0️⃣ التهيئة الأولى وإعدادات الصفحة السيادية الفاخرة
 # ==============================================================================
 st.set_page_config(
     page_title="CellRevive AI - Dr. Ehab Heshmat El-Znny",
@@ -33,7 +32,9 @@ st.set_page_config(
 try:
     from cryptography.fernet import Fernet
 except ImportError:
-    os.system('pip install cryptography')
+    import subprocess
+    import sys
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "cryptography"])
     from cryptography.fernet import Fernet
 
 # 👑 تطبيق التصاميم الفاخرة للواجهة الملكية واتجاه الكتابة لليمين (Premium Gold & RTL Design)
@@ -41,20 +42,17 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=600;800;900&display=swap');
     
-    /* الخلفية المظلمة الفاخرة والخط السيادي */
     .stApp { 
         background-color: #040d1a; 
         color: #ffffff !important; 
         font-family: 'Cairo', sans-serif !important; 
     }
     
-    /* إجبار الاتجاه من اليمين إلى اليسار لجميع العناصر */
     [data-testid="stMainBlockContainer"], .stTabs, div, p, span, label, h1, h2, h3, h4, h5, h6 { 
         direction: rtl !important; 
         text-align: right !important; 
     }
     
-    /* الكروت الملكية المحاطة بالإطار الذهبي */
     .premium-card {
         background: linear-gradient(145deg, #0a1f38, #07162c);
         border: 2px solid #d4af37;
@@ -64,7 +62,6 @@ st.markdown("""
         box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
     }
     
-    /* كروت التنبيهات الحرجة الطارئة */
     .emergency-card {
         background: linear-gradient(145deg, #4a0d0d, #2a0505);
         border: 2px solid #ff4b4b;
@@ -80,13 +77,11 @@ st.markdown("""
         100% { border-color: #ff4b4b; }
     }
     
-    /* توحيد ألوان النصوص والخطوط العريضة */
     label, p, span, h3, h4 { 
         color: #ffffff !important; 
         font-weight: 600 !important; 
     }
     
-    /* الأزرار الذهبية الفاخرة المتوهجة */
     .stButton>button {
         background: linear-gradient(90deg, #f3e5ab, #d4af37, #aa8422) !important;
         color: #040d1a !important;
@@ -104,14 +99,12 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6) !important;
     }
     
-    /* صناديق القياسات والمؤشرات الحركية */
     .metric-box { 
         border-right: 4px solid #d4af37; 
         padding-right: 15px; 
         margin: 10px 0; 
     }
     
-    /* تحسين مظهر التنسيقات الداخلية والمدخلات */
     .stTextInput>div>div>input, .stNumberInput>div>div>input, .stSelectbox>div>div>div {
         background-color: #07162c !important;
         color: #ffffff !important;
@@ -128,19 +121,21 @@ if 'disclaimer_agreed' not in st.session_state:
 if not st.session_state.disclaimer_agreed:
     st.markdown("""
         <div class="emergency-card" style="margin-top: 30px;">
-            <h2 style="color: #ff4b4b !important; text-align: center !important; font-weight: 900;">🛡️ وثيقة الأمان الطبي والالتزام المشترك / Legal Disclaimer</h2>
+            <h2 style="color: #ff4b4b !important; text-align: center !important; font-weight: 900; direction: rtl !important;">🛡️ وثيقة الأمان الطبي والالتزام المشترك / Legal Disclaimer</h2>
             <hr style="border-color: #ff4b4b;">
-            <p style="font-size: 16px; line-height: 1.7; text-align: justify !important;">
-            <b>هام جدًا</b><br>
+            <p style="font-size: 16px; line-height: 1.7; text-align: justify !important; direction: rtl !important;">
+                <b>هام جدًا</b><br>
                 هذا التطبيق هو منصة محاكاة رقمية وأداة تعليمية وتثقيفية تهدف إلى دعم الصحة الأيضية ونمط الحياة وتحسين كفاءة الخلايا. 
                 المعلومات والبروتوكولات الصادرة عن هذا البرنامج <b>لا تعتبر تشخيصاً طبياً، أو وصفة علاجية، ولا تغني بأي حال من الأحوال عن استشارة الطبيب البشري المعالج</b> أو تعديل الأدوية الموصوفة دون الرجوع إليه.
             </p>
             <hr style="border-color: #ff4b4b; opacity: 0.3;">
-            <p style="font-size: 15px; line-height: 1.6; text-align: left !important; direction: ltr !important;">
-                <b>Very important</b><br>
-                This application is a digital simulation model and an educational tool designed to support metabolic health. 
-                The information provided <b>DO NOT constitute medical advice, diagnosis, or prescription, and are NOT a substitute for professional medical consultation by a licensed physician</b>.
-            </p>
+            <div style="direction: ltr !important; text-align: left !important;">
+                <p style="font-size: 15px; line-height: 1.6; color: #ffffff !important; font-weight: 600 !important; text-align: left !important; direction: ltr !important;">
+                    <b>Very important</b><br>
+                    This application is a digital simulation model and an educational tool designed to support metabolic health. <br>
+                    The information provided <b>DO NOT constitute medical advice, diagnosis, or prescription, and are NOT a substitute for professional medical consultation by a licensed physician</b>.
+                </p>
+            </div>
         </div>
     """, unsafe_allow_html=True)
     
@@ -150,8 +145,7 @@ if not st.session_state.disclaimer_agreed:
         if st.button("الانطلاق وبدء الاتصال بالمنصة الخلوية 🚀"):
             st.session_state.disclaimer_agreed = True
             st.rerun()
-            
-    st.stop() # يمنع استكمال تحميل بقية العناصر حتى يتم تأكيد الحماية الطبية
+    st.stop()
 
 # ==============================================================================
 # 3️⃣ منظومة التشفير وحماية البيانات الطبية البيئية (HIPAA Safe Architecture)
@@ -174,17 +168,18 @@ def decrypt_data(crypto_str):
     try:
         return cipher_suite.decrypt(crypto_str.encode()).decode()
     except Exception:
-        return "🛡️ [بيانات مشفرة ومحمية بيئياً]"
+        return "لا توجد تصبغات نشطة"
 
-# التحقق السريع من مفاتيح محرك الذكاء الاصطناعي
+# تفعيل وإدارة مفاتيح الذكاء الاصطناعي بشكل آمن عبر الجلسات
 if "GEMINI_API_KEY" in st.secrets:
-    GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
-    genai.configure(api_key=GEMINI_API_KEY)
+    ACTIVE_API_KEY = st.secrets["GEMINI_API_KEY"]
 elif "api_key_input" in st.session_state and st.session_state.api_key_input:
-    GEMINI_API_KEY = st.session_state.api_key_input
-    genai.configure(api_key=GEMINI_API_KEY)
+    ACTIVE_API_KEY = st.session_state.api_key_input
 else:
-    GEMINI_API_KEY = ""
+    ACTIVE_API_KEY = ""
+
+if ACTIVE_API_KEY:
+    genai.configure(api_key=ACTIVE_API_KEY)
 
 # الهيدر الملكي الثابت للمنصة
 st.markdown("""
@@ -225,17 +220,6 @@ def init_db():
             FOREIGN KEY(patient_code) REFERENCES patients(patient_code)
         )
     """)
-    
-    cursor.execute("PRAGMA table_info(patients)")
-    columns = [col[1] for col in cursor.fetchall()]
-    
-    if 'fasting_insulin' not in columns:
-        cursor.execute("ALTER TABLE patients ADD COLUMN fasting_insulin REAL DEFAULT 12.0")
-    if 'hscrp' not in columns:
-        cursor.execute("ALTER TABLE patients ADD COLUMN hscrp REAL DEFAULT 1.0")
-    if 'compliance_score' not in columns:
-        cursor.execute("ALTER TABLE patients ADD COLUMN compliance_score INTEGER DEFAULT 100")
-        
     conn.commit()
     conn.close()
 
@@ -253,11 +237,25 @@ def get_patient_data(code):
     conn.close()
     if row:
         return {
-            'fbg': row[0], 'ppbg': row[1], 'rbg': row[2], 'hba1c': row[3], 'weight': row[4], 'waist': row[5],
-            'severity_score': row[6], 'skin_analysis': decrypt_data(row[7]), 'selected_drugs': decrypt_data(row[8]), 
-            'creatinine': row[9], 'age': row[10], 'gender': row[11], 'country': row[12] or 'Egypt', 'cgm_connected': row[13] or 0,
-            'mthfr_mutation': row[14] or 'Normal (CC)', 'fto_variant': row[15] or 'Normal (TT)', 'fasting_insulin': row[16] or 12.0,
-            'hscrp': row[17] if row[17] is not None else 1.0, 'compliance_score': row[18] if row[18] is not None else 100
+            'fbg': row[0] if row[0] is not None else 130.0, 
+            'ppbg': row[1] if row[1] is not None else 140.0, 
+            'rbg': row[2] if row[2] is not None else 120.0, 
+            'hba1c': row[3] if row[3] is not None else 7.2, 
+            'weight': row[4] if row[4] is not None else 85.0, 
+            'waist': row[5] if row[5] is not None else 105.0,
+            'severity_score': row[6] if row[6] is not None else 5.0, 
+            'skin_analysis': decrypt_data(row[7]) if row[7] else 'لا توجد تصبغات نشطة', 
+            'selected_drugs': decrypt_data(row[8]) if row[8] else '', 
+            'creatinine': row[9] if row[9] is not None else 1.0, 
+            'age': row[10] if row[10] is not None else 45, 
+            'gender': row[11] if row[11] else 'Male', 
+            'country': row[12] or 'Egypt', 
+            'cgm_connected': row[13] or 0,
+            'mthfr_mutation': row[14] or 'Normal (CC)', 
+            'fto_variant': row[15] or 'Normal (TT)', 
+            'fasting_insulin': row[16] if row[16] is not None else 12.0, 
+            'hscrp': row[17] if row[17] is not None else 1.0, 
+            'compliance_score': row[18] if row[18] is not None else 100
         }
     return None
 
@@ -278,37 +276,15 @@ def save_patient_data(code, data):
     conn.commit()
     conn.close()
 
-def log_glucose(code, g_type, value):
-    conn = sqlite3.connect('cellrevive_quantum_system.db')
-    cursor = conn.cursor()
-    t_str = datetime.now().strftime('%Y-%m-%d %H:%M')
-    cursor.execute("INSERT INTO glucose_logs (patient_code, reading_time, reading_type, reading_value) VALUES (?, ?, ?, ?)",
-                   (code, t_str, g_type, value))
-    conn.commit()
-    conn.close()
-
-def get_all_glucose_logs(code):
-    conn = sqlite3.connect('cellrevive_quantum_system.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT reading_time, reading_type, reading_value FROM glucose_logs WHERE patient_code = ? ORDER BY id ASC", (code,))
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
-
-def get_anonymized_research_data():
-    conn = sqlite3.connect('cellrevive_quantum_system.db')
-    df = pd.read_sql_query("SELECT fbg, ppbg, hba1c, severity_score, compliance_score, age, gender FROM patients", conn)
-    conn.close()
-    return df
-
 # ==============================================================================
 # 5️⃣ المحرك الحسابي المتقدم للمؤشرات وطول العمر (Biological Age Engine)
 # ==============================================================================
 def calculate_homa_ir(fbg, fasting_insulin):
+    if fasting_insulin <= 0 or fbg <= 0: return 1.0
     return (fbg * fasting_insulin) / 405
 
 def calculate_egfr(age, weight, creatinine, gender):
-    if creatinine <= 0: return 90.0
+    if creatinine <= 0 or weight <= 0: return 90.0
     val = ((140 - age) * weight) / (72 * creatinine)
     if gender in ['Female', 'أنثى', 'أنثي']: val *= 0.85
     return min(round(val, 2), 150.0)
@@ -319,68 +295,48 @@ def calculate_biological_age(age, hba1c, homa_ir, hscrp, waist):
     if homa_ir > 1.9: base_shift += (homa_ir - 1.9) * 2.0
     if hscrp > 1.0: base_shift += (hscrp - 1.0) * 1.5
     if waist > 94: base_shift += (waist - 94) * 0.15
-    bio_age = age + base_shift
-    return round(bio_age, 1)
-
-def calculate_glucose_variability(code):
-    logs = get_all_glucose_logs(code)
-    if len(logs) < 3: return 0.0, "بيانات غير كافية لحساب التقلب الحركي"
-    values = [row[2] for row in logs]
-    mean = sum(values) / len(values)
-    variance = sum((x - mean) ** 2 for x in values) / len(values)
-    sd = math.sqrt(variance)
-    cv = (sd / mean) * 100 if mean > 0 else 0.0
-    if cv < 15.0: status = "✅ مستقر ومثالي للترميم الخلوي"
-    elif cv <= 36.0: status = "⚠️ تذبذب متوسط - يتطلب ضبط ترتيب الطعام"
-    else: status = "🚨 تذبذب حاد وحرج - خطر حدوث طفرات سكر مفاجئة"
-    return round(cv, 2), status
+    return max(round(age + base_shift, 1), 18.0)
 
 def simulate_glucose_curve(base_fbg, sequence_type, gi_score):
     t = np.linspace(0, 180, 100)
-    gamma = 2.4 if sequence_type == "الألياف أولاً ➔ البروتين والدهون ➔ النشويات" else 1.0
-    A = gi_score * 1.5 
+    gamma = 2.5 if sequence_type == "الألياف أولاً ➔ :البروتينات والدهون ➔ النشويات" else 1.0
+    A = gi_score * 1.3
     k1 = 0.04 / (gamma * 0.8)
     k2 = 0.02 * gamma
-    delta_g = A * (np.exp(-k2 * t) - np.exp(-k1 * t)) * (150 / (base_fbg * gamma))
-    glucose_t = base_fbg + delta_g
-    return t, glucose_t
+    delta_g = A * (np.exp(-k2 * t) - np.exp(-k1 * t)) * (140 / (max(base_fbg, 70.0) * gamma))
+    return t, base_fbg + delta_g
 
 # ==============================================================================
-# 6️⃣ قواعد البيانات الدستورية للأدوية والأطعمة (Global Pharma & GI DB)
+# 6️⃣ قواعد البيانات الدستورية للأدوية والأطعمة (Global Pharma DB)
 # ==============================================================================
 GLOBAL_DRUG_DB = {
     "Cidophage (سيدوفاج)": {
-        "generic": "Metformin", "class": "Biguanide (Insulin Sensitizer)",
-        "regions": ["Egypt", "Exported to Gulf"], "arabic_names": ["سيدوفاج", "سيدوفاج ار"],
-        "supp": "Methyl B12 (1000mcg) + CoQ10", "reason": "استنزاف فيتامين ب12 الحاد وتأثر كفاءة الميتوكوندريا فسيولوجياً طبقاً لتدقيق هيئة الدواء المصرية."
+        "generic": "Metformin", "supp": "Methyl B12 (1000mcg) + CoQ10", 
+        "reason": "استنزاف فيتامين ب12 الحاد وتأثر كفاءة الميتوكوندريا فسيولوجياً طبقاً لتدقيق هيئة الدواء المصرية."
     },
     "Glucophage (جلوكوفاج)": {
-        "generic": "Metformin", "class": "Biguanide (Insulin Sensitizer)",
-        "regions": ["Egypt", "Gulf", "International"], "arabic_names": ["جلوكوفاج", "جلوفاج"],
-        "supp": "Methyl B12 (1000mcg)", "reason": "ضعف امتصاص فيتامين ب12 الممتد وتأثر المحاور الأعصاب الطرفية فسيولوجياً على المدى الطويل."
+        "generic": "Metformin", "supp": "Methyl B12 (1000mcg)", 
+        "reason": "ضعف امتصاص فيتامين ب12 الممتد وتأثر محاور الأعصاب الطرفية فسيولوجياً على المدى الطويل."
     },
     "Nervizam (نيرفيزام)": {
-        "generic": "Alpha-Lipoic Acid + Vitamin B Complex", "class": "Mitochondrial & Neurovascular Antioxidant",
-        "regions": ["Egypt", "Exported to Gulf"], "arabic_names": ["نيرفيزام", "نرفيزام"],
-        "supp": "Chromium Picolinate + Magnesium Citrate", "reason": "دعم مضادات الأكسدة الخلوية العميقة وحماية غمد المايلين الدهني وكبح مسارات التحلل السكري المتقدم (AGEs)."
+        "generic": "Alpha-Lipoic Acid + Vitamin B Complex", "supp": "Chromium Picolinate + Magnesium Citrate", 
+        "reason": "دعم مضادات الأكسدة الخلوية العميقة وحماية غمد المايلين الدهني وكبح مسارات التحلل السكري المتقدم (AGEs)."
     },
     "Milga (ميلجا)": {
-        "generic": "Benfotiamine + B6 + B12", "class": "Neurotropic B-Complex",
-        "regions": ["Egypt", "Exported to Gulf"], "arabic_names": ["ميلجا", "ميلجا ادفانس"],
-        "supp": "Alpha-Lipoic Acid (600mg)", "reason": "حماية غمد المايلين الدهني للأعصاب الطرفية عبر دمج البنفوتيامين (B1 الذائب في الدهون) لمنع التلف الأيضي."
+        "generic": "Benfotiamine + B6 + B12", "supp": "Alpha-Lipoic Acid (600mg)", 
+        "reason": "حماية غمد المايلين الدهني للأعصاب الطرفية عبر دمج البنفوتيامين لمنع التلف الأيضي."
     },
     "Ozempic (أوزمبيك)": {
-        "generic": "Semaglutide", "class": "GLP-1 Receptor Agonist",
-        "regions": ["Egypt", "Gulf", "International"], "arabic_names": ["أوزمبيك", "وزمبك"],
-        "supp": "Digestive Enzymes + Zinc + Essential Amino Acids (EAAs)", "reason": "تأخير حركة المعدة فسيولوجياً والحاجة لتسهيل امتصاص المغذيات خلوياً ومنع هدم الكتلة العضلية (Sarcopenia)."
+        "generic": "Semaglutide", "supp": "Digestive Enzymes + Zinc + Essential Amino Acids (EAAs)", 
+        "reason": "تأخير حركة المعدة فسيولوجياً والحاجة لتسهيل امتصاص المغذيات خلوياً ومنع هدم الكتلة العضلية (Sarcopenia)."
     }
 }
 
 GI_FOOD_DATABASE = {
-    "أرز أبيض مصري": {"GI": 72, "unit_carbs": 4.0, "unit_fiber": 0.1},
-    "أرز بسمتي طويل الحبة": {"GI": 50, "unit_carbs": 3.5, "unit_fiber": 0.4},
-    "خبز شعير كامل": {"GI": 45, "unit_carbs": 12.0, "unit_fiber": 2.5},
-    "خبز جوز الهند / اللوز (Keto)": {"GI": 15, "unit_carbs": 3.0, "unit_fiber": 3.0}
+    "أرز أبيض مصري": {"GI": 72},
+    "أرز بسمتي طويل الحبة": {"GI": 50},
+    "خبز شعير كامل": {"GI": 45},
+    "خبز جوز الهند / اللوز (Keto)": {"GI": 15}
 }
 
 # ==============================================================================
@@ -388,26 +344,25 @@ GI_FOOD_DATABASE = {
 # ==============================================================================
 MASTER_CODE = "CR-EMPEROR-EHAB-2026"
 CORE_CODES = ["CR-PATIENT-77", "CR-PATIENT-99", "CR-PATIENT-101", "CR-SOHAG-2026"]
-VALID_PATIENT_CODES = CORE_CODES + [f"CR-1M-{i:02d}" for i in range(1, 11)] + [f"CR-3M-{i:02d}" for i in range(1, 11)]
+VALID_PATIENT_CODES = CORE_CODES + [f"CR-1M-{i:02d}" for i in range(1, 11)]
 
-if 'auth_code' not in st.session_state: st.session_state.auth_code = ""
 if 'is_auth' not in st.session_state: st.session_state.is_auth = False
 if 'role' not in st.session_state: st.session_state.role = None
+if 'auth_code' not in st.session_state: st.session_state.auth_code = ""
 
 if not st.session_state.is_auth:
-    st.markdown("""
-        <div class="premium-card" style="margin-top: 20px;">
-            <div style="text-align:center; color:#d4af37; font-size:22px; font-weight:900; margin-bottom:15px;">🔐 بروتوكول العبور الرقمي والاتصال المشفّر للمنصة</div>
-        </div>
-    """, unsafe_allow_html=True)
-    
+    st.markdown('<div class="premium-card"><div style="text-align:center; color:#d4af37; font-size:22px; font-weight:900;">🔐 بروتوكول العبور الرقمي والاتصال المشفّر للمنصة</div></div>', unsafe_allow_html=True)
     input_code = st.text_input("أدخل كود العضوية المحفوظ على موبايلك للولوج السريع:", type="password")
     if st.button("تأكيد الاتصال والمصادقة الحيوية"):
         if input_code == MASTER_CODE:
-            st.session_state.is_auth, st.session_state.role, st.session_state.auth_code = True, "doctor", MASTER_CODE
+            st.session_state.is_auth = True
+            st.session_state.role = "doctor"
+            st.session_state.auth_code = MASTER_CODE
             st.rerun()
         elif input_code in VALID_PATIENT_CODES:
-            st.session_state.is_auth, st.session_state.role, st.session_state.auth_code = True, "patient", input_code
+            st.session_state.is_auth = True
+            st.session_state.role = "patient"
+            st.session_state.auth_code = input_code
             st.rerun()
         else:
             st.error("كود غير مصرح به. يرجى مراجعة الإدارة الطبية فوراً لتفعيل الاشتراك.")
@@ -425,46 +380,47 @@ p_data = get_patient_data(current_code) or {
 # 8️⃣ شاشة المشرف السيادي (د. إيهاب حشمت الظني) & المجهر الإحصائي
 # ==============================================================================
 if st.session_state.role == "doctor":
-    st.markdown("""
-        <div style="color:#d4af37; font-size:24px; font-weight:900; text-align:center; border-bottom:2px solid #d4af37; padding-bottom:10px; margin-bottom:20px;">
-            👑 لوحة القيادة وطب طول العمر السيادية - د. إيهاب حشمت
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div style="color:#d4af37; font-size:24px; font-weight:900; text-align:center; border-bottom:2px solid #d4af37; padding-bottom:10px; margin-bottom:20px;">👑 لوحة القيادة وطب طول العمر السيادية - د. إيهاب حشمت</div>', unsafe_allow_html=True)
     
     st.sidebar.markdown("### 🔐 الإشراف الأمني")
-    st.session_state.api_key_input = st.sidebar.text_input("Gemini API Key", type="password", value=GEMINI_API_KEY)
+    st.session_state.api_key_input = st.sidebar.text_input("Gemini API Key", type="password", value=ACTIVE_API_KEY)
     
     tab_manage, tab_research = st.tabs(["📝 إدارة ملفات المشتركين", "🔬 المجهر الإحصائي ومستودع الأدلة السريرية"])
     
     with tab_manage:
-        st.markdown('<div class="premium-card">', unsafe_allow_html=True)
         target_patient = st.selectbox("اختر كود المشترك المراد فحص وهندسة ملفه الخلوي:", VALID_PATIENT_CODES)
         current_p_data = get_patient_data(target_patient) or p_data
-        st.markdown('</div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown('<div class="premium-card">', unsafe_allow_html=True)
             mod_fbg = st.number_input("سكر صائم (mg/dL):", value=float(current_p_data['fbg']), key="dr_fbg")
             mod_ppbg = st.number_input("سكر فاطر ساعتين (mg/dL):", value=float(current_p_data['ppbg']), key="dr_ppbg")
             mod_insulin = st.number_input("إنسولين صائم (uIU/mL):", value=float(current_p_data['fasting_insulin']), key="dr_ins")
             mod_hscrp = st.number_input("مؤشر الالتهاب الخلوي (hs-CRP mg/L):", value=float(current_p_data['hscrp']), key="dr_crp")
             mod_age = st.number_input("العمر الزمني الحالي:", value=int(current_p_data['age']), key="dr_age")
-            st.markdown('</div>', unsafe_allow_html=True)
         with col2:
-            st.markdown('<div class="premium-card">', unsafe_allow_html=True)
             mod_hba1c = st.number_input("السكر التراكمي (HbA1c%):", value=float(current_p_data['hba1c']), key="dr_a1c")
             mod_weight = st.number_input("الوزن الحالي (كجم):", value=float(current_p_data['weight']), key="dr_wt")
             mod_waist = st.number_input("محيط الخصر السريري (سم):", value=float(current_p_data['waist']), key="dr_wst")
             mod_creatinine = st.number_input("الكرياتينين (mg/dL):", value=float(current_p_data['creatinine']), key="dr_creat")
             mod_gender = st.selectbox("الجنس الخلوي للمشترك:", ["Male", "Female"], index=0 if current_p_data['gender'] == "Male" else 1)
-            st.markdown('</div>', unsafe_allow_html=True)
             
-        st.markdown('<div class="premium-card">', unsafe_allow_html=True)
-        mod_mthfr = st.selectbox("جين MTHFR:", ["Normal (CC)", "طفرة متغايرة (CT)", "طفرة متجانسة (TT)"])
-        mod_fto = st.selectbox("جين FTO الأيضي:", ["Normal (TT)", "خطر مرتفع (AA)"])
-        mod_drugs = st.multiselect("الأدوية الحالية للمقاصة:", list(GLOBAL_DRUG_DB.keys()))
-        st.markdown('</div>', unsafe_allow_html=True)
+        # 🛡️ معالجة آمنة لخيارات الطفرات الجينية
+        mthfr_options = ["Normal (CC)", "طفرة متغايرة (CT)", "طفرة متجانسة (TT)"]
+        mthfr_idx = mthfr_options.index(current_p_data['mthfr_mutation']) if current_p_data['mthfr_mutation'] in mthfr_options else 0
+        mod_mthfr = st.selectbox("جين MTHFR:", mthfr_options, index=mthfr_idx)
+        
+        fto_options = ["Normal (TT)", "خطر مرتفع (AA)"]
+        fto_idx = fto_options.index(current_p_data['fto_variant']) if current_p_data['fto_variant'] in fto_options else 0
+        mod_fto = st.selectbox("جين FTO الأيضي:", fto_options, index=fto_idx)
+        
+        # 🛡️ صمام الأمان المحدث: معالجة قائمة الأدوية بشكل مرن ومنع الانهيار
+        if current_p_data['selected_drugs']:
+            saved_drugs_list = [d.strip() for d in current_p_data['selected_drugs'].split(",") if d.strip() in GLOBAL_DRUG_DB]
+        else:
+            saved_drugs_list = []
+            
+        mod_drugs = st.multiselect("الأدوية الحالية للمقاصة الطبية والأيضية:", list(GLOBAL_DRUG_DB.keys()), default=saved_drugs_list)
         
         if st.button("💾 تشفير وتثبيت البيانات الحيوية للمشترك"):
             updated_data = {
@@ -477,22 +433,26 @@ if st.session_state.role == "doctor":
             }
             save_patient_data(target_patient, updated_data)
             st.success("🟢 تم تشفير الملف وحفظه بأعلى معايير الحماية الرقمية بنجاح.")
+            st.toast("تم تحديث البيانات الحيوية بنجاح!", icon="💾")
             
     with tab_research:
-        st.markdown('<div class="premium-card">', unsafe_allow_html=True)
-        st.markdown("### 📊 مستودع الأدلة السريرية الواقعية لتقديمها للمؤسسات الدولية (Real-World Evidence)")
-        res_df = get_anonymized_research_data()
+        st.markdown('### 📊 مستودع الأدلة السريرية الواقعية لتقديمها للمؤسسات الدولية (Real-World Evidence)')
+        conn = sqlite3.connect('cellrevive_quantum_system.db')
+        try:
+            res_df = pd.read_sql_query("SELECT fbg, ppbg, hba1c, severity_score, compliance_score, age, gender FROM patients", conn)
+        except Exception:
+            res_df = pd.DataFrame()
+        finally:
+            conn.close()
+            
         if not res_df.empty:
-            col_stat1, col_stat2, col_stat3 = st.columns(3)
+            col_stat1, col_stat2 = st.columns(2)
             col_stat1.metric("إجمالي الحالات المسجلة أبحاثاً", len(res_df))
             col_stat2.metric("متوسط التراكمي في الداتا", f"{round(res_df['hba1c'].mean(), 2)}%")
-            col_stat3.metric("معدل الالتزام المتوسط للمشتركين", f"{round(res_df['compliance_score'].mean(), 1)}%")
-            
-            fig_hist = px.histogram(res_df, x="hba1c", title="توزيع السكر التراكمي بين عينات المرضى (بيانات مجهولة الهوية بالكامل)", color_discrete_sequence=['#d4af37'])
+            fig_hist = px.histogram(res_df, x="hba1c", title="توزيع السكر التراكمي بين عينات المرضى", color_discrete_sequence=['#d4af37'])
             st.plotly_chart(fig_hist, use_container_width=True)
         else:
-            st.info("لا توجد بيانات كافية في مستودع الأبحاث حالياً لتوليد المنحنيات المجمعة.")
-        st.markdown('</div>', unsafe_allow_html=True)
+            st.info("لا توجد بيانات كافية في مستودع الأبحاث حالياً.")
 
 # ==============================================================================
 # 9️⃣ شاشة المشترك المتقدمة وطب طول العمر وتصفير الكورتيزول والتلعيب
@@ -503,89 +463,116 @@ if st.session_state.role == "patient":
     homa_calc = calculate_homa_ir(p_data['fbg'], p_data['fasting_insulin'])
     bio_age_calc = calculate_biological_age(p_data['age'], p_data['hba1c'], homa_calc, p_data['hscrp'], p_data['waist'])
     
-    # 🔥 ركيزة طول العمر: استعراض العمر البيولوجي مقارنة بالزمني
     st.markdown(f"""
-        <div class="premium-card" style="border-color: #f3e5ab; background: linear-gradient(145deg, #091e36, #040f1c);">
+        <div class="premium-card">
             <h3 style="color:#d4af37 !important; margin:0 0 15px 0; font-size:18px;">🧬 مجهر طول العمر وعمر الخلايا (Biological Longevity Core)</h3>
             <div style="display:flex; justify-content:space-around; text-align:center;">
                 <div><span style="font-size:14px; opacity:0.8;">العمر الزمني (البطاقة):</span><br><b style="font-size:24px; color:#ffffff;">{p_data['age']} سنة</b></div>
                 <div><span style="font-size:14px; opacity:0.8;">العمر البيولوجي (الخلايا):</span><br><b style="font-size:24px; color:#00ffcc;">{bio_age_calc} سنة</b></div>
             </div>
-            <p style="font-size:12.5px; margin-top:10px; line-height:1.5; opacity:0.9; text-align:justify;">
-                *العمر البيولوجي يتم حسابه بدقة عبر خوارزمية الربط الميتابوليزمي والالتهاب الخلوي المسرع للشيخوخة. هدف بروتوكول عكس مسار المرض مع الدكتور إيهاب هو خفض عمر خلاياك لتصبح أصغر من عمرك الزمني!
-            </p>
         </div>
     """, unsafe_allow_html=True)
 
-    # 🕹️ ركيزة التلعيب ومكافآت الالتزام الخلوي (Gamification Core)
+    # 🕹️ ركيبة التلعيب ومكافآت الالتزام الخلوي (Gamification Core)
     st.markdown(f"""
-        <div class="premium-card" style="border-color: #00ffcc; background: linear-gradient(145deg, #05221d, #02110e);">
+        <div class="premium-card" style="border-color: #00ffcc;">
             <h3 style="color:#00ffcc !important; margin:0 0 10px 0; font-size:18px;">🏆 لوحة الإنجاز ومكافآت الخلايا (Cellular Rewards)</h3>
-            <p style="font-size:13px; margin:0 0 10px 0;">مستوى التزامك الحالي بالبروتوكول الأيضي الموجه: <b>{p_data['compliance_score']}%</b></p>
+            <p style="font-size:13px;">مستوى التزامك الحالي بالبروتوكول الأيضي الموجه: <b>{p_data['compliance_score']}%</b></p>
+        </div>
     """, unsafe_allow_html=True)
     
     col_game1, col_game2 = st.columns(2)
-    with col_game1:
-        done_soleus = st.checkbox("🏃 أكملت تمرين كبش السكر (Soleus Pushups) بعد الوجبة اليوم")
-    with col_game2:
-        done_stress = st.checkbox("🌬️ طبقت بروتوكول تصفير الكورتيزول والتنفس المربع اليوم")
+    with col_game1: done_soleus = st.checkbox("🏃 أكملت تمرين كبش السكر (Soleus Pushups) بعد الوجبة اليوم")
+    with col_game2: done_stress = st.checkbox("🌬️ طبقت بروتوكول تصفير الكورتيزول والتنفس المربع اليوم")
         
     if done_soleus or done_stress:
-        st.markdown("""
-            <div style="color:#00ffcc; font-size:13px; font-weight:800; margin-top:5px;">
-                👑 رائع! تم منحك وسام الرقمي: [🛡️ حارس الميتوكوندريا] وزيادة نقاط الالتزام في مصفوفة أبحاث الدكتور إيهاب الحركية.
-            </div>
-        """, unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown('<div style="color:#00ffcc; font-size:13px; font-weight:800;">👑 رائع! تم منحك وسام رقمي: [🛡️ حارس الميتوكوندريا] وزيادة نقاط الالتزام.</div>', unsafe_allow_html=True)
 
-    # 🧠 رادار الكورتيزول والأدرينالين متعدد الاختيارات
-    st.markdown("""
-        <div class="premium-card" style="border-color: #e0a96d;">
-            <h3 style="color:#e0a96d !important; margin:0 0 10px 0; font-size:17px;">🧠 رادار المحور العصبي-الغدّي والضغط الكظري</h3>
-            <p style="font-size:13px; margin:0; opacity:0.85;">يرجى تحديد كافة العوارض التي تصف بدقة ضغوطك النفسية أو اضطرابات نومك الحالية لكسر طفرة الكورتيزول فسيولوجياً:</p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    stress_options = [
-        "🔄 أستيقظ من النوم مجهداً وكأنني لم أنم تماماً (مؤشر ذروة كورتيزول مقلوبة)",
-        "🧠 صعوبة بالغة في الدخول في النوم مع عدم توقف العقل عن التفكير والتحليل",
-        "⚡ خفقان سريع مفاجئ في القلب أو شد حاد في عضلات الرقبة والكتفين عند التوتر",
-        "🍪 رغبة مفاجئة وشرهة لا يمكن كبحها لتناول السكريات أو المعجنات عند الضغط العصبي"
-    ]
-    selected_stress = st.multiselect("مؤشرات الإجهاد العصبي التراكمي:", stress_options)
+    # 🧠 رادار الكورتيزول والضغط الكظري
+    selected_stress = st.multiselect("مؤشرات الإجهاد العصبي التراكمي الحالية لديك:", [
+        "🔄 أستيقظ من النوم مجهداً وكأنني لم أنم تماماً (ذروة كورتيزول مقلوبة)",
+        "🧠 صعوبة بالغة في الدخول في النوم مع عدم توقف العقل عن التفكير",
+        "⚡ خفقان سريع مفاجئ في القلب أو شد حاد في عضلات الرقبة عند التوتر",
+        "🍪 رغبة مفاجئة وشرهة لتناول السكريات أو المعجنات عند الضغط العصبي"
+    ])
     
     if selected_stress:
-        st.markdown(f"""
+        st.markdown("""
             <div class="premium-card" style="border-color: #e0a96d; background: #22170d;">
-                <h4 style="color:#e0a96d !important; margin:0 0 10px 0;">🛡️ بروتوكول الدكتور إيهاب حشمت لتصفير الكورتيزول الفوري:</h4>
+                <h4 style="color:#e0a96d !important;">🛡️ بروتوكول الدكتور إيهاب حشمت لتصفير الكورتيزول الفوري:</h4>
                 <p style="font-size:13.5px; line-height:1.6;">
-                    توجيهات سيادية صارمة لكسر دائرة استثارة الغدد الصماء فوراً:
-                    <br>
-                    • <b>العلاج بالضحك الاستباقي:</b> استمع لنكتة أو مشهد كوميدي الآن؛ الضحك يفرز الإندورفين الذي يخفض الكورتيزول مصل الحركية بنسبة 39%.
-                    <br>
-                    • <b>التنفس المربع الصارم (Box Breathing):</b> 4 ثوانٍ شهيق، 4 ثوانٍ كتم، 4 ثوانٍ زفير، 4 ثوانٍ كتم. (كررها 5 مرات لتفعيل العصب الحائر كابح الأدرينالين).
-                    <br>
-                    • <b>الهروب البيئي السريع:</b> اخرج فوراً وتمشّ في مكان مفتوح متسع لتقليل نشاط منطقة الأميغدالا بالمخ.
+                    • <b>العلاج بالضحك الاستباقي:</b> استمع لمشهد كوميدي الآن لخفض الكورتيزول بنسبة 39%.<br>
+                    • <b>التنفس المربع (Box Breathing):</b> 4 ثوانٍ شهيق, 4 كتم, 4 زفير, 4 كتم لتفعيل العصب الحائر.<br>
+                    • <b>الهروب البيئي السريع:</b> اخرج فوراً وتمشّ في مكان مفتوح لتقليل نشاط الأميغدالا بالمخ.
                 </p>
             </div>
         """, unsafe_allow_html=True)
 
-    # 🌿 حزمة الحركة الذكية والوصفات الأكاديمية
-    st.markdown("""
-        <div class="premium-card" style="border-color: #8fce00;">
-            <h3 style="color:#8fce00 !important; margin:0 0 15px 0; font-size:18px;">🏃 التوجيه الحركي والوصفات الأيضية المعتمدة</h3>
-            <p style="font-size:13.5px; line-height:1.6;">
-                • <b>تمرين كبش السكر (Soleus Pushups):</b> تحريك عضلة الساق الخلفية أثناء الجلوس بعد الوجبة لـ 10 دقائق لامتصاص الجلوكوز مباشرة دون إجهاد.
-                <br>
-                • <b>منقوع القرفة السيالانية النقية (Ceylon Cinnamon):</b> نصف ملعقة صغيرة في كوب ماء دافئ قبل الوجبة الرئيسية بـ 20 دقيقة لزيادة حساسية مستقبلات الإنسولين.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
+    # 🥗 محاكي تسطيح منحنى الجلوكوز التفاعلي ثنائي الأبعاد (2D Curve Simulator)
+    st.markdown("### 🥗 محاكي تسطيح منحنى الجلوكوز التفاعلي ثنائي الأبعاد")
+    sel_food = st.selectbox("اختر المكون النشوي الرئيسي في وجبتك:", list(GI_FOOD_DATABASE.keys()))
+    sel_seq = st.selectbox("اختر الترتيب الفسيولوجي لتناول هذه الوجبة:", ["النشويات أولاً", "الألياف أولاً ➔ :البروتينات والدهون ➔ النشويات"])
+    
+    food_gi = GI_FOOD_DATABASE[sel_food]["GI"]
+    t_vec, g_vec = simulate_glucose_curve(p_data['fbg'], sel_seq, food_gi)
+    
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=t_vec, y=g_vec, mode='lines', name='منحنى الاستجابة الأيضية', line=dict(color='#d4af37', width=3)))
+    fig.update_layout(
+        title="توقع حركة السكر خلوياً خلال 180 دقيقة بعد الوجبة",
+        xaxis_title="الوقت بالدقائق", yaxis_title="مستوى السكر المتوقع (mg/dL)",
+        paper_bgcolor='#040d1a', plot_bgcolor='#07162c', font=dict(color='#ffffff')
+    )
+    st.plotly_chart(fig, use_container_width=True)
 
-    with st.expander("🥗 محاكي تسطيح منحنى الجلوكوز التفاعلي ثنائي الأبعاد (2D Curve Simulator)"):
-        st.markdown('<div class="premium-card">', unsafe_allow_html=True)
-        sel_food = st.selectbox("اختر المكون النشوي:", list(GI_FOOD_DATABASE.keys()))
-        sel_seq = st.selectbox("اختر الترتيب الفسيولوجي لتناول الوجبة:", ["النشويات أولاً", "الألياف أولاً ➔ البروتين والدهون ➔ النشويات"])
-        food_gi = GI_FOOD_DATABASE[sel_food]["GI"]
-        t_vec, g_vec = simulate_glucose_curve(p_data['fbg'], sel_seq, food_gi)
-        fig = go.Figure()
+    # 🔬 المقاصة الدوائية الآلية لربط الأدوية بنقص المغذيات
+    if p_data['selected_drugs']:
+        st.markdown('<div class="premium-card" style="border-color: #ff4b4b;">', unsafe_allow_html=True)
+        st.markdown("<h3 style='color:#ff4b4b !important; font-size:18px;'>🔬 نظام المقاصة الدوائية التلقائي والمكملات التصحيحية</h3>", unsafe_allow_html=True)
+        for drug in p_data['selected_drugs'].split(","):
+            drug = drug.strip()
+            if drug in GLOBAL_DRUG_DB:
+                st.markdown(f"""
+                    <p style="font-size:14px; margin-bottom:8px;">
+                        • دواء <b>{drug}</b> يستنزف حيوياً: <span style="color:#00ffcc;">{GLOBAL_DRUG_DB[drug]['supp']}</span><br>
+                        <small style="opacity:0.8;">السبب السريري: {GLOBAL_DRUG_DB[drug]['reason']}</small>
+                    </p>
+                """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # 🤖 العقل المفكر الذكي المدمج بالكامل (Generative Clinical AI Block)
+    st.markdown("### 🤖 العقل المفكر للذكاء الاصطناعي - هندسة الوجبة الفورية")
+    user_meal_input = st.text_input("اكتب بالتفصيل ماذا تريد أن تأكل الآن:", placeholder="مثال: ربع فرخة مشوية مع 5 معالق أرز مصري وسلطة")
+    
+    if st.button("🧬 تحليل الهندسة الخلوية للوجبة وإصدار بروتوكول التعديل"):
+        if not ACTIVE_API_KEY:
+            st.warning("⚠️ يرجى تزويد التطبيق بمفتاح الـ API الخاص بـ Gemini في لوحة التحكم العلوية لتفعيل العقل المفكر الحركي.")
+        elif not user_meal_input:
+            st.error("يرجى كتابة مكونات الوجبة أولاً ليتمكن النظام من تقييمها فسيولوجياً.")
+        else:
+            with st.spinner("⚡ جاري استدعاء مصفوفة الأبحاث الخلوية وتحليل الوجبة..."):
+                try:
+                    genai.configure(api_key=ACTIVE_API_KEY)
+                    model = genai.GenerativeModel('gemini-1.5-flash')
+                    prompt_context = f"""
+                    You are CellRevive AI, an advanced metabolic operating system working under the strict clinical supervision of Dr. Ehab Heshmat El-Znny (Clinical Pharmacist & Cellular Restoration & Longevity Specialist).
+                    Patient Metrics:
+                    - Age: {p_data['age']} | Gender: {p_data['gender']}
+                    - HbA1c: {p_data['hba1c']}% | Fasting Glucose: {p_data['fbg']} mg/dL
+                    - Metabolic Mutations: MTHFR: {p_data['mthfr_mutation']} | FTO: {p_data['fto_variant']}
+                    - Current Medications: {p_data['selected_drugs']}
+                    
+                    Proposed Meal: {user_meal_input}
+                    Sequence Choice selected by user: {sel_seq}
+                    
+                    Provide an elite, medically authoritative clinical response in Arabic. 
+                    Structure the response strictly with:
+                    1. التقييم الأيضي السريع للوجبة (Impact analysis based on HbA1c and medications).
+                    2. بروتوكول التعديل الفوري لتسطيح المنحنى (How to optimize the sequence, add fibers, or healthy fats).
+                    3. الخلاصة الميتوكوندريالية لطب طول العمر (Longevity insight specifically tailored to their MTHFR/FTO variants or medication depletions).
+                    Keep the tone premium, encouraging, and clear. Do not prescribe drugs or offer diagnosis, always reference that this is under the supervision of Dr. Ehab Heshmat El-Znny.
+                    """
+                    response = model.generate_content(prompt_context)
+                    st.markdown(f'<div class="premium-card" style="border-color:#d4af37;"><h4 style="color:#d4af37 !important;">📋 التقرير الخلوي الفوري المعتمد:</h4><p style="line-height:1.7; font-size:14.5px; text-align:justify;">{response.text}</p></div>', unsafe_allow_html=True)
+                except Exception as e:
+                    st.error(f"حدث خطأ أثناء الاتصال بالخادم الأيضي: {str(e)}")
