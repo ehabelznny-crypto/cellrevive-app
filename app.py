@@ -131,13 +131,13 @@ if not st.session_state.disclaimer_agreed:
             <h2 style="color: #ff4b4b !important; text-align: center !important; font-weight: 900;">🛡️ نظام الحماية وإخلاء المسؤولية القانونية / Legal Disclaimer</h2>
             <hr style="border-color: #ff4b4b;">
             <p style="font-size: 16px; line-height: 1.7; text-align: justify !important;">
-            <b>هام جدًا</b><b>
+            <b>هام جدًا</b><br>
                 هذا التطبيق هو منصة محاكاة رقمية وأداة تعليمية وتثقيفية تهدف إلى دعم الصحة الأيضية ونمط الحياة وتحسين كفاءة الخلايا. 
                 المعلومات والبروتوكولات الصادرة عن هذا البرنامج <b>لا تعتبر تشخيصاً طبياً، أو وصفة علاجية، ولا تغني بأي حال من الأحوال عن استشارة الطبيب البشري المعالج</b> أو تعديل الأدوية الموصوفة دون الرجوع إليه.
             </p>
             <hr style="border-color: #ff4b4b; opacity: 0.3;">
             <p style="font-size: 15px; line-height: 1.6; text-align: left !important; direction: ltr !important;">
-                <b>In English:</b><br>
+                <b>Very important</b><br>
                 This application is a digital simulation model and an educational tool designed to support metabolic health. 
                 The information provided <b>DO NOT constitute medical advice, diagnosis, or prescription, and are NOT a substitute for professional medical consultation by a licensed physician</b>.
             </p>
