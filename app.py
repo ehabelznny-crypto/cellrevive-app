@@ -131,7 +131,7 @@ if not st.session_state.disclaimer_agreed:
             <h2 style="color: #ff4b4b !important; text-align: center !important; font-weight: 900;">🛡️ نظام الحماية وإخلاء المسؤولية القانونية / Legal Disclaimer</h2>
             <hr style="border-color: #ff4b4b;">
             <p style="font-size: 16px; line-height: 1.7; text-align: justify !important;">
-                <b>باللغة العربية:</b><br>
+            <b>هام جدًا</b><b>
                 هذا التطبيق هو منصة محاكاة رقمية وأداة تعليمية وتثقيفية تهدف إلى دعم الصحة الأيضية ونمط الحياة وتحسين كفاءة الخلايا. 
                 المعلومات والبروتوكولات الصادرة عن هذا البرنامج <b>لا تعتبر تشخيصاً طبياً، أو وصفة علاجية، ولا تغني بأي حال من الأحوال عن استشارة الطبيب البشري المعالج</b> أو تعديل الأدوية الموصوفة دون الرجوع إليه.
             </p>
