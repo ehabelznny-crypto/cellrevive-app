@@ -128,19 +128,21 @@ if 'disclaimer_agreed' not in st.session_state:
 if not st.session_state.disclaimer_agreed:
     st.markdown("""
         <div class="emergency-card" style="margin-top: 30px;">
-            <h2 style="color: #ff4b4b !important; text-align: center !important; font-weight: 900;">🛡️ وثيقة الأمان الطبي والالتزام المشترك / Legal Disclaimer</h2>
+            <h2 style="color: #ff4b4b !important; text-align: center !important; font-weight: 900; direction: rtl !important;">🛡️ وثيقة الأمان الطبي والالتزام المشترك / Legal Disclaimer</h2>
             <hr style="border-color: #ff4b4b;">
-            <p style="font-size: 16px; line-height: 1.7; text-align: justify !important;">
+            <p style="font-size: 16px; line-height: 1.7; text-align: justify !important; direction: rtl !important;">
                 <b>هام جدًا</b><br>
                 هذا التطبيق هو منصة محاكاة رقمية وأداة تعليمية وتثقيفية تهدف إلى دعم الصحة الأيضية ونمط الحياة وتحسين كفاءة الخلايا. 
                 المعلومات والبروتوكولات الصادرة عن هذا البرنامج <b>لا تعتبر تشخيصاً طبياً، أو وصفة علاجية، ولا تغني بأي حال من الأحوال عن استشارة الطبيب البشري المعالج</b> أو تعديل الأدوية الموصوفة دون الرجوع إليه.
             </p>
             <hr style="border-color: #ff4b4b; opacity: 0.3;">
-            <p style="font-size: 15px; line-height: 1.6; text-align: left !important; direction: ltr !important;">
-                <b>Very important</b><br>
-                This application is a digital simulation model and an educational tool designed to support metabolic health. 
-                The information provided <b>DO NOT constitute medical advice, diagnosis, or prescription, and are NOT a substitute for professional medical consultation by a licensed physician</b>.
-            </p>
+            <div style="direction: ltr !important; text-align: left !important; block-size: auto;">
+                <p style="font-size: 15px; line-height: 1.6; color: #ffffff !important; font-weight: 600 !important; text-align: left !important; direction: ltr !important;">
+                    <b>Very important</b><br>
+                    This application is a digital simulation model and an educational tool designed to support metabolic health. <br>
+                    The information provided <b>DO NOT constitute medical advice, diagnosis, or prescription, and are NOT a substitute for professional medical consultation by a licensed physician</b>.
+                </p>
+            </div>
         </div>
     """, unsafe_allow_html=True)
     
@@ -563,7 +565,7 @@ if st.session_state.role == "patient":
                     <br>
                     • <b>العلاج بالضحك الاستباقي:</b> استمع لنكتة أو مشهد كوميدي الآن؛ الضحك يفرز الإندورفين الذي يخفض الكورتيزول مصل الحركية بنسبة 39%.
                     <br>
-                    • <b>التنفس المربع الصارم (Box Breathing):</b> 4 ثوانٍ شهيق، 4 ثوانٍ كتم، 4 ثوانٍ زفير، 4 ثوانٍ كتم. (كررها 5 مرات لتفعيل العصب الحائر كابح الأدرينالين).
+                    • <b>التنفس المربع الصارم (Box Breathing):</b> 4 ثوانٍ شهيق, 4 ثوانٍ كتم، 4 ثوانٍ زفير، 4 ثوانٍ كتم. (كررها 5 مرات لتفعيل العصب الحائر كابح الأدرينالين).
                     <br>
                     • <b>الهروب البيئي السريع:</b> اخرج فوراً وتمشّ في مكان مفتوح متسع لتقليل نشاط منطقة الأميغدالا بالمخ.
                 </p>
