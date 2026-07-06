@@ -48,7 +48,7 @@ st.markdown("""
         font-family: 'Cairo', sans-serif !important; 
     }
     
-    /* إجبار الاتجاه من اليمين إلى اليسار لجميع العناصر */
+    /* إجبار الاتجاه من اليمين إلى اليسار لجميع العناصر افتراضياً */
     [data-testid="stMainBlockContainer"], .stTabs, div, p, span, label, h1, h2, h3, h4, h5, h6 { 
         direction: rtl !important; 
         text-align: right !important; 
@@ -131,7 +131,7 @@ if not st.session_state.disclaimer_agreed:
             <h2 style="color: #ff4b4b !important; text-align: center !important; font-weight: 900;">🛡️ وثيقة الأمان الطبي والالتزام المشترك / Legal Disclaimer</h2>
             <hr style="border-color: #ff4b4b;">
             <p style="font-size: 16px; line-height: 1.7; text-align: justify !important;">
-            <b>هام جدًا</b><br>
+                <b>هام جدًا</b><br>
                 هذا التطبيق هو منصة محاكاة رقمية وأداة تعليمية وتثقيفية تهدف إلى دعم الصحة الأيضية ونمط الحياة وتحسين كفاءة الخلايا. 
                 المعلومات والبروتوكولات الصادرة عن هذا البرنامج <b>لا تعتبر تشخيصاً طبياً، أو وصفة علاجية، ولا تغني بأي حال من الأحوال عن استشارة الطبيب البشري المعالج</b> أو تعديل الأدوية الموصوفة دون الرجوع إليه.
             </p>
@@ -589,7 +589,3 @@ if st.session_state.role == "patient":
         food_gi = GI_FOOD_DATABASE[sel_food]["GI"]
         t_vec, g_vec = simulate_glucose_curve(p_data['fbg'], sel_seq, food_gi)
         fig = go.Figure()
-        fig.add_trace(go.Scatter(x=t_vec, y=g_vec, mode='lines', name='منحنى استجابة الجلوكوز المتوقع', line=dict(color='#d4af37' if "الألياف" in sel_seq else '#ff4b4b', width=3)))
-        fig.update_layout(template="plotly_dark", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig, use_container_width=True) 
-        st.markdown('</div>', unsafe_allow_html=True)
