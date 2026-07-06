@@ -128,7 +128,7 @@ if 'disclaimer_agreed' not in st.session_state:
 if not st.session_state.disclaimer_agreed:
     st.markdown("""
         <div class="emergency-card" style="margin-top: 30px;">
-            <h2 style="color: #ff4b4b !important; text-align: center !important; font-weight: 900;">🛡️ نظام الحماية وإخلاء المسؤولية القانونية / Legal Disclaimer</h2>
+            <h2 style="color: #ff4b4b !important; text-align: center !important; font-weight: 900;">🛡️ وثيقة الأمان الطبي والالتزام المشترك / Legal Disclaimer</h2>
             <hr style="border-color: #ff4b4b;">
             <p style="font-size: 16px; line-height: 1.7; text-align: justify !important;">
             <b>هام جدًا</b><br>
