@@ -1,4 +1,4 @@
-# 👑 CELLREVIVE AI - THE MASTER METABOLIC OS & CELLULAR RESTORATION PLATFORM (v21.0 - Complete Sovereign Edition)
+# 👑 CELLREVIVE AI - THE MASTER METABOLIC OS & CELLULAR RESTORATION PLATFORM (v21.1 - Stable Multimodal)
 # ==============================================================================
 # Production-Ready Sovereign System (2026 International & Egyptian Drug Authority Standards)
 # Designed & Supervised by: Dr. Ehab Heshmat El-Zanny
@@ -129,7 +129,6 @@ def calculate_biological_age(age, hba1c, homa_ir, hscrp, waist):
 # محاكاة منحنى الجلوكوز الديناميكي التفاعلي بناءً على ترتيب الوجبة
 def simulate_glucose_curve(base_fbg, sequence, gi_score):
     t = np.linspace(0, 180, 100)
-    # تسطيح المنحنى إذا كانت البداية بالألياف أو الدهون والبروتين قبل النشويات
     flatten_factor = 2.2 if (sequence in ["ألياف -> بروتين -> نشويات", "دهون وبروتين -> نشويات"]) else 1.0
     amplitude = (gi_score * 1.5) / flatten_factor
     k1 = 0.04 / (flatten_factor * 0.8)
@@ -229,10 +228,13 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
         meal_mode = st.radio("طريقة الإدخال الأيضي للوجبة:", ["نصي", "رفع صورة الوجبة"])
         
         meal_text = "حلاوة سبريد و2 رغيف عيش بلدي"
+        uploaded_meal = None
         if meal_mode == "نصي":
             meal_text = st.text_input("اكتب بدقة ما تريد أكله الآن:", value=meal_text)
         else:
             uploaded_meal = st.file_uploader("القط أو ارفع صورة وجبتك:", type=["jpg", "png", "jpeg"])
+            if uploaded_meal:
+                st.image(uploaded_meal, caption="الوجبة المرفوعة")
             
         food_seq = st.selectbox("اختر ترتيب وتتابع تناول مكونات هذه الوجبة فسيولوجياً:", [
             "النشويات أولاً (بدء بالأكل مباشرة)", 
@@ -241,20 +243,25 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
         ])
         
         if st.button("🔬 تحليل ومحاكاة منحنى الجلوكوز الحي"):
-            # تحديد مؤشر جلايسيمي تقريبي للمحاكاة الرسومية الفورية
             gi_val = 85 if "حلاوة" in meal_text else 55
             t, glucose_curve = simulate_glucose_curve(p_data['fbg'], food_seq, gi_val)
             
-            # رسم منحنى السكر التفاعلي بالكامل ليوضح للمريض تأثير الترتيب
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=t, y=glucose_curve, mode='lines', name='منحنى الجلوكوز المتوقع', line=dict(color='#d4af37', width=3)))
-            fig.update_layout(title="📈 محاكاة حركة الجلوكوز في الدم (ملجم/دسيليتر) على مدار 3 ساعات", template="plotly_dark", background_color="#07162c")
+            fig.update_layout(title="📈 محاكاة حركة الجلوكوز في الدم (ملجم/دسيليتر) على مدار 3 ساعات", template="plotly_dark")
             st.plotly_chart(fig, use_container_width=True)
             
             if ACTIVE_API_KEY:
-                model = genai.GenerativeModel('gemini-1.5-flash-latest')
+                # 🛠️ التعديل الجوهري والمضمون لعام 2026 هنا:
+                model = genai.GenerativeModel('gemini-1.5-flash')
                 prompt = f"حلل لي الوجبة التالية فسيولوجياً وأيضياً: {meal_text}، مع الترتيب المختار: {food_seq}. السكر الصائم للمريض: {p_data['fbg']}. اشرح للمريض بلهجة مصرية ودية بسيطة جداً كيف يؤثر العيش البلدي (مؤشره متوسط 55) مقارنة بالدقيق الأبيض، وكيف يمنع الارتفاع الحاد، واختم بنصيحة من الدكتور إيهاب حشمت."
-                res = model.generate_content(prompt)
+                
+                if meal_mode == "رفع صورة الوجبة" and uploaded_meal:
+                    img = Image.open(uploaded_meal)
+                    res = model.generate_content([prompt, img])
+                else:
+                    res = model.generate_content(prompt)
+                    
                 st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
                 st.write(res.text)
                 st.markdown("</div>", unsafe_allow_html=True)
@@ -267,6 +274,7 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
         drug_scan_mode = st.radio("وسيلة إدخال الدواء المعالج:", ["اختيار من القائمة الشائعة", "تصوير علبة الدواء / رفع الروشتة"])
         
         selected_drug_info = ""
+        uploaded_drug = None
         if drug_scan_mode == "اختيار من القائمة الشائعة":
             drug_choice = st.selectbox("اختر الدواء الحالي الموصوف لك من طبيبك البشري:", [
                 "Cidophage (سيدوفاج) - Metformin", 
@@ -284,9 +292,16 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
                 
         if st.button("🧬 إجراء المقاصة الطبية واستخراج النقص الخلوي"):
             if ACTIVE_API_KEY:
-                model = genai.GenerativeModel('gemini-1.5-flash-latest')
+                # 🛠️ استخدام الموديل المستقر
+                model = genai.GenerativeModel('gemini-1.5-flash')
                 prompt = f"بصفتك أخصائي صيدلة إكلينيكية وطب تجديدي، حلل هذا الدواء: {selected_drug_info}. اذكر بوضوح تام النقص في الفيتامينات والمعادن والمغذيات التي يستنزفها هذا الدواء من خلايا الجسم (Drug-Nutrient Depletion) طبقاً لأحدث تحديثات عام 2026، واشرح للمريض بأسلوب مصري بسيط تحت إشراف د. إيهاب حشمت ما يجب أن يعوضه من مكملات مثل المغنيسيوم أو ب12."
-                res = model.generate_content(prompt)
+                
+                if drug_scan_mode == "تصوير علبة الدواء / رفع الروشتة" and uploaded_drug:
+                    img = Image.open(uploaded_drug)
+                    res = model.generate_content([prompt, img])
+                else:
+                    res = model.generate_content(prompt)
+                    
                 st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
                 st.write(res.text)
                 st.markdown("</div>", unsafe_allow_html=True)
@@ -301,7 +316,8 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
         
         if st.button("👁️ فحص البصمة الجلدية وربطها بالأعراض الحيوية"):
             if ACTIVE_API_KEY:
-                model = genai.GenerativeModel('gemini-1.5-flash-latest')
+                # 🛠️ استخدام الموديل المستقر
+                model = genai.GenerativeModel('gemini-1.5-flash')
                 prompt = f"قم بتحليل الشكوى الجلدية التالية للمريض: {skin_notes}. السكر التراكمي لديه هو {p_data['hba1c']}%. اربط بين ظهور التصبغات والزوائد الجلدية (Acanthosis Nigricans) وبين كفاءة الخلايا ومقاومة الإنسولين، وقدم نصائح علاجية ترميمية بلغة مصرية مفهومة ومحفزة تنتهي بتحية الدكتور إيهاب حشمت الظني."
                 
                 if uploaded_skin:
@@ -328,11 +344,12 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
         
         if st.button("🧘‍♂️ توليد بروتوكول تصفير الإجهاد الكظري الفوري"):
             if ACTIVE_API_KEY:
-                model = genai.GenerativeModel('gemini-1.5-flash-latest')
+                # 🛠️ استخدام الموديل المستقر
+                model = genai.GenerativeModel('gemini-1.5-flash')
                 prompt = f"""
                 المريض يعاني من مستوى توتر وقلق يقدر بـ {p_data['anxiety_score']}/10. 
                 اكتب بروتوكولاً نفسياً وسلوكياً كاملاً لتخفيض هرمونات الكورتيزول والأدرينالين وتأثيرها على مقاومة الإنسولين.
-                اشرح له ببراعة واحترافية بالغة الحيل السلوكية الفعالة فوراً مثل:
+                اشرح له ببراعة وااحترافية بالغة الحيل السلوكية الفعالة فوراً مثل:
                 1. تمارين التنفس الصندوقي (Box Breathing) والتحفيز المبهمي.
                 2. حيلة المشي الخفيف والتمشية في الطبيعة لتصريف الجلوكوز الفائض بدون إجهاد.
                 3. سيكولوجية الضحك والخروج وأثرهما الفوري في كبح الأدرينالين ورفع الإندورفين والدوبامين.
