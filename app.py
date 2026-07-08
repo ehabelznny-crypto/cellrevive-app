@@ -1,4 +1,4 @@
-# 👑 CELLREVIVE AI - THE MASTER METABOLIC OS & CELLULAR RESTORATION PLATFORM (v21.1 - Stable Multimodal)
+# 👑 CELLREVIVE AI - THE MASTER METABOLIC OS & CELLULAR RESTORATION PLATFORM (v21.2 - BugFix Production)
 # ==============================================================================
 # Production-Ready Sovereign System (2026 International & Egyptian Drug Authority Standards)
 # Designed & Supervised by: Dr. Ehab Heshmat El-Zanny
@@ -110,21 +110,40 @@ def init_db():
     """)
     cursor.execute("SELECT COUNT(*) FROM patients")
     if cursor.fetchone()[0] == 0:
-        cursor.execute("INSERT INTO patients (patient_code, fbg, ppbg, rbg, hba1c, weight, waist, creatinine, age, gender, mthfr_mutation, fto_variant, fasting_insulin, hscrp, compliance_score, anxiety_score) VALUES ('CR-SOHAG-2026', 115, 145, 120, 6.2, 80, 95, 0.9, 42, 'Male', 'Normal (CC)', 'Normal (TT)', 10.5, 0.8, 95, 4)")
+        cursor.execute("""
+            INSERT INTO patients (patient_code, fbg, ppbg, rbg, hba1c, weight, waist, creatinine, age, gender, mthfr_mutation, fto_variant, fasting_insulin, hscrp, compliance_score, anxiety_score) 
+            VALUES ('CR-SOHAG-2026', 115.0, 145.0, 120.0, 6.2, 80.0, 95.0, 0.9, 42, 'Male', 'Normal (CC)', 'Normal (TT)', 10.5, 0.8, 95, 4)
+        """)
     conn.commit()
     conn.close()
 
 init_db()
 
-# دوال العمليات الحسابية الطبية والأيضية
-def calculate_homa_ir(fbg, fasting_insulin): return round((fbg * fasting_insulin) / 405, 2) if fasting_insulin > 0 else 1.0
+# دوال العمليات الحسابية الطبية والأيضية مع الحماية الاحترازية ضد القيم الفارغة
+def calculate_homa_ir(fbg, fasting_insulin): 
+    try: return round((float(fbg) * float(fasting_insulin)) / 405, 2) if float(fasting_insulin) > 0 else 1.0
+    except: return 1.0
+
 def calculate_egfr(age, weight, creatinine, gender):
-    if creatinine <= 0: return 90.0
-    val = ((140 - age) * weight) / (72 * creatinine)
-    if gender.lower() in ['female', 'أنثى']: val *= 0.85
-    return min(round(val, 2), 150.0)
+    try:
+        cr = float(creatinine)
+        if cr <= 0: return 90.0
+        val = ((140 - int(age)) * float(weight)) / (72 * cr)
+        if str(gender).lower() in ['female', 'أنثى']: val *= 0.85
+        return min(round(val, 2), 150.0)
+    except: return 90.0
+
 def calculate_biological_age(age, hba1c, homa_ir, hscrp, waist):
-    return max(round(age + (hba1c - 5.4)*2.5 + (homa_ir - 1.5)*1.8 + (hscrp - 0.5)*1.2, 1), 18.0)
+    try:
+        # حماية صارمة لضمان تحويل القيم إلى أرقام عشرية حقيقية لمنع الـ TypeError
+        a = float(age)
+        h = float(hba1c) if hba1c is not None else 5.4
+        ir = float(homa_ir) if homa_ir is not None else 1.5
+        crp = float(hscrp) if hscrp is not None else 0.5
+        w = float(waist) if waist is not None else 90.0
+        return max(round(a + (h - 5.4)*2.5 + (ir - 1.5)*1.8 + (crp - 0.5)*1.2, 1), 18.0)
+    except:
+        return float(age)
 
 # محاكاة منحنى الجلوكوز الديناميكي التفاعلي بناءً على ترتيب الوجبة
 def simulate_glucose_curve(base_fbg, sequence, gi_score):
@@ -133,7 +152,7 @@ def simulate_glucose_curve(base_fbg, sequence, gi_score):
     amplitude = (gi_score * 1.5) / flatten_factor
     k1 = 0.04 / (flatten_factor * 0.8)
     k2 = 0.02 * flatten_factor
-    curve = base_fbg + amplitude * (np.exp(-k2 * t) - np.exp(-k1 * t)) * 1.5
+    curve = float(base_fbg) + amplitude * (np.exp(-k2 * t) - np.exp(-k1 * t)) * 1.5
     return t, curve
 
 # المصادقة المبدئية والعبور الأمن
@@ -155,19 +174,36 @@ if not st.session_state.is_auth:
         else: st.error("كود غير صحيح، يرجى مراجعة العيادة.")
     st.stop()
 
-# جلب البيانات الحالية للمستخدم
+# 🧠 التحديث الحاسم: جلب البيانات بالاسم لمنع تداخل الأعمدة نهائياً وسط الحقول المضافة
 conn = sqlite3.connect('cellrevive_quantum_system.db')
+conn.row_factory = sqlite3.Row  # تفعيل جلب البيانات كقاموس مسمى
 c = conn.cursor()
 c.execute("SELECT * FROM patients WHERE patient_code = ?", (st.session_state.auth_code if st.session_state.role=="patient" else "CR-SOHAG-2026",))
 row = c.fetchone()
 conn.close()
 
-p_data = {
-    'fbg': row[1], 'ppbg': row[2], 'rbg': row[3], 'hba1c': row[4], 'weight': row[5], 'waist': row[6],
-    'creatinine': row[7], 'age': row[8], 'gender': row[9], 'skin_analysis': decrypt_data(row[10]),
-    'selected_drugs': decrypt_data(row[11]), 'mthfr_mutation': row[12], 'fto_variant': row[13],
-    'fasting_insulin': row[14], 'hscrp': row[15], 'compliance_score': row[16], 'anxiety_score': row[17]
-}
+if row:
+    p_data = {
+        'fbg': row['fbg'] if row['fbg'] is not None else 115.0,
+        'ppbg': row['ppbg'] if row['ppbg'] is not None else 145.0,
+        'rbg': row['rbg'] if row['rbg'] is not None else 120.0,
+        'hba1c': row['hba1c'] if row['hba1c'] is not None else 6.2,
+        'weight': row['weight'] if row['weight'] is not None else 80.0,
+        'waist': row['waist'] if row['waist'] is not None else 95.0,
+        'creatinine': row['creatinine'] if row['creatinine'] is not None else 0.9,
+        'age': row['age'] if row['age'] is not None else 42,
+        'gender': row['gender'] if row['gender'] is not None else 'Male',
+        'skin_analysis': decrypt_data(row['skin_analysis']),
+        'selected_drugs': decrypt_data(row['selected_drugs']),
+        'mthfr_mutation': row['mthfr_mutation'] if row['mthfr_mutation'] is not None else 'Normal (CC)',
+        'fto_variant': row['fto_variant'] if row['fto_variant'] is not None else 'Normal (TT)',
+        'fasting_insulin': row['fasting_insulin'] if row['fasting_insulin'] is not None else 10.5,
+        'hscrp': row['hscrp'] if row['hscrp'] is not None else 0.8,
+        'compliance_score': row['compliance_score'] if row['compliance_score'] is not None else 95,
+        'anxiety_score': row['anxiety_score'] if row['anxiety_score'] is not None else 4
+    }
+else:
+    p_data = {'fbg': 115.0, 'ppbg': 145.0, 'rbg': 120.0, 'hba1c': 6.2, 'weight': 80.0, 'waist': 95.0, 'creatinine': 0.9, 'age': 42, 'gender': 'Male', 'skin_analysis': '', 'selected_drugs': '', 'mthfr_mutation': 'Normal (CC)', 'fto_variant': 'Normal (TT)', 'fasting_insulin': 10.5, 'hscrp': 0.8, 'compliance_score': 95, 'anxiety_score': 4}
 
 # 2️⃣ لوحة الطبيب والمشرف السيادي (د. إيهاب حشمت)
 if st.session_state.role == "doctor":
@@ -252,7 +288,6 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
             st.plotly_chart(fig, use_container_width=True)
             
             if ACTIVE_API_KEY:
-                # 🛠️ التعديل الجوهري والمضمون لعام 2026 هنا:
                 model = genai.GenerativeModel('gemini-1.5-flash')
                 prompt = f"حلل لي الوجبة التالية فسيولوجياً وأيضياً: {meal_text}، مع الترتيب المختار: {food_seq}. السكر الصائم للمريض: {p_data['fbg']}. اشرح للمريض بلهجة مصرية ودية بسيطة جداً كيف يؤثر العيش البلدي (مؤشره متوسط 55) مقارنة بالدقيق الأبيض، وكيف يمنع الارتفاع الحاد، واختم بنصيحة من الدكتور إيهاب حشمت."
                 
@@ -292,7 +327,6 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
                 
         if st.button("🧬 إجراء المقاصة الطبية واستخراج النقص الخلوي"):
             if ACTIVE_API_KEY:
-                # 🛠️ استخدام الموديل المستقر
                 model = genai.GenerativeModel('gemini-1.5-flash')
                 prompt = f"بصفتك أخصائي صيدلة إكلينيكية وطب تجديدي، حلل هذا الدواء: {selected_drug_info}. اذكر بوضوح تام النقص في الفيتامينات والمعادن والمغذيات التي يستنزفها هذا الدواء من خلايا الجسم (Drug-Nutrient Depletion) طبقاً لأحدث تحديثات عام 2026، واشرح للمريض بأسلوب مصري بسيط تحت إشراف د. إيهاب حشمت ما يجب أن يعوضه من مكملات مثل المغنيسيوم أو ب12."
                 
@@ -316,7 +350,6 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
         
         if st.button("👁️ فحص البصمة الجلدية وربطها بالأعراض الحيوية"):
             if ACTIVE_API_KEY:
-                # 🛠️ استخدام الموديل المستقر
                 model = genai.GenerativeModel('gemini-1.5-flash')
                 prompt = f"قم بتحليل الشكوى الجلدية التالية للمريض: {skin_notes}. السكر التراكمي لديه هو {p_data['hba1c']}%. اربط بين ظهور التصبغات والزوائد الجلدية (Acanthosis Nigricans) وبين كفاءة الخلايا ومقاومة الإنسولين، وقدم نصائح علاجية ترميمية بلغة مصرية مفهومة ومحفزة تنتهي بتحية الدكتور إيهاب حشمت الظني."
                 
@@ -344,12 +377,11 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
         
         if st.button("🧘‍♂️ توليد بروتوكول تصفير الإجهاد الكظري الفوري"):
             if ACTIVE_API_KEY:
-                # 🛠️ استخدام الموديل المستقر
                 model = genai.GenerativeModel('gemini-1.5-flash')
                 prompt = f"""
                 المريض يعاني من مستوى توتر وقلق يقدر بـ {p_data['anxiety_score']}/10. 
                 اكتب بروتوكولاً نفسياً وسلوكياً كاملاً لتخفيض هرمونات الكورتيزول والأدرينالين وتأثيرها على مقاومة الإنسولين.
-                اشرح له ببراعة وااحترافية بالغة الحيل السلوكية الفعالة فوراً مثل:
+                اشرح له ببراعة وااحرافية بالغة الحيل السلوكية الفعالة فوراً مثل:
                 1. تمارين التنفس الصندوقي (Box Breathing) والتحفيز المبهمي.
                 2. حيلة المشي الخفيف والتمشية في الطبيعة لتصريف الجلوكوز الفائض بدون إجهاد.
                 3. سيكولوجية الضحك والخروج وأثرهما الفوري في كبح الأدرينالين ورفع الإندورفين والدوبامين.
