@@ -1,4 +1,4 @@
-# 👑 CELLREVIVE AI - THE MASTER METABOLIC OS & CELLULAR RESTORATION PLATFORM (v21.3 - Final Sovereign Fix)
+# 👑 CELLREVIVE AI - THE MASTER METABOLIC OS & CELLULAR RESTORATION PLATFORM (v21.5 - Persistent Memory)
 # ==============================================================================
 # Production-Ready Sovereign System (2026 International & Egyptian Drug Authority Standards)
 # Designed & Supervised by: Dr. Ehab Heshmat El-Znny
@@ -49,7 +49,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ⚖️ وثيقة الأمان الطبي والالتزام الصارم والكامل من v20 الملكي
+# ⚖️ وثيقة الأمان الطبي والالتزام الصارم والكامل
 if 'disclaimer_agreed' not in st.session_state:
     st.session_state.disclaimer_agreed = False
 
@@ -60,7 +60,7 @@ if not st.session_state.disclaimer_agreed:
             <p style="font-size: 15px; line-height: 1.8; text-align: justify !important; color: #ffffff;">
                 <b>تنبيه قانوني وطبي صارم:</b> إن منصة <b>CellRevive AI</b> هي منظومة محاكاة رقمية متقدمة وأداة تثقيفية مخصصة لدعم هندسة التمثيل الغذائي وتحسين كفاءة الميتوكوندريا تحت الإشراف العلمي المباشر للصيدلي المختص <b>د/ إيهاب حشمت الظني</b>. 
                 <br><br>
-                1. لا يعتبر هذا البرنامج أو التقارير الصادرة عنه بديلاً عن التشخيص الطبي البشري أو الفحوصات المختبرية السريرية.<br>
+                1. لا يعتبر this البرنامج أو التقارير الصادرة عنه بديلاً عن التشخيص الطبي البشري أو الفحوصات المختبرية السريرية.<br>
                 2. يجب على كل مستخدم مراجعة طبيبه المعالج قبل تعديل أو إيقاف أي جرعات دوائية موصوفة، لا سيما أدوية السكري والضغط الكيميائية.<br>
                 3. المنصة تخلي مسؤوليتها تماماً من أي استخدام أحادي للبيانات الحيوية خارج نطاق الاستشارة الطبية المباشرة والتوجيه المعتمد داخل العيادة.
             </p>
@@ -117,19 +117,15 @@ def init_db():
     cursor.execute("SELECT COUNT(*) FROM patients")
     if cursor.fetchone()[0] == 0:
         cursor.execute("""
-            INSERT INTO patients (patient_code, fbg, ppbg, rbg, hba1c, weight, waist, creatinine, age, gender, mthfr_mutation, fto_variant, fasting_insulin, hscrp, compliance_score, anxiety_score) 
-            VALUES ('CR-SOHAG-2026', 115.0, 145.0, 120.0, 6.2, 80.0, 95.0, 0.9, 42, 'Male', 'Normal (CC)', 'Normal (TT)', 10.5, 0.8, 95, 4)
-        """)
-        cursor.execute("""
-            INSERT INTO patients (patient_code, fbg, ppbg, rbg, hba1c, weight, waist, creatinine, age, gender, mthfr_mutation, fto_variant, fasting_insulin, hscrp, compliance_score, anxiety_score) 
-            VALUES ('CR-PATIENT-77', 125.0, 160.0, 130.0, 6.8, 85.0, 102.0, 0.85, 47, 'Male', 'Mutated', 'Normal (TT)', 12.0, 1.1, 90, 5)
+            INSERT INTO patients (patient_code, fbg, ppbg, rbg, hba1c, weight, waist, creatinine, age, gender, mthfr_mutation, fto_variant, fasting_insulin, hscrp, compliance_score, anxiety_score, selected_drugs, skin_analysis) 
+            VALUES ('CR-SOHAG-2026', 115.0, 145.0, 120.0, 6.2, 80.0, 95.0, 0.9, 42, 'Male', 'Normal (CC)', 'Normal (TT)', 10.5, 0.8, 95, 4, '', '')
         """)
     conn.commit()
     conn.close()
 
 init_db()
 
-# دوال العمليات الحسابية الطبية والأيضية مع الحماية الاحترازية ضد القيم الفارغة
+# دوال العمليات الحسابية الطبية والأيضية
 def calculate_homa_ir(fbg, fasting_insulin): 
     try: return round((float(fbg) * float(fasting_insulin)) / 405, 2) if float(fasting_insulin) > 0 else 1.0
     except: return 1.0
@@ -154,7 +150,6 @@ def calculate_biological_age(age, hba1c, homa_ir, hscrp, waist):
     except:
         return float(age)
 
-# محاكاة منحنى الجلوكوز الديناميكي التفاعلي بناءً على ترتيب الوجبة
 def simulate_glucose_curve(base_fbg, sequence, gi_score):
     t = np.linspace(0, 180, 100)
     flatten_factor = 2.2 if (sequence in ["ألياف -> بروتين -> نشويات", "دهون وبروتين -> نشويات"]) else 1.0
@@ -166,7 +161,7 @@ def simulate_glucose_curve(base_fbg, sequence, gi_score):
 
 # المصادقة المبدئية والعبور الأمن
 MASTER_CODE = "CR-EMPEROR-EHAB-2026"
-VALID_PATIENT_CODES = ["CR-SOHAG-2026", "CR-PATIENT-77", "CR-PATIENT-99"]
+VALID_PATIENT_CODES = ["CR-SOHAG-2026"]
 
 if 'is_auth' not in st.session_state: st.session_state.is_auth = False
 if 'role' not in st.session_state: st.session_state.role = None
@@ -183,28 +178,20 @@ if not st.session_state.is_auth:
         else: st.error("كود غير صحيح، يرجى مراجعة العيادة.")
     st.stop()
 
-# إدارة اختيار المريض من الجلسة أو لوحة الإشراف لمنع التصفير التلقائي
 if 'active_patient_code' not in st.session_state:
     st.session_state.active_patient_code = st.session_state.auth_code if st.session_state.role == "patient" else "CR-SOHAG-2026"
 
-# 2️⃣ لوحة الطبيب والمشرف السيادي (د. إيهاب حشمت)
-if st.session_state.role == "doctor":
-    st.markdown('<div style="color:#d4af37; font-size:22px; font-weight:900; text-align:center;">👑 لوحة الإشراف العيادي وطب طول العمر</div>', unsafe_allow_html=True)
-    st.sidebar.markdown("### 🔐 الإشراف البرمجي")
-    st.session_state.api_key_input = st.sidebar.text_input("Gemini API Key", type="password", value=ACTIVE_API_KEY)
-    
-    selected_p = st.selectbox("اختر ملف المشترك لإدارته وتعديله فسيولوجياً:", VALID_PATIENT_CODES, index=VALID_PATIENT_CODES.index(st.session_state.active_patient_code))
-    if selected_p != st.session_state.active_patient_code:
-        st.session_state.active_patient_code = selected_p
-        st.rerun()
+# جلب البيانات الصريحة بناءً على الكود النشط
+def get_patient_data():
+    conn = sqlite3.connect('cellrevive_quantum_system.db')
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute("SELECT * FROM patients WHERE patient_code = ?", (st.session_state.active_patient_code,))
+    row = c.fetchone()
+    conn.close()
+    return row
 
-# جلب البيانات الصريحة والمؤمنة بالاسم بناءً على الكود النشط حالياً
-conn = sqlite3.connect('cellrevive_quantum_system.db')
-conn.row_factory = sqlite3.Row
-c = conn.cursor()
-c.execute("SELECT * FROM patients WHERE patient_code = ?", (st.session_state.active_patient_code,))
-row = c.fetchone()
-conn.close()
+row = get_patient_data()
 
 if row:
     p_data = {
@@ -230,6 +217,15 @@ else:
     p_data = {'fbg': 115.0, 'ppbg': 145.0, 'rbg': 120.0, 'hba1c': 6.2, 'weight': 80.0, 'waist': 95.0, 'creatinine': 0.9, 'age': 42, 'gender': 'Male', 'skin_analysis': '', 'selected_drugs': '', 'mthfr_mutation': 'Normal (CC)', 'fto_variant': 'Normal (TT)', 'fasting_insulin': 10.5, 'hscrp': 0.8, 'compliance_score': 95, 'anxiety_score': 4}
 
 if st.session_state.role == "doctor":
+    st.markdown('<div style="color:#d4af37; font-size:22px; font-weight:900; text-align:center;">👑 لوحة الإشراف العيادي وطب طول العمر</div>', unsafe_allow_html=True)
+    st.sidebar.markdown("### 🔐 الإشراف البرمجي")
+    st.session_state.api_key_input = st.sidebar.text_input("Gemini API Key", type="password", value=ACTIVE_API_KEY)
+    
+    selected_p = st.selectbox("اختر ملف المشترك لإدارته وتعديله فسيولوجياً:", VALID_PATIENT_CODES, index=VALID_PATIENT_CODES.index(st.session_state.active_patient_code))
+    if selected_p != st.session_state.active_patient_code:
+        st.session_state.active_patient_code = selected_p
+        st.rerun()
+
     col1, col2 = st.columns(2)
     with col1:
         dr_fbg = st.number_input("سكر صائم:", value=float(p_data['fbg']), key="dr_fbg_in")
@@ -251,7 +247,7 @@ if st.session_state.role == "doctor":
         st.success("🟢 تم تحديث وتأمين البيانات بنجاح.")
         st.rerun()
 
-# 3️⃣ لوحة الحسابات الحيوية وعرض الأرقام بالألوان الملكية المستقرة
+# 3️⃣ لوحة الحسابات الحيوية وعرض الأرقام بالألوان الملكية
 if st.session_state.role == "patient" or st.session_state.role == "doctor":
     homa_calc = calculate_homa_ir(p_data['fbg'], p_data['fasting_insulin'])
     bio_age = calculate_biological_age(p_data['age'], p_data['hba1c'], homa_calc, p_data['hscrp'], p_data['waist'])
@@ -268,152 +264,5 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
         </div>
     """, unsafe_allow_html=True)
 
-    # 📑 تقسيم واجهة العرض إلى المحاور الـ 4 المنفصلة والمعزولة لحظر أخطاء الـ NotFound المتبادلة
-    tab_meals, tab_drugs, tab_skin, tab_mind = st.tabs([
-        "🌾 هندسة الوجبات والمنحنيات", 
-        "💊 مجهر ومسح علب الأدوية", 
-        "🔎 مجهر الجلد والأعراض الحيوية", 
-        "🧠 مؤشر الكورتيزول والصحة النفسية"
-    ])
-    
-    # 🔘 المحور الأول: هندسة الوجبات ومنحنى الجلوكوز
-    with tab_meals:
-        st.markdown("### 📸 ماسح الوجبات الخلوي الفوري")
-        meal_mode = st.radio("طريقة الإدخال الأيضي للوجبة:", ["نصي", "رفع صورة الوجبة"], key="meal_mode_select")
-        
-        meal_text = "عدد 5 معالق فول بزيت كريستال او زيت الزيتون+3 اقراص طعمية+2 رغيف عيش مصري+طبق سلطة صغير"
-        uploaded_meal = None
-        if meal_mode == "نصي":
-            meal_text = st.text_input("اكتب بدقة ما تريد أكله الآن:", value=meal_text, key="meal_text_in")
-        else:
-            uploaded_meal = st.file_uploader("القط أو ارفع صورة وجبتك:", type=["jpg", "png", "jpeg"], key="meal_file_up")
-            if uploaded_meal:
-                st.image(uploaded_meal, caption="الوجبة المرفوعة")
-            
-        food_seq = st.selectbox("اختر ترتيب وتتابع تناول مكونات هذه الوجبة فسيولوجياً:", [
-            "النشويات أولاً (بدء بالأكل مباشرة)", 
-            "ألياف -> بروتين -> نشويات", 
-            "دهون وبروتين -> نشويات"
-        ], key="food_seq_select")
-        
-        if st.button("🔬 تحليل ومحاكاة منحنى الجلوكوز الحي", key="btn_run_meal_analysis"):
-            gi_val = 85 if "حلاوة" in meal_text else 55
-            t, glucose_curve = simulate_glucose_curve(p_data['fbg'], food_seq, gi_val)
-            
-            fig = go.Figure()
-            fig.add_trace(go.Scatter(x=t, y=glucose_curve, mode='lines', name='منحنى الجلوكوز المتوقع', line=dict(color='#d4af37', width=3)))
-            fig.update_layout(title="📈 محاكاة حركة الجلوكوز في الدم (ملجم/دسيليتر) على مدار 3 ساعات", template="plotly_dark")
-            st.plotly_chart(fig, use_container_width=True)
-            
-            if ACTIVE_API_KEY:
-                model = genai.GenerativeModel('gemini-1.5-flash')
-                prompt = f"حلل لي الوجبة التالية فسيولوجياً وأيضياً: {meal_text}، مع الترتيب المختار: {food_seq}. السكر الصائم للمريض: {p_data['fbg']}. اشرح للمريض بلهجة مصرية ودية بسيطة جداً كيف يؤثر العيش البلدي (مؤشره متوسط 55) مقارنة بالدقيق الأبيض، وكيف يمنع الارتفاع الحاد، واختم بنصيحة من الدكتور إيهاب حشمت."
-                
-                if meal_mode == "رفع صورة الوجبة" and uploaded_meal:
-                    img = Image.open(uploaded_meal)
-                    res = model.generate_content([prompt, img])
-                else:
-                    res = model.generate_content(prompt)
-                    
-                st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
-                st.write(res.text)
-                st.markdown("</div>", unsafe_allow_html=True)
-            else:
-                st.warning("⚠️ يرجى إدخال مفتاح الـ API للاتصال بالموديل وتحليل الوجبة.")
-
-    # 🔘 المحور الثاني: مجهر ومسح علب الأدوية
-    with tab_drugs:
-        st.markdown("### 💊 الفحص الدوائي المتكامل ومقاصة المغذيات المستنزفة (EDA 2026)")
-        st.info("هذا القسم مربوط تلقائياً بـ دستور الأدوية المصري الصادر عن هيئة الدواء المصرية لعام 2026 لمراجعة التعارضات الحيوية.")
-        
-        drug_scan_mode = st.radio("وسيلة إدخال الدواء المعالج:", ["اختيار من القائمة الشائعة", "تصوير علبة الدواء / رفع الروشتة"], key="drug_mode_select")
-        
-        selected_drug_info = ""
-        uploaded_drug = None
-        if drug_scan_mode == "اختيار من القائمة الشائعة":
-            drug_choice = st.selectbox("اختر الدواء الحالي الموصوف لك من طبيبك البشري:", [
-                "Cidophage (سيدوفاج) - Metformin", 
-                "Glucophage (جلوكوفاج) - Metformin",
-                "Nervizam (نيرفيزام) - B Complex + ALA",
-                "Milga (ميلجا) - Benfotiamine",
-                "Ozempic (أوزمبيك) - Semaglutide"
-            ], key="drug_choice_select")
-            selected_drug_info = drug_choice
-        else:
-            uploaded_drug = st.file_uploader("ارفع صورة علبة الدواء أو الروشتة المكتوبة بخط اليد:", type=["png", "jpg", "jpeg"], key="drug_file_up")
-            if uploaded_drug:
-                st.image(uploaded_drug, caption="📷 علبة الدواء الجاري فحصها جينومياً وظاهرياً", use_container_width=True)
-                selected_drug_info = "صورة علبة دواء مرفوعة للمطابقة الرقمية"
-                
-        if st.button("🧬 إجراء المقاصة الطبية واستخراج النقص الخلوي", key="btn_run_drug_analysis"):
-            if ACTIVE_API_KEY:
-                model = genai.GenerativeModel('gemini-1.5-flash')
-                prompt = f"بصفتك أخصائي صيدلة إكلينيكية وطب تجديدي، حلل هذا الدواء: {selected_drug_info}. اذكر بوضوح تام النقص في الفيتامينات والمعادن والمغذيات التي يستنزفها هذا الدواء من خلايا الجسم (Drug-Nutrient Depletion) طبقاً لأحدث تحديثات عام 2026، وااشرح للمريض بأسلوب مصري بسيط تحت إشراف د. إيهاب حشمت ما يجب أن يعوضه من مكملات مثل المغنيسيوم أو ب12 وبما يتوافق مع الواقع المصري."
-                
-                if drug_scan_mode == "تصوير علبة الدواء / رفع الروشتة" and uploaded_drug:
-                    img = Image.open(uploaded_drug)
-                    res = model.generate_content([prompt, img])
-                else:
-                    res = model.generate_content(prompt)
-                    
-                st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
-                st.write(res.text)
-                st.markdown("</div>", unsafe_allow_html=True)
-            else:
-                st.warning("⚠️ يرجى إدخال مفتاح الـ API لتشغيل مجهر ومسح علب الأدوية.")
-
-    # 🔘 المحور الثالث: مجهر الجلد والأعراض الحيوية
-    with tab_skin:
-        st.markdown("### 🔎 مجهر الجلد والمظاهر الخارجية لمقاومة الإنسولين")
-        st.write("ارفع صورة لمنطقة الرقبة أو المفاصل للكشف المبكر والمحاكاة التقديرية لوجود التصبغات الجلدية النشطة المصاحبة لخلل الميتوكوندريا.")
-        
-        uploaded_skin = st.file_uploader("ارفع صورة الجلد المراد فحصها هيدروليكياً خلوياً:", type=["png", "jpg", "jpeg"], key="skin_file_up")
-        skin_notes = st.text_area("اذكر أي أعراض مصاحبة (مثال: زوائد جلدية، إرهاق مزمن، تنميل في الأطراف):", key="skin_notes_in")
-        
-        if st.button("👁️ فحص البصمة الجلدية وربطها بالأعراض الحيوية", key="btn_run_skin_analysis"):
-            if ACTIVE_API_KEY:
-                model = genai.GenerativeModel('gemini-1.5-flash')
-                prompt = f"قم بتحليل الشكوى الجلدية التالية للمريض: {skin_notes}. السكر التراكمي لديه هو {p_data['hba1c']}%. اربط بين ظهور التصبغات والزوائد الجلدية (Acanthosis Nigricans) وبين كفاءة الخلايا ومقاومة الإنسولين، وقدم نصائح علاجية ترميمية بلغة مصرية مفهومة ومحفزة تنتهي بتحية الدكتور إيهاب حشمت الظني."
-                
-                if uploaded_skin:
-                    img = Image.open(uploaded_skin)
-                    res = model.generate_content([prompt, img])
-                else:
-                    res = model.generate_content(prompt)
-                    
-                st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
-                st.write(res.text)
-                st.markdown("</div>", unsafe_allow_html=True)
-            else:
-                st.warning("⚠️ يرجى إدخال مفتاح الـ API لتشغيل مجهر وفحص البصمة الجلدية.")
-
-    # 🔘 المحور الرابع: مؤشر الكورتيزول والصحة النفسية والحيل السلوكية
-    with tab_mind:
-        st.markdown("### 🧠 مؤشر الحالة المزاجية والنفسية وهورمونات الإجهاد")
-        st.write("التوتر والضغط النفسي يرفعان هرمونات الكورتيزول والأدرينالين، مما يؤدي تلقائياً لرفع سكر الدم حتى بدون تناول نشويات!")
-        
-        st.markdown(f"""
-            <div style="background-color:#07162c; padding: 15px; border-radius: 10px; border-right: 5px solid #ffcc00; margin-bottom: 15px;">
-                <b>📊 مستوى القلق العصبي الحالي المسجل في ملفك الحركي: {p_data['anxiety_score']} / 10</b><br>
-                <span style="font-size:13px; opacity:0.8;">كلما ارتفع هذا المؤشر، زاد إفراز الكورتيزول الذي يحفز الكبد على إطلاق الجلوكوز المخزن (Glycogenolysis).</span>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        if st.button("🧘‍♂️ توليد بروتوكول تصفير الإجهاد الكظري الفوري", key="btn_run_mind_analysis"):
-            if ACTIVE_API_KEY:
-                model = genai.GenerativeModel('gemini-1.5-flash')
-                prompt = f"""
-                المريض يعاني من مستوى توتر وقلق يقدر بـ {p_data['anxiety_score']}/10. 
-                اكتب بروتوكولاً نفسياً وسلوكياً كاملاً لتخفيض هرمونات الكورتيزول والأدرينالين وتأثيرها على مقاومة الإنسولين وعكس السكري.
-                اشرح له ببراعة واحترافية بالغة الحيل السلوكية الفعالة فوراً مثل:
-                1. تمارين التنفس الصندوقي (Box Breathing) والتحفيز المبهمي.
-                2. حيلة المشي الخفيف والتمشية في الطبيعة لتصريف الجلوكوز الفائض بدون إجهاد خلوي.
-                3. سيكولوجية الضحك والخروج وأثرهما الفوري في كبح الأدرينالين ورفع الإندورفين والدوبامين.
-                الكتابة تكون بلهجة مصرية مشجعة جداً ومريحة للعيون باسم العيادة والدكتور إيهاب حشمت الظني.
-                """
-                res = model.generate_content(prompt)
-                st.markdown("<div class='premium-card'>", unsafe_allow_html=True)
-                st.write(res.text)
-                st.markdown("</div>", unsafe_allow_html=True)
-            else:
-                st.warning("⚠️ يرجى إدخال مفتاح الـ API لتوليد بروتوكول تصفير الإجهاد الكظري.")
+    # الـ 4 محاور
+    tab_meals, tab
