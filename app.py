@@ -1,7 +1,7 @@
-# 👑 CELLREVIVE AI - THE MASTER METABOLIC OS & CELLULAR RESTORATION PLATFORM (v21.5 - Persistent Memory)
+# 👑 CELLREVIVE AI - THE MASTER METABOLIC OS & CELLULAR RESTORATION PLATFORM (v21.6 - Fixed API Endpoint)
 # ==============================================================================
 # Production-Ready Sovereign System (2026 International & Egyptian Drug Authority Standards)
-# Designed & Supervised by: Dr. Ehab Heshmat El-Znny
+# Designed & Supervised by: Dr. Ehab Heshmat El-Zanny
 # ==============================================================================
 
 import streamlit as st
@@ -18,7 +18,7 @@ import plotly.graph_objects as go
 
 # 0️⃣ الإعدادات السيادية الفاخرة لواجهة المستخدم والتصميم الملكي
 st.set_page_config(
-    page_title="CellRevive AI - Dr. Ehab Heshmat El-Znny",
+    page_title="CellRevive AI - Dr. Ehab Heshmat El-Zanny",
     page_icon="🧬",
     layout="centered",
     initial_sidebar_state="collapsed"
@@ -60,7 +60,7 @@ if not st.session_state.disclaimer_agreed:
             <p style="font-size: 15px; line-height: 1.8; text-align: justify !important; color: #ffffff;">
                 <b>تنبيه قانوني وطبي صارم:</b> إن منصة <b>CellRevive AI</b> هي منظومة محاكاة رقمية متقدمة وأداة تثقيفية مخصصة لدعم هندسة التمثيل الغذائي وتحسين كفاءة الميتوكوندريا تحت الإشراف العلمي المباشر للصيدلي المختص <b>د/ إيهاب حشمت الظني</b>. 
                 <br><br>
-                1. لا يعتبر this البرنامج أو التقارير الصادرة عنه بديلاً عن التشخيص الطبي البشري أو الفحوصات المختبرية السريرية.<br>
+                1. لا يعتبر هذا البرنامج أو التقارير الصادرة عنه بديلاً عن التشخيص الطبي البشري أو الفحوصات المختبرية السريرية.<br>
                 2. يجب على كل مستخدم مراجعة طبيبه المعالج قبل تعديل أو إيقاف أي جرعات دوائية موصوفة، لا سيما أدوية السكري والضغط الكيميائية.<br>
                 3. المنصة تخلي مسؤوليتها تماماً من أي استخدام أحادي للبيانات الحيوية خارج نطاق الاستشارة الطبية المباشرة والتوجيه المعتمد داخل العيادة.
             </p>
@@ -265,4 +265,150 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
     """, unsafe_allow_html=True)
 
     # الـ 4 محاور
-    tab_meals, tab
+    tab_meals, tab_drugs, tab_skin, tab_mind = st.tabs([
+        "🌾 هندسة الوجبات والمنحنيات", 
+        "💊 مجهر ومسح علب الأدوية", 
+        "🔎 مجهر الجلد والأعراض الحيوية", 
+        "🧠 مؤشر الكورتيزول والصحة النفسية"
+    ])
+    
+    # 🔘 المحور الأول: هندسة الوجبات (تحليل لحظي بدون حفظ في DB)
+    with tab_meals:
+        st.markdown("### 📸 ماسح الوجبات الخلوي الفوري")
+        meal_mode = st.radio("طريقة الإدخال الأيضي للوجبة:", ["نصي", "رفع صورة الوجبة"], key="meal_mode_select_f")
+        
+        meal_text = "حلاوة سبريد و2 رغيف عيش بلدي"
+        uploaded_meal_f = None
+        if meal_mode == "نصي":
+            meal_text = st.text_input("اكتب بدقة ما تريد أكله الآن:", value=meal_text, key="meal_text_in_f")
+        else:
+            uploaded_meal_f = st.file_uploader("القط أو ارفع صورة وجبتك الحالية:", type=["jpg", "png", "jpeg"], key="meal_file_up_final")
+            if uploaded_meal_f is not None:
+                st.image(uploaded_meal_f, caption="📷 الوجبة المرفوعة - تحليل لحظي متغير", use_container_width=True)
+            
+        food_seq = st.selectbox("اختر ترتيب وتتابع الوجبة:", ["النشويات أولاً", "ألياف -> بروتين -> نشويات", "دهون وبروتين -> نشويات"], key="food_seq_select_f")
+        
+        if st.button("🔬 تحليل ومحاكاة منحنى الجلوكوز الحي", key="btn_run_meal_final"):
+            gi_val = 85 if "حلاوة" in meal_text else 55
+            t, glucose_curve = simulate_glucose_curve(p_data['fbg'], food_seq, gi_val)
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=t, y=glucose_curve, mode='lines', name='منحنى الجلوكوز المتوقع', line=dict(color='#d4af37', width=3)))
+            st.plotly_chart(fig, use_container_width=True)
+            
+            if ACTIVE_API_KEY:
+                # 🛠️ تم تصحيح اسم الموديل لـ gemini-1.5-flash-latest لمنع الـ NotFound Error
+                model = genai.GenerativeModel('gemini-1.5-flash-latest')
+                prompt = f"حلل لي الوجبة التالية فسيولوجياً: {meal_text}، مع الترتيب المختار: {food_seq}. السكر الصائم للمريض: {p_data['fbg']} بلهجة مصرية."
+                if meal_mode == "رفع صورة الوجبة" and uploaded_meal_f is not None:
+                    res = model.generate_content([prompt, Image.open(uploaded_meal_f)])
+                else:
+                    res = model.generate_content(prompt)
+                st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
+
+    # 🔘 المحور الثاني: مجهر ومسح علب الأدوية (حفظ مستمر ودائم في DB)
+    with tab_drugs:
+        st.markdown("### 💊 الذاكرة الدائمة للأدوية الموصوفة ومقاصة المغذيات")
+        
+        if p_data['selected_drugs']:
+            st.markdown(f"""
+                <div style="background-color:#07162c; padding: 12px; border-radius: 8px; border-right: 5px solid #00ffcc; margin-bottom:15px;">
+                    <b>🧬 الأدوية النشطة حالياً في ذاكرة البرنامج:</b><br>
+                    <span style="color:#00ffcc !important;">{p_data['selected_drugs']}</span>
+                </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.warning("⚠️ لا توجد أدوية محفوظة في الذاكرة حتى الآن.")
+
+        drug_scan_mode = st.radio("وسيلة إدخال الدواء لتحديث الذاكرة:", ["اختيار من القائمة الشائعة", "تصوير علبة الدواء / رفع الروشتة"], key="drug_mode_select_f")
+        
+        selected_drug_info = ""
+        uploaded_drug_f = None
+        if drug_scan_mode == "اختيار من القائمة الشائعة":
+            drug_choice = st.selectbox("اختر الدواء:", ["Cidophage (سيدوفاج) - Metformin", "Glucophage (جلوكوفاج) - Metformin", "Nervizam (نيرفيزام) - B Complex + ALA", "Milga (ميلجا) - Benfotiamine", "Ozempic (أوزمبيك) - Semaglutide"], key="drug_choice_select_f")
+            selected_drug_info = drug_choice
+        else:
+            uploaded_drug_f = st.file_uploader("ارفع صورة علبة الدواء لتخزينها ومطابقتها:", type=["png", "jpg", "jpeg"], key="drug_file_up_final")
+            if uploaded_drug_f is not None:
+                st.image(uploaded_drug_f, caption="📷 دواء جاري معالجته وحفظه", use_container_width=True)
+                selected_drug_info = "دواء مرفوع بالصورة"
+                
+        if st.button("💾 تشغيل المقاصة الطبية وحفظ الدواء في ذاكرة المشترك الدائمة"):
+            if ACTIVE_API_KEY:
+                # 🛠️ تم تصحيح اسم الموديل هنا أيضاً لـ gemini-1.5-flash-latest لمنع الـ NotFound Error
+                model = genai.GenerativeModel('gemini-1.5-flash-latest')
+                name_prompt = f"استخرج فقط اسم المادة الفعالة والتجاري لهذا الدواء في سطر واحد بدون أي كلام إضافي: {selected_drug_info}"
+                
+                try:
+                    if drug_scan_mode == "تصوير علبة الدواء / رفع الروشتة" and uploaded_drug_f is not None:
+                        drug_name_extracted = model.generate_content([name_prompt, Image.open(uploaded_drug_f)]).text.strip()
+                        prompt_analysis = f"حلل هذا الدواء واذكر المغذيات المستنزفة بلهجة مصرية: {drug_name_extracted}"
+                        res = model.generate_content([prompt_analysis, Image.open(uploaded_drug_f)])
+                    else:
+                        drug_name_extracted = selected_drug_info
+                        prompt_analysis = f"حلل هذا الدواء واذكر المغذيات المستنزفة بلهجة مصرية: {drug_name_extracted}"
+                        res = model.generate_content(prompt_analysis)
+                    
+                    new_drugs_list = f"{p_data['selected_drugs']} | {drug_name_extracted}".strip(" | ")
+                    conn = sqlite3.connect('cellrevive_quantum_system.db')
+                    conn.cursor().execute("UPDATE patients SET selected_drugs=? WHERE patient_code=?", (encrypt_data(new_drugs_list), st.session_state.active_patient_code))
+                    conn.commit()
+                    conn.close()
+                    
+                    st.success(f"🟢 تم بنجاح تحديث قاعدة البيانات وحفظ الدواء: ({drug_name_extracted}) في الذاكرة الدائمة!")
+                    st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"حدث خطأ أثناء المعالجة: {e}")
+
+    # 🔘 المحور الثالث: مجهر الجلد (حفظ مستمر ودائم في DB)
+    with tab_skin:
+        st.markdown("### 🔎 الأرشيف الدائم لتحليل بصمات وتصبغات الجلد")
+        
+        if p_data['skin_analysis']:
+            st.markdown(f"""
+                <div class="premium-card" style="border-color:#ffcc00;">
+                    <b>📜 آخر تحليل فسيولوجي محفوظ للجلد في ملفك الحركي:</b><br><br>
+                    <p style="font-size:14px; line-height:1.6;">{p_data['skin_analysis']}</p>
+                </div>
+            """, unsafe_allow_html=True)
+            
+        uploaded_skin_f = st.file_uploader("ارفع صورة جديدة لتحديث أرشيف الجلد الفسيولوجي:", type=["png", "jpg", "jpeg"], key="skin_file_up_final")
+        if uploaded_skin_f is not None:
+            st.image(uploaded_skin_f, caption="📷 بصمة الجلد الجديدة المرفوعة", use_container_width=True)
+            
+        skin_notes = st.text_area("الأعراض المصاحبة للتحديث الخلوي الحركي:", key="skin_notes_in_f")
+        
+        if st.button("👁️ فحص البصمة الجلدية وتحديث السجل الدائم للمشترك"):
+            if ACTIVE_API_KEY:
+                # 🛠️ تم تصحيح اسم الموديل هنا أيضاً لـ gemini-1.5-flash-latest لمنع الـ NotFound Error
+                model = genai.GenerativeModel('gemini-1.5-flash-latest')
+                prompt = f"قم بتحليل الشكوى الجلدية التالية للمريض تحت إشراف د. إيهاب حشمت: {skin_notes}. السكر التراكمي لديه هو {p_data['hba1c']}%. اربط بين ظهور التصبغات والزوائد الجلدية ومقاومة الإنسولين بلهجة مصرية مبسطة للغاية."
+                
+                try:
+                    if uploaded_skin_f is not None:
+                        res = model.generate_content([prompt, Image.open(uploaded_skin_f)])
+                    else:
+                        res = model.generate_content(prompt)
+                    
+                    conn = sqlite3.connect('cellrevive_quantum_system.db')
+                    conn.cursor().execute("UPDATE patients SET skin_analysis=? WHERE patient_code=?", (encrypt_data(res.text), st.session_state.active_patient_code))
+                    conn.commit()
+                    conn.close()
+                    
+                    st.success("🟢 تم حفظ وتحديث سجل الجلد الخلوي الدائم!")
+                    st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"حدث خطأ أثناء فحص صورة الجلد: {e}")
+
+    # 🔘 المحور الرابع: مؤشر الكورتيزول
+    with tab_mind:
+        st.markdown("### 🧠 مؤشر الحالة المزاجية ونظام تصفير الإجهاد")
+        st.markdown(f"<div style='background-color:#07162c; padding: 15px; border-radius: 10px; border-right: 5px solid #ffcc00; margin-bottom: 15px;'><b>📊 مستوى القلق العصبي الحالي المسجل في ملفك الحركي: {p_data['anxiety_score']} / 10</b></div>", unsafe_allow_html=True)
+        
+        if st.button("🧘‍♂️ توليد بروتوكول تصفير الإجهاد الكظري الفوري", key="btn_run_mind_final"):
+            if ACTIVE_API_KEY:
+                model = genai.GenerativeModel('gemini-1.5-flash-latest')
+                prompt = f"المريض يعاني من مستوى توتر يقدر بـ {p_data['anxiety_score']}/10. اكتب بروتوكولاً نفسياً وسلوكياً كاملاً لتخفيض هرمونات الكورتيزول بلهجة مصرية مشجعة جداً باسم العيادة والدكتور إيهاب حشمت الظني."
+                res = model.generate_content(prompt)
+                st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
