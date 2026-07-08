@@ -1,4 +1,4 @@
-# 👑 CELLREVIVE AI - THE MASTER METABOLIC OS & CELLULAR RESTORATION PLATFORM (v21.6 - Fixed API Endpoint)
+# 👑 CELLREVIVE AI - THE MASTER METABOLIC OS & CELLULAR RESTORATION PLATFORM (v21.7 - Fixed Index Bug)
 # ==============================================================================
 # Production-Ready Sovereign System (2026 International & Egyptian Drug Authority Standards)
 # Designed & Supervised by: Dr. Ehab Heshmat El-Zanny
@@ -221,7 +221,13 @@ if st.session_state.role == "doctor":
     st.sidebar.markdown("### 🔐 الإشراف البرمجي")
     st.session_state.api_key_input = st.sidebar.text_input("Gemini API Key", type="password", value=ACTIVE_API_KEY)
     
-    selected_p = st.selectbox("اختر ملف المشترك لإدارته وتعديله فسيولوجياً:", VALID_PATIENT_CODES, index=VALID_PATIENT_CODES.index(st.session_state.active_patient_code))
+    # 🛠️ الإصلاح الذكي والآمن هنا: حماية من الـ ValueError إذا كان الكود النشط هو كود الطبيب
+    if st.session_state.active_patient_code in VALID_PATIENT_CODES:
+        default_index = VALID_PATIENT_CODES.index(st.session_state.active_patient_code)
+    else:
+        default_index = 0
+        
+    selected_p = st.selectbox("اختر ملف المشترك لإدارته وتعديله فسيولوجياً:", VALID_PATIENT_CODES, index=default_index)
     if selected_p != st.session_state.active_patient_code:
         st.session_state.active_patient_code = selected_p
         st.rerun()
@@ -296,7 +302,6 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
             st.plotly_chart(fig, use_container_width=True)
             
             if ACTIVE_API_KEY:
-                # 🛠️ تم تصحيح اسم الموديل لـ gemini-1.5-flash-latest لمنع الـ NotFound Error
                 model = genai.GenerativeModel('gemini-1.5-flash-latest')
                 prompt = f"حلل لي الوجبة التالية فسيولوجياً: {meal_text}، مع الترتيب المختار: {food_seq}. السكر الصائم للمريض: {p_data['fbg']} بلهجة مصرية."
                 if meal_mode == "رفع صورة الوجبة" and uploaded_meal_f is not None:
@@ -334,7 +339,6 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
                 
         if st.button("💾 تشغيل المقاصة الطبية وحفظ الدواء في ذاكرة المشترك الدائمة"):
             if ACTIVE_API_KEY:
-                # 🛠️ تم تصحيح اسم الموديل هنا أيضاً لـ gemini-1.5-flash-latest لمنع الـ NotFound Error
                 model = genai.GenerativeModel('gemini-1.5-flash-latest')
                 name_prompt = f"استخرج فقط اسم المادة الفعالة والتجاري لهذا الدواء في سطر واحد بدون أي كلام إضافي: {selected_drug_info}"
                 
@@ -345,7 +349,7 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
                         res = model.generate_content([prompt_analysis, Image.open(uploaded_drug_f)])
                     else:
                         drug_name_extracted = selected_drug_info
-                        prompt_analysis = f"حلل هذا الدواء واذكر المغذيات المستنزفة بلهجة مصرية: {drug_name_extracted}"
+                        prompt_analysis = f"حلل هذا الدواء واذكر المغغديات المستنزفة بلهجة مصرية: {drug_name_extracted}"
                         res = model.generate_content(prompt_analysis)
                     
                     new_drugs_list = f"{p_data['selected_drugs']} | {drug_name_extracted}".strip(" | ")
@@ -380,7 +384,6 @@ if st.session_state.role == "patient" or st.session_state.role == "doctor":
         
         if st.button("👁️ فحص البصمة الجلدية وتحديث السجل الدائم للمشترك"):
             if ACTIVE_API_KEY:
-                # 🛠️ تم تصحيح اسم الموديل هنا أيضاً لـ gemini-1.5-flash-latest لمنع الـ NotFound Error
                 model = genai.GenerativeModel('gemini-1.5-flash-latest')
                 prompt = f"قم بتحليل الشكوى الجلدية التالية للمريض تحت إشراف د. إيهاب حشمت: {skin_notes}. السكر التراكمي لديه هو {p_data['hba1c']}%. اربط بين ظهور التصبغات والزوائد الجلدية ومقاومة الإنسولين بلهجة مصرية مبسطة للغاية."
                 
