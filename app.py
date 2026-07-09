@@ -489,7 +489,7 @@ if st.session_state.role in ["client", "supervisor"]:
                 with st.spinner("جاري فحص الوجبة مجهرياً وبناء التوجيهات..."):
                     try:
                         # تصحيح مسار الموديل للموديل المستقر 2026 في الوجبات
-                        model = genai.GenerativeModel('gemini-1.5-flash')
+                        model = genai.GenerativeModel('models/gemini-1.5-flash')
                         meal_prompt = """
                         بصفتك خبيراً واستشارياً في الهندسة الأيضية، والتغذية العلاجية، وإصلاح الخلايا لعام 2026 تحت قيادة د/ إيهاب حشمت الظني. 
                         قم بتحليل الوجبة المقدمة بناءً على الحالة الصحية للمشترك ومقاومة الأنسولين لديه.
@@ -531,7 +531,7 @@ if st.session_state.role in ["client", "supervisor"]:
                 with st.spinner("جاري قراءة البيانات الدوائية ومطابقة التعارضات بدقة مجهرية..."):
                     try:
                         # تصحيح الخلل المسبب لخطأ 404: توحيد الاسم إلى المستقر هنا أيضاً
-                        model = genai.GenerativeModel('gemini-1.5-flash')
+                        model = genai.GenerativeModel('models/gemini-1.5-flash')
                         med_prompt = """
                         أنت خبير الذكاء الاصطناعي الموجه فائق الحساسية المرتبط بدستور الأدوية المصري لعام 2026 الصادر عن هيئة الدواء المصرية وطب الأعشاب الشمولي والتكاملي داخل برنامج CellRevive AI المطور بواسطة د/ إيهاب حشمت الظني.
                         قم بفحص وتحليل الأدوية المقدمة (حتى 10 أصناف) من خلال النص أو قراءة الصور المرفقة بدقة متناهية وبنسبة خطأ 0%.
@@ -570,7 +570,7 @@ if st.session_state.role in ["client", "supervisor"]:
                 with st.spinner("جاري فحص النسيج الظاهري ورصد التصبغات الأيضية..."):
                     try:
                         # تصحيح الخلل المسبب لخطأ 404: توحيد الاسم للموديل المستقر هنا أيضاً
-                        model = genai.GenerativeModel('gemini-1.5-flash')
+                        model = genai.GenerativeModel('models/gemini-1.5-flash')
                         skin_prompt = "بصفتك بروفيسور في تشخيص العلامات الأيضية الجلدية المرتبطة بمقاومة الأنسولين والشواك الأسود (Acanthosis Nigricans)، حلل هذه الصورة وعلاقتها بالاضطراب الأيضي الداخلي وقدم إرشاداً خلوياً صارماً."
                         res = model.generate_content([skin_prompt, Image.open(uploaded_skin)])
                         st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
