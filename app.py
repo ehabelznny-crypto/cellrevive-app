@@ -1,7 +1,7 @@
 # 👑 CELLREVIVE AI - SOVEREIGN ULTIMATE OMNIPOTENT RELEASE (v24.5 - Color Perfected)
 # ==============================================================================
 # 100% Production-Ready Sovereign System (International & EDA 2026 Standards)
-# Executive Director & Founder: Dr. Ehab Heshmat El-Zanny
+# Executive Director & Founder: Dr. Ehab Heshmat El-Znny
 # Clinical Pharmacist & Cellular Restoration, Longevity Medicine & Type 2 Diabetes Reversal Specialist
 # ==============================================================================
 
@@ -19,7 +19,7 @@ import plotly.graph_objects as go
 
 # 0️⃣ التهيئة الحركية الفاخرة للواجهة الملكية المضادة للانهيار وتداخل الـ Session State
 st.set_page_config(
-    page_title="CellRevive AI - Dr. Ehab Heshmat El-Zanny",
+    page_title="CellRevive AI - Dr. Ehab Heshmat El-Znny",
     page_icon="🧬",
     layout="centered",
     initial_sidebar_state="collapsed"
