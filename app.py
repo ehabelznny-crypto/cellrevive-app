@@ -1,4 +1,4 @@
-# 👑 CELLREVIVE AI - SOVEREIGN ULTIMATE OMNIPOTENT RELEASE (v24.5 - Color Perfected)
+# 👑 CELLREVIVE AI - SOVEREIGN ULTIMATE OMNIPOTENT RELEASE (v24.6 - Zero Error Patch)
 # ==============================================================================
 # 100% Production-Ready Sovereign System (International & EDA 2026 Standards)
 # Executive Director & Founder: Dr. Ehab Heshmat El-Znny
@@ -468,7 +468,7 @@ if st.session_state.role in ["client", "supervisor"]:
         chosen_fasting = st.selectbox("حدد نمط ونظام الصيام الحالي الحركي لضبط الحساسية ومستشعر الوجبة:", fasting_options)
         chosen_diet = st.selectbox("حدد الخيار والنظام الغذائي المتبع داخل المنظومة الخلوية:", diet_options)
         
-        meal_txt_input = st.text_input("اكتب تفاصيل ومكونات وجبتك ومشروباتك المصاحبة الآن بدقة:", value="أرز بني مع فاصوليا ومشروب قرفة دافئ", key="meal_txt_field")
+        meal_txt_input = st.text_area("اكتب تفاصيل ومكونات وجبتك ومشروباتك المصاحبة الآن بدقة:", value="أرز بني مع فاصوليا ومشروب قرفة دافئ", key="meal_txt_field")
         uploaded_meal_img = st.file_uploader("التقط أو ارفع صورة وجبتك الحالية للفحص المجهري بعدسة الذكاء الاصطناعي الخارقة:", type=["jpg", "png", "jpeg"], key="meal_img_field")
         
         if uploaded_meal_img is not None:
@@ -486,23 +486,31 @@ if st.session_state.role in ["client", "supervisor"]:
             st.plotly_chart(fig, use_container_width=True)
             
             if ACTIVE_API_KEY:
-                try:
-                    model = genai.GenerativeModel('gemini-1.5-flash-latest')
-                    prompt = f"""
-                    أنت المحرك الموجه الحساس بمقدار 100 ضعف في منظومة CellRevive AI تحت إدارة ومؤسس البرنامج د/ إيهاب حشمت الظني لعام 2026.
-                    حلل فسيولوجياً بدقة متناهية وبنسبة خطأ 0% مكونات هذه الوجبة: {meal_txt_input}. 
-                    نظام الصيام الحالي: {chosen_fasting}. النظام الغذائي المتبع: {chosen_diet}. التتابع المختار: {food_seq_choice}. السكر الصائم للحالة: {p_data['fbg']}.
-                    اربط هذه المدخلات كلياً بإرشادات الغدد الصماء والترميم الخلوي ومسارات AMPK وعكس مقاومة الأنسولين بلهجة مصرية طبية سيادية مشجعة جداً.
-                    """
-                    if uploaded_meal_img is not None:
-                        res = model.generate_content([prompt, Image.open(uploaded_meal_img)])
-                    else: res = model.generate_content(prompt)
-                    st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
-                except: st.error("❌ واجهت العدسة فائقة الحساسية صعوبة مؤقتة في معالجة الوجبة.")
+                with st.spinner("جاري فحص الوجبة مجهرياً وبناء التوجيهات..."):
+                    try:
+                        # تصحيح مسار الموديل للموديل المستقر 2026 في الوجبات
+                        model = genai.GenerativeModel('gemini-1.5-flash')
+                        meal_prompt = """
+                        بصفتك خبيراً واستشارياً في الهندسة الأيضية، والتغذية العلاجية، وإصلاح الخلايا لعام 2026 تحت قيادة د/ إيهاب حشمت الظني. 
+                        قم بتحليل الوجبة المقدمة بناءً على الحالة الصحية للمشترك ومقاومة الأنسولين لديه.
+                        يجب أن يتضمن ردك التوجيهات التالية بأسلوب مشجع ومحفز كالتالي:
+                        1. ابدأ بعبارة تحفيزية مثل: "طبقاً لحالتك الصحية يا بطل...".
+                        2. تقديم بدائل ذكية وخالية من النشويات الضارة، مثل: (استخدام الكابوتشة، الخس، أو الفلفل كبديل للعيش لغموس الطبيخ، الفول، أو الجبنة لإعطاء نفس إحساس الخبز تماماً).
+                        3. تعديل نسب المكونات (مثال: تقليل الفول وزيادة البيض لرفع البروتين، تقليل الملح لحماية الكلى والضغط).
+                        4. تقديم بروتوكول الترتيب الأيضي الصارم لتناول الوجبة: (ألياف أولاً، ثم بروتين، ثم نشويات معقدة إن وجدت).
+                        5. نصائح المشروبات الداعمة قبل وبعد الوجبة (مثال: كوب ماء بملعقة خل تفاح عضوي قبل الوجبة، وكوب قرفة دافئ بعد الوجبة لضبط سكر الدم).
+                        اجعل الأسلوب عيادياً مخصصاً وصارماً وبسيطاً ومصرياً في نفس الوقت.
+                        """
+                        if uploaded_meal_img is not None:
+                            res = model.generate_content([meal_prompt, Image.open(uploaded_meal_img), meal_txt_input])
+                        else:
+                            res = model.generate_content([meal_prompt, meal_txt_input])
+                        st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
+                    except Exception as e: st.error(f"❌ واجهت العدسة صعوبة في المعالجة: {e}")
 
-    # 🔘 المحور الثاني: مسح وتدقيق علب الأدوية والمغذيات
+    # 🔘 المحور الثاني: مسح وتدقيق علب الأدوية والمغذيات لـ 10 أصناف
     with tab_supplements:
-        st.markdown("### 💊 عدسة فحص ومطابقة المكونات والأدوية الكلية (قرار سليم 100% بنسبة خطأ 0%)")
+        st.markdown("### 💊 عدسة فحص ومطابقة المكونات والأدوية الكلية (حتى 10 أصناف دفعة واحدة)")
         
         if p_data['selected_supplements']:
             st.markdown(f"""
@@ -511,96 +519,65 @@ if st.session_state.role in ["client", "supervisor"]:
                 </div>
             """, unsafe_allow_html=True)
             
-        drug_txt_input = st.text_input("اكتب اسم المركب باللغة العربية أو الإنجليزية بدقة عالية:", value="Milga Tablets", key="drug_txt_field")
-        uploaded_drug_img = st.file_uploader("ارفع أو صور علبة المركب أو الروشتة لتفعيل العدسة الخارقة والتعرف الدقيق:", type=["png", "jpg", "jpeg"], key="drug_img_field")
+        drug_txt_input = st.text_area("اكتب أسماء الأدوية (حتى 10 أصناف، يفصل بينها بفاصلة):", value="Milga Tablets, Metformin 500mg", key="drug_txt_field")
+        uploaded_drug_imgs = st.file_uploader("ارفع أو صور علب المركبات أو الروشتات معاً (يمكنك اختيار حتى 10 صور دفعة واحدة):", type=["png", "jpg", "jpeg"], accept_multiple_files=True, key="drug_img_field")
         
-        if uploaded_drug_img is not None:
-            st.image(uploaded_drug_img, caption="📷 المركب المرصود بالعدسة السحّابة", use_container_width=True)
+        if uploaded_drug_imgs:
+            for idx, img in enumerate(uploaded_drug_imgs):
+                st.image(img, caption=f"📷 علبة دواء رقم {idx+1}", use_container_width=True)
             
         if st.button("💾 تفعيل قرار المقاصة الصحية والمطابقة مع دستور 2026"):
             if ACTIVE_API_KEY:
-                try:
-                    model = genai.GenerativeModel('gemini-1.5-flash-latest')
-                    prompt = f"""
-                    أنت خبير الذكاء الاصطناعي الموجه فائق الحساسية المرتبط بدستور الأدوية المصري لعام 2026 الصادر عن هيئة الدواء المصرية وطب الأعشاب الشمولي والتكاملي داخل برنامج CellRevive AI المطور بواسطة د/ إيهاب حشمت الظني.
-                    قم بفحص المركب أو الدواء التالي: {drug_txt_input}. السكر التراكمي للعميل هو {p_data['hba1c']}%.
-                    أعط قراراً صحياً سليماً 100% وبنسبة خطأ 0% يتضمن بدقة بالغة المادة الفعالة واستنزافها للمغذيات الدقيقة، مع إعداد روتين وجبات متوافق مع مصفوفة الصيام والروتين الحركي والمشروبات المتميزة لتحسين الأيض وكفاءة الميتوكوندريا بمهارة تفوق أعظم المتخصصين.
-                    تكلم باللغة العربية وبلهجة مصرية واثقة وبمنتهى الاحترافية والتدقيق الشمولي.
-                    """
-                    if uploaded_drug_img is not None:
-                        res = model.generate_content([prompt, Image.open(uploaded_drug_img)])
-                    else: res = model.generate_content(prompt)
-                    
-                    new_list = f"{p_data['selected_supplements']} | {drug_txt_input}".strip(" | ")
-                    conn = sqlite3.connect('cellrevive_sovereign_system.db')
-                    conn.cursor().execute("UPDATE clients SET selected_supplements=? WHERE client_code=?", (encrypt_data(new_list), st.session_state.active_client_code))
-                    conn.commit()
-                    conn.close()
-                    
-                    st.success("🟢 تم التعرف والمطابقة وحفظ السجل المحدث بنجاح!")
-                    st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
-                except Exception as e: st.error(f"خطأ في معالجة ومطابقة الدواء: {e}")
+                with st.spinner("جاري قراءة البيانات الدوائية ومطابقة التعارضات بدقة مجهرية..."):
+                    try:
+                        # تصحيح الخلل المسبب لخطأ 404: توحيد الاسم إلى المستقر هنا أيضاً
+                        model = genai.GenerativeModel('gemini-1.5-flash')
+                        med_prompt = """
+                        أنت خبير الذكاء الاصطناعي الموجه فائق الحساسية المرتبط بدستور الأدوية المصري لعام 2026 الصادر عن هيئة الدواء المصرية وطب الأعشاب الشمولي والتكاملي داخل برنامج CellRevive AI المطور بواسطة د/ إيهاب حشمت الظني.
+                        قم بفحص وتحليل الأدوية المقدمة (حتى 10 أصناف) من خلال النص أو قراءة الصور المرفقة بدقة متناهية وبنسبة خطأ 0%.
+                        أعط قراراً صحياً سليماً يتضمن بدقة بالغة: المادة الفعالة، استنزافها للمغذيات الدقيقة، رصد أي تعارضات دوائية (Drug-Drug Interactions)، والتوقيت الأمثل لتناول كل دواء بما يتوافق مع مصفوفة الصيام والوجبات لتحسين الأيض وكفاءة الميتوكوندريا.
+                        تكلم باللغة العربية وبلهجة مصرية واثقة وبمنتهى الاحترافية والتدقيق الشمولي.
+                        """
+                        content_list = [med_prompt]
+                        if drug_txt_input:
+                            content_list.append(f"الأدوية المكتوبة نصياً: {drug_txt_input}")
+                        if uploaded_drug_imgs:
+                            for img in uploaded_drug_imgs:
+                                content_list.append(Image.open(img))
+                                
+                        res = model.generate_content(content_list)
+                        
+                        new_list = f"{p_data['selected_supplements']} | {drug_txt_input}".strip(" | ")
+                        conn = sqlite3.connect('cellrevive_sovereign_system.db')
+                        conn.cursor().execute("UPDATE clients SET selected_supplements=? WHERE client_code=?", (encrypt_data(new_list), st.session_state.active_client_code))
+                        conn.commit()
+                        conn.close()
+                        
+                        st.success("🟢 تم التعرف والمطابقة وحفظ السجل المحدث بنجاح!")
+                        st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
+                    except Exception as e: st.error(f"خطأ في معالجة ومطابقة الدواء: {e}")
 
-    # 🔘 المحور الثالث: عدسة فحص العلامات الجلدية والأعراض
+    # 🔘 المحور الثالث: عدسة فحص الجلد والأعراض الخارجية
     with tab_skin:
-        st.markdown("### 🔎 عدسة فحص البصمات والعلامات الجلدية والأعراض المتكاملة")
+        st.markdown("### 🔎 رادار رصد ومسح العلامات الجلدية الأيضية الفائقة")
+        uploaded_skin = st.file_uploader("ارفع صورة مقربة جداً وبإضاءة جيدة للعلامة الجلدية (الرقبة، الإبط، أو الزوائد):", type=["jpg","png","jpeg"], key="skin_field")
         
-        skin_symptoms_input = st.text_area("اكتب بالتفصيل كافة الأعراض الظاهرة على الجلد أو التي تشعر بها بصفة عامة حالياً ووضوح تام:", value="وجود تصبغات داكنة تحت الإبط وزوائد حول الرقبة مع إجهاد عام", key="skin_txt_field")
-        uploaded_skin_img = st.file_uploader("ارفع صورة دقيقة للحالة الجلدية للفحص والتفسير بمحرك الحساسية المطور (100x Precision):", type=["png", "jpg", "jpeg"], key="skin_img_field")
-        
-        if uploaded_skin_img is not None:
-            st.image(uploaded_skin_img, caption="📷 البصمة الجلدية المرفوعة بعدسة الفحص الخلوي", use_container_width=True)
+        if uploaded_skin:
+            st.image(uploaded_skin, caption="📷 الصورة المرصودة للجلد", use_container_width=True)
             
-        if st.button("👁️ فحص وتفسير البصمة الجلدية وتحديث أرشيف الاستشفاء"):
-            if ACTIVE_API_KEY:
-                try:
-                    model = genai.GenerativeModel('gemini-1.5-flash-latest')
-                    prompt = f"""
-                    أنت خبير العدسة فائقة الحساسية لتفسير وتدقيق الصور الجلدية في منظومة CellRevive AI لعام 2026 المصممة بواسطة د/ إيهاب حشمت الظني.
-                    حلل بدقة متناهية وبمهارة فائقة الأعراض والعلامات التالية: {skin_symptoms_input}. 
-                    اربط هذه العلامات الجلدية بمقاومة الأنسولين، وحالات السكري، ومستوى السكر الصائم الحركي ({p_data['fbg']}) والتراكمي ({p_data['hba1c']}%) للعميل.
-                    أعطِ تفسيراً طبياً ومهارياً تكاملياً بلهجة مصرية مبسطة للغاية وبثقة سيادية يوضح كيفية تراجع هذه العلامات مع الترميم الخلوي وتحسين جودة خلايا الجسم الميتوكوندرية.
-                    """
-                    if uploaded_skin_img is not None:
-                        res = model.generate_content([prompt, Image.open(uploaded_skin_img)])
-                    else: res = model.generate_content(prompt)
-                    
-                    conn = sqlite3.connect('cellrevive_sovereign_system.db')
-                    conn.cursor().execute("UPDATE clients SET skin_analysis=? WHERE client_code=?", (encrypt_data(res.text), st.session_state.active_client_code))
-                    conn.commit()
-                    conn.close()
-                    
-                    st.success("🟢 تم حفظ وتحديث سجل الجلد الخلوي بنجاح الاستقرار والتشفير.")
-                    st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
-                except: st.error("❌ تعذر على مستشعر البصمات الجلدية إتمام عملية الفحص اللحظية.")
+        if st.button("🧬 بدء الفحص الميكروسكوبي الخارجي"):
+            if ACTIVE_API_KEY and uploaded_skin:
+                with st.spinner("جاري فحص النسيج الظاهري ورصد التصبغات الأيضية..."):
+                    try:
+                        # تصحيح الخلل المسبب لخطأ 404: توحيد الاسم للموديل المستقر هنا أيضاً
+                        model = genai.GenerativeModel('gemini-1.5-flash')
+                        skin_prompt = "بصفتك بروفيسور في تشخيص العلامات الأيضية الجلدية المرتبطة بمقاومة الأنسولين والشواك الأسود (Acanthosis Nigricans)، حلل هذه الصورة وعلاقتها بالاضطراب الأيضي الداخلي وقدم إرشاداً خلوياً صارماً."
+                        res = model.generate_content([skin_prompt, Image.open(uploaded_skin)])
+                        st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
+                    except Exception as e: st.error(f"خطأ في معالجة فحص الجلد: {e}")
 
-    # 🔘 المحور الرابع: مستشعر الهرمونات والعلاج بالموسيقى
+    # 🔘 المحور الرابع: تصفير الكورتيزول بالهندسة الصوتية
     with tab_mind:
-        st.markdown("### 🧠 مستشعر الهرمونات المسؤول عن الإجهاد والتوتر ونظام العلاج بالموسيقى")
-        st.markdown(f"<div style='background-color:#01060f; padding:15px; border-radius:10px; border-right: 5px solid #ff4b4b; margin-bottom:15px;'><b style='color:#ffffff !important;'>📊 مستوى التوتر العصبي الحالي المسجل بملفك الموجه: {p_data['anxiety_score']} / 10</b></div>", unsafe_allow_html=True)
-        
-        st.markdown("""
-            <div class="premium-card" style="border-color:#00ffcc; background:linear-gradient(145deg, #02171e, #010a0d);">
-                <h4 style="color:#00ffcc !important; text-align:center;">🎵 منظومة العلاج بالموسيقى والترددات الصوتية الموجهة بالذكاء الاصطناعي</h4>
-                <p style="font-size:13px; text-align:center; color:#ffffff !important;">
-                    بناءً على قياس مستشعراتك الحيوية للإجهاد والتوتر، تم توليد وتخصيص هذه الموجات الصوتية ثنائية النبرة وترددات <b>528Hz Solfeggio</b> المصممة علمياً لخفض هرمونات الكورتيزول والأدرينالين الزائدة وتفعيل التصفير الكظري الفوري لدعم الاستشفاء والترميم الخلوي.
-                </p>
-                <div style="display:flex; justify-content:center; margin-top:10px;">
-                    <audio controls src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" style="width:100%; max-width:400px;"></audio>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        if st.button("🧘‍♂️ اكتشاف الهرمون الزائد وتوليد بروتوكول التصفير الكظري والتوصيات المنزلية"):
-            if ACTIVE_API_KEY:
-                try:
-                    model = genai.GenerativeModel('gemini-1.5-flash-latest')
-                    prompt = f"""
-                    أنت مستشعر الهرمونات الفائق ووحدة الذكاء الاصطناعي المخصصة للتحكم السلوكي والعلاج بالموسيقى والطب النفسي التكاملي في منظومة CellRevive AI المبتكرة بواسطة د/ إيهاب حشمت الظني لعام 2026.
-                    العميل لديه مستوى توتر يقدر بـ {p_data['anxiety_score']}/10 وهو ما يؤدي لارتفاع هرمون الكورتيزول والأدرينالين المسبب لرفع السكر وعناد حرق الدهون.
-                    اكتشف الهرمون الزائد والمسبب للحالة بدقة، وقدم بروتوكولاً علاجياً سلوكياً ونفسياً وتوصيات منزلية وممارسات متميزة لتصفير الإجهاد وخفض الكورتيزول بطريقة علمية وبأسلوب تحفيزي فائق لعام 2026 يفوق أفضل الممارسات في الكون.
-                    تكلم باللغة العربية وبلهجة مصرية مشجعة ومبهرة.
-                    """
-                    res = model.generate_content(prompt)
-                    st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
-                except: st.error("❌ تعذر على مستشعر الهرمونات صياغة بروتوكول التصفير الكظري المحدث حالياً.")
+        st.markdown("### 🧠 مستشعر الهرمونات وتصفير الكورتيزول الصوتي")
+        st.write("استمع للترددات الخلوية (Binaural Beats) لخفض التوتر العصبي وتثبيط مسار الكورتيزول الهدام:")
+        st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
