@@ -1,4 +1,4 @@
-# 👑 CELLREVIVE AI - SOVEREIGN ULTIMATE OMNIPOTENT RELEASE (v24.0 - Absolute Perfection)
+# 👑 CELLREVIVE AI - SOVEREIGN ULTIMATE OMNIPOTENT RELEASE (v24.5 - Color Perfected)
 # ==============================================================================
 # 100% Production-Ready Sovereign System (International & EDA 2026 Standards)
 # Executive Director & Founder: Dr. Ehab Heshmat El-Zanny
@@ -25,7 +25,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# تأمين مكتبة التشفير بشكل صامت تماماً لضمان الخصوصية السيادية الفائقة (AES-256 GCM Alternative)
+# تأمين مكتبة التشفير بشكل صامت تماماً لضمان الخصوصية السيادية الفائقة (AES-256 Fernet Layer)
 try:
     from cryptography.fernet import Fernet
 except ImportError:
@@ -100,28 +100,51 @@ UI_TEXT = {
 
 T = UI_TEXT[st.session_state.lang]
 
-# حقن القوالب الملكية والتصميمات المتجاوبة السيادية لعام 2026 والمضادة للهلوسة والتعارض
+# 🎨 ترقية وهندسة التصميم الفاخر لحل مشكلة الخطوط الباهتة وتفتيحها بنسبة 100%
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=600;800;900&display=swap');
+    
+    /* ضبط لون الخلفية العامة للمنظومة */
     .stApp { background-color: #01060f; color: #ffffff !important; font-family: 'Cairo', sans-serif !important; }
+    
+    /* 🛠️ الكود السحري: إجبار كافة النصوص التوضيحية (Labels) والعناوين على السطوع باللون الأبيض النقي */
+    label, .stWidgetLabel, p, span, div[data-testid="stMarkdownContainer"] p { 
+        color: #ffffff !important; 
+        font-weight: 700 !important; 
+        font-size: 15px !important;
+        opacity: 1.0 !important;
+    }
+    
+    /* تفتيح خطوط القوائم المنسدلة والتبيوبات المظلمة */
+    .stSelectbox div[data-baseweb="select"] div, .stTab {
+        color: #ffffff !important;
+    }
+    
+    /* البطاقات والأطر السيادية الفاخرة لعام 2026 */
     .premium-card { background: linear-gradient(145deg, #051226, #030a17); border: 2px solid #d4af37; border-radius: 16px; padding: 25px; margin-bottom: 20px; box-shadow: 0 12px 35px rgba(212, 175, 55, 0.15); }
     .motivational-card { background: linear-gradient(135deg, #071f18, #020f0b); border: 2px solid #00ffcc; border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0, 255, 204, 0.15); }
     .emergency-card { background: linear-gradient(145deg, #1a0505, #0a0101); border: 2px solid #ff4b4b; border-radius: 16px; padding: 25px; margin-bottom: 20px; box-shadow: 0 0 25px rgba(255, 75, 75, 0.25); }
+    
+    /* تعديل مظهر الأزرار الملكية */
     .stButton>button { background: linear-gradient(90deg, #f5e3aa, #d4af37, #b5922d) !important; color: #01060f !important; border-radius: 14px !important; font-weight: 900 !important; font-size: 16px !important; height: 3.3em; width: 100%; border: none !important; box-shadow: 0 5px 20px rgba(212, 175, 55, 0.35) !important; transition: all 0.2s ease-in-out; }
     .stButton>button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5) !important; }
+    
+    /* حقول المدخلات المضيئة والمؤطرة بالذهب المطفأ */
+    .stTextInput>div>div>input, .stNumberInput>div>div>input, .stSelectbox>div>div>div, .stTextArea>div>div>textarea { background-color: #030d1e !important; color: #ffffff !important; border: 1px solid #d4af37 !important; border-radius: 10px !important; }
+    
     .metric-value-green { font-size: 26px; color: #00ffcc !important; font-weight: 900; text-shadow: 0 0 10px rgba(0,255,204,0.3); }
     .metric-value-gold { font-size: 26px; color: #d4af37 !important; font-weight: 900; text-shadow: 0 0 10px rgba(212,175,55,0.3); }
     </style>
 """, unsafe_allow_html=True)
 
-# تحويل الاتجاه اللغوي للواجهة ديناميكياً بناءً على الاختيار الفعلي
+# تحويل الاتجاه اللغوي للواجهة ديناميكياً بناءً على الاختيار الفعلى
 if st.session_state.lang == 'العربية':
     st.markdown("<style>[data-testid='stMainBlockContainer'], .stTabs, div, p, span, label, h1, h2, h3, h4, h5, h6 { direction: rtl !important; text-align: right !important; }</style>", unsafe_allow_html=True)
 else:
     st.markdown("<style>[data-testid='stMainBlockContainer'], .stTabs, div, p, span, label, h1, h2, h3, h4, h5, h6 { direction: ltr !important; text-align: left !important; }</style>", unsafe_allow_html=True)
 
-# زر التبديل السريع والسيادي للغة أعلى الصفحة
+# 🌐 تبويب اختيار اللغة المضيء والمرئي تماماً
 lang_choice = st.selectbox("🌐 Select Language / اختر اللغة المعتمدة للمنصة:", ["العربية", "English"], index=0 if st.session_state.lang == 'العربية' else 1)
 if lang_choice != st.session_state.lang:
     st.session_state.lang = lang_choice
@@ -197,7 +220,6 @@ def init_sovereign_db():
 
 init_sovereign_db()
 
-# الفحص التلقائي الفوري والتصفير الآلي للاشتراكات المنتهية الصلاحية لحماية حدود المنصة
 def enforce_automatic_expiry():
     conn = sqlite3.connect('cellrevive_sovereign_system.db')
     cursor = conn.cursor()
@@ -236,27 +258,23 @@ def calculate_biological_age(age, hba1c, homa_ir, hscrp, waist):
         h = float(hba1c) if hba1c is not None else 5.4
         ir = float(homa_ir) if homa_ir is not None else 1.5
         crp = float(hscrp) if hscrp is not None else 0.5
-        w = float(waist) if waist is not None else 90.0
-        # معادلة طول العمر والترميم الخلوي المحدثة لعام 2026 (100x Precision Weights)
+        w = float(waist) if waist is not None else 85.0
         return max(round(a + (h - 5.4)*2.35 + (ir - 1.5)*1.65 + (crp - 0.5)*1.15 + (w - 85)*0.12, 1), 18.0)
     except: return float(age)
 
 def simulate_glucose_curve(base_fbg, sequence, fasting_type, diet_type, gi_score):
     t = np.linspace(0, 180, 100)
     flatten_factor = 2.6 if (sequence in ["ألياف -> بروتين -> نشويات", "دهون وبروتين -> نشويات", "Fiber -> Protein -> Carbs"]) else 1.0
-    
-    # مواءمة المنحنيات بناءً على محرك الصيام والخيارات الغذائية لعام 2026
     if "16" in fasting_type or "18" in fasting_type: flatten_factor *= 1.2
     if "رمضان" in fasting_type or "Ramadan" in fasting_type: flatten_factor *= 1.1
     if "حيواني" in diet_type or "Vegan" in diet_type: flatten_factor *= 0.95
-
     amplitude = (gi_score * 1.55) / flatten_factor
     k1 = 0.046 / (flatten_factor * 0.85)
     k2 = 0.023 * flatten_factor
     curve = float(base_fbg) + amplitude * (np.exp(-k2 * t) - np.exp(-k1 * t)) * 1.6
     return t, curve
 
-# 3️⃣ بروتوكول المصادقة السيادي الآمن لكل عميل ومشرف (Authentication Module)
+# 3️⃣ بروتوكول المصادقة السيادي والمدخلات الساطعة بيضاء اللون بالكامل
 MASTER_SUPER_CODE = "CR-EMPEROR-EHAB-2026"
 
 if 'is_auth' not in st.session_state: st.session_state.is_auth = False
@@ -283,15 +301,14 @@ if not st.session_state.is_auth:
                 if db_pass == input_pass:
                     if db_active == 1:
                         st.session_state.is_auth = True; st.session_state.role = "client"; st.session_state.auth_code = input_user; st.rerun()
-                    else: st.error("❌ This subscription has expired or has been automatically deactivated by the system.")
+                    else: st.error("❌ This subscription has expired or has been automatically deactivated.")
                 else: st.error("❌ Incorrect Password / كلمة المرور غير مطابقة.")
-            else: st.error("❌ Access code not registered in the system / الكود غير مسجل في النظام السيادي.")
+            else: st.error("❌ Access code not registered in the system / الكود غير مسجل.")
     st.stop()
 
 if 'active_client_code' not in st.session_state:
     st.session_state.active_client_code = st.session_state.auth_code if st.session_state.role == "client" else "CR-SOHAG-2026"
 
-# جلب فوري وشامل لبيانات العميل النشط لحمايتها من التداخل واللخبطة البرمجية
 def get_current_active_client_data():
     conn = sqlite3.connect('cellrevive_sovereign_system.db')
     conn.row_factory = sqlite3.Row
@@ -318,7 +335,7 @@ if row:
 else:
     p_data = {'fbg': 115.0, 'ppbg': 145.0, 'rbg': 120.0, 'hba1c': 6.2, 'weight': 85.0, 'height': 175.0, 'waist': 95.0, 'creatinine': 0.9, 'age': 42, 'gender': 'Male', 'skin_analysis': '', 'selected_supplements': '', 'fasting_insulin': 10.5, 'hscrp': 0.8, 'compliance_score': 95, 'anxiety_score': 4, 'plan_type': 'باقة شهر (20 مشترك)', 'is_active': 1, 'expiry_date': '2026-12-31'}
 
-# 4️⃣ لوحة التحكم الخاصة بالمشرف العام (التحكم السيادي في الحصص والاشتراكات لـ د/ إيهاب حشمت)
+# 4️⃣ لوحة الإشراف وحوكمة الحصص والاشتراكات
 if st.session_state.role == "supervisor":
     st.markdown(f'<div class="premium-card" style="border-color:#00ffcc;"><h2 style="color:#00ffcc; text-align:center; font-weight:900;">{T["supervisor_title"]}</h2></div>', unsafe_allow_html=True)
     st.sidebar.markdown("### 🔐 System Governance")
@@ -356,7 +373,7 @@ if st.session_state.role == "supervisor":
             """, (dr_fbg, dr_insulin, dr_hba1c, dr_weight, dr_waist, dr_anxiety, st.session_state.active_client_code))
             conn.commit()
             conn.close()
-            st.success("🟢 Secured & Updated / تم تحديث وتشفير السجل الخلوي بنجاح استقرار.")
+            st.success("🟢 Secured & Updated / تم تحديث وتشفير السجل الخلوي بنجاح.")
             st.rerun()
 
     with dr_tab_quota:
@@ -394,18 +411,17 @@ if st.session_state.role == "supervisor":
                         """, (new_code, new_pass, chosen_plan, target_expiry))
                         conn.commit()
                         conn.close()
-                        st.success(f"🟢 Account Activated / تم إنشاء الحساب بنجاح، تاريخ انتهاء الصلاحية الآلي: {target_expiry}")
+                        st.success(f"🟢 Account Activated / تم إنشاء الحساب بنجاح، العداد ينتهي بتاريخ: {target_expiry}")
                         st.rerun()
                     except sqlite3.IntegrityError:
-                        st.error("🚨 هذا الكود محجوز مسبقاً في مصفوفة الاستقرار.")
+                        st.error("🚨 هذا الكود محجوز مسبقاً في المنظومة.")
 
-# 5️⃣ لوحة حسابات وفحص المشتركين ومستشعرات الطاقة والترميم الخلوي
+# 5️⃣ لوحة حسابات وفحص المشتركين ومستشعرات الطاقة والترميم الخلوي الساطعة
 if st.session_state.role in ["client", "supervisor"]:
     homa_calc = calculate_homa_ir(p_data['fbg'], p_data['fasting_insulin'])
     bio_age = calculate_biological_age(p_data['age'], p_data['hba1c'], homa_calc, p_data['hscrp'], p_data['waist'])
     egfr_calc = calculate_egfr(p_data['age'], p_data['weight'], p_data['creatinine'], p_data['gender'])
     
-    # شعلة التحفيز اليومي والتحفيز المستمر لمنع الملل وضمان الاستمرارية العميقة للعميل
     st.markdown(f"""
         <div class="motivational-card">
             <h3 style="color:#00ffcc !important; text-align:center; margin-bottom:5px;">{T['motivation_title']}</h3>
@@ -420,23 +436,20 @@ if st.session_state.role in ["client", "supervisor"]:
         <div class="premium-card">
             <h3 style="color:#d4af37 !important; text-align:center; margin-bottom:15px;">{T['metrics_title']}</h3>
             <div style="display:flex; justify-content:space-around; text-align:center; flex-wrap: wrap;">
-                <div style="margin:5px;"><span style="font-size:13px; opacity:0.85;">{T['bio_age']}</span><br><b class="metric-value-green">{bio_age} {"سنة" if st.session_state.lang == "العربية" else "Years"}</b></div>
-                <div style="margin:5px;"><span style="font-size:13px; opacity:0.85;">{T['homa_ir']}</span><br><b class="metric-value-gold">{homa_calc}</b></div>
-                <div style="margin:5px;"><span style="font-size:13px; opacity:0.85;">{T['egfr']}</span><br><b class="metric-value-green">{egfr_calc}</b></div>
-                <div style="margin:5px;"><span style="font-size:13px; opacity:0.85;">{T['expiry']}</span><br><b style="color:#ff4b4b; font-size:16px;">{p_data['expiry_date']}</b></div>
+                <div style="margin:5px;"><span style="font-size:13px; color:#ffffff;">{T['bio_age']}</span><br><b class="metric-value-green">{bio_age} {"سنة" if st.session_state.lang == "العربية" else "Years"}</b></div>
+                <div style="margin:5px;"><span style="font-size:13px; color:#ffffff;">{T['homa_ir']}</span><br><b class="metric-value-gold">{homa_calc}</b></div>
+                <div style="margin:5px;"><span style="font-size:13px; color:#ffffff;">{T['egfr']}</span><br><b class="metric-value-green">{egfr_calc}</b></div>
+                <div style="margin:5px;"><span style="font-size:13px; color:#ffffff;">{T['expiry']}</span><br><b style="color:#ff4b4b; font-size:16px;">{p_data['expiry_date']}</b></div>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # الأجنحة والعدسات الأربعة المحدثة بحساسية 100 ضعف لعام 2026
     tab_meals, tab_supplements, tab_skin, tab_mind = st.tabs([T['tab1'], T['tab2'], T['tab3'], T['tab4']])
     
     # 🔘 المحور الأول: هندسة الوجبات والمنحنيات الأيضية ومصفوفة الصيام الشاملة
     with tab_meals:
         st.markdown("### 📸 عدسة مسح الوجبات الخلوية فائقة الحساسية ومتناهية الدقة")
-        st.markdown("<p style='font-size:13px; color:#f5e3aa;'>يمكنك استخدام تصوير الوجبة وكتابة تفاصيلها المكونة في نفس اللحظة دون تعارض برمجى.</p>", unsafe_allow_html=True)
         
-        # مصفوفة الصيام المتقطع وصيام الكنائس ورمضان
         fasting_options = [
             "لا يوجد صيام حالياً / No Fasting", 
             "صيام متقطع 14 ساعة / Intermittent Fasting 14h",
@@ -469,7 +482,7 @@ if st.session_state.role in ["client", "supervisor"]:
             
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=t, y=glucose_curve, mode='lines', name='تذبذب السكر المتوقع بالدم', line=dict(color='#00ffcc', width=3)))
-            fig.update_layout(title="📉 المستشعر الأيضي - محاكاة تأثير تتابع ومصفوفة الوجبة على خلاياك لعام 2026", paper_bgcolor="#01060f", plot_bgcolor="#01060f", font=dict(color="#ffffff"))
+            fig.update_layout(title="📉 المستشعر الأيضي - محاكاة تأثير تتابع ومصفوفة الوجبة على خلاياك", paper_bgcolor="#01060f", plot_bgcolor="#01060f", font=dict(color="#ffffff"))
             st.plotly_chart(fig, use_container_width=True)
             
             if ACTIVE_API_KEY:
@@ -487,10 +500,9 @@ if st.session_state.role in ["client", "supervisor"]:
                     st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
                 except: st.error("❌ واجهت العدسة فائقة الحساسية صعوبة مؤقتة في معالجة الوجبة.")
 
-    # 🔘 المحور الثاني: مسح وتدقيق علب المغذيات والأدوية ودستور هيئة الدواء المصرية 2026
+    # 🔘 المحور الثاني: مسح وتدقيق علب الأدوية والمغذيات
     with tab_supplements:
         st.markdown("### 💊 عدسة فحص ومطابقة المكونات والأدوية الكلية (قرار سليم 100% بنسبة خطأ 0%)")
-        st.markdown("<p style='font-size:13px; color:#f5e3aa;'>اكتب اسم الدواء أو المادة الفعالة أو ارفع صورته، ليقوم البرنامج فوراً بمطابقته مع دستور الأدوية المصري المحدث لعام 2026 الصادر عن هيئة الدواء المصرية وطب الأعشاب التكاملي.</p>", unsafe_allow_html=True)
         
         if p_data['selected_supplements']:
             st.markdown(f"""
@@ -499,7 +511,7 @@ if st.session_state.role in ["client", "supervisor"]:
                 </div>
             """, unsafe_allow_html=True)
             
-        drug_txt_input = st.text_input("اكتب اسم المركب باللغة العربية أو الإنجليزية بدقة:", value="Milga Tablets", key="drug_txt_field")
+        drug_txt_input = st.text_input("اكتب اسم المركب باللغة العربية أو الإنجليزية بدقة عالية:", value="Milga Tablets", key="drug_txt_field")
         uploaded_drug_img = st.file_uploader("ارفع أو صور علبة المركب أو الروشتة لتفعيل العدسة الخارقة والتعرف الدقيق:", type=["png", "jpg", "jpeg"], key="drug_img_field")
         
         if uploaded_drug_img is not None:
@@ -512,9 +524,7 @@ if st.session_state.role in ["client", "supervisor"]:
                     prompt = f"""
                     أنت خبير الذكاء الاصطناعي الموجه فائق الحساسية المرتبط بدستور الأدوية المصري لعام 2026 الصادر عن هيئة الدواء المصرية وطب الأعشاب الشمولي والتكاملي داخل برنامج CellRevive AI المطور بواسطة د/ إيهاب حشمت الظني.
                     قم بفحص المركب أو الدواء التالي: {drug_txt_input}. السكر التراكمي للعميل هو {p_data['hba1c']}%.
-                    أعط قراراً صحياً سليماً 100% وبنسبة خطأ 0% يتضمن بدقة بالغة:
-                    1. المادة الفعالة ومطابقتها وعملها واستنزافها للمغذيات الدقيقة (مثل استنزاف الميتفورمين لـ B12).
-                    2. إعداد روتين وجبات متوافق مع مصفوفة الصيام والروتين الحركي والتمارين البسيطة التي يمكن عملها في البيت ومقترحات المشروبات المتميزة (مثل مستخلص البربرين عالي النقاء أو القرفة الموجهة) لتحسين الأيض وكفاءة الميتوكوندريا بمهارة تفوق أعظم المتخصصين في العالم.
+                    أعط قراراً صحياً سليماً 100% وبنسبة خطأ 0% يتضمن بدقة بالغة المادة الفعالة واستنزافها للمغذيات الدقيقة، مع إعداد روتين وجبات متوافق مع مصفوفة الصيام والروتين الحركي والمشروبات المتميزة لتحسين الأيض وكفاءة الميتوكوندريا بمهارة تفوق أعظم المتخصصين.
                     تكلم باللغة العربية وبلهجة مصرية واثقة وبمنتهى الاحترافية والتدقيق الشمولي.
                     """
                     if uploaded_drug_img is not None:
@@ -531,12 +541,11 @@ if st.session_state.role in ["client", "supervisor"]:
                     st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
                 except Exception as e: st.error(f"خطأ في معالجة ومطابقة الدواء: {e}")
 
-    # 🔘 المحور الثالث: عدسة فحص العلامات الجلدية والأعراض الفائقة وربطها بمقاومة الأنسولين
+    # 🔘 المحور الثالث: عدسة فحص العلامات الجلدية والأعراض
     with tab_skin:
         st.markdown("### 🔎 عدسة فحص البصمات والعلامات الجلدية والأعراض المتكاملة")
-        st.markdown("<p style='font-size:13px; color:#f5e3aa;'>قم برفع صور التصبغات الجلدية (مثل الاسمرار خلف الرقبة أو الزوائد الجلدية الحيوية) واكتب الأعراض المصاحبة لتقوم العدسة بربطها مباشرة بمقاومة الأنسولين بدقة متناهية الحساسية.</p>", unsafe_allow_html=True)
         
-        skin_symptoms_input = st.text_area("اكتب بالتفصيل كافة الأعراض الظاهرة على الجلد أو التي تشعر بها بصفة عامة حالياً:", value="وجود تصبغات داكنة تحت الإبط وزوائد حول الرقبة مع إجهاد عام", key="skin_txt_field")
+        skin_symptoms_input = st.text_area("اكتب بالتفصيل كافة الأعراض الظاهرة على الجلد أو التي تشعر بها بصفة عامة حالياً ووضوح تام:", value="وجود تصبغات داكنة تحت الإبط وزوائد حول الرقبة مع إجهاد عام", key="skin_txt_field")
         uploaded_skin_img = st.file_uploader("ارفع صورة دقيقة للحالة الجلدية للفحص والتفسير بمحرك الحساسية المطور (100x Precision):", type=["png", "jpg", "jpeg"], key="skin_img_field")
         
         if uploaded_skin_img is not None:
@@ -565,16 +574,15 @@ if st.session_state.role in ["client", "supervisor"]:
                     st.markdown(f"<div class='premium-card'>{res.text}</div>", unsafe_allow_html=True)
                 except: st.error("❌ تعذر على مستشعر البصمات الجلدية إتمام عملية الفحص اللحظية.")
 
-    # 🔘 المحور الرابع: مستشعر الهرمونات وتصفير الكورتيزول والإجهاد عبر منظومة العلاج بالموسيقى الموجهة
+    # 🔘 المحور الرابع: مستشعر الهرمونات والعلاج بالموسيقى
     with tab_mind:
         st.markdown("### 🧠 مستشعر الهرمونات المسؤول عن الإجهاد والتوتر ونظام العلاج بالموسيقى")
-        st.markdown(f"<div style='background-color:#01060f; padding:15px; border-radius:10px; border-right: 5px solid #ff4b4b; margin-bottom:15px;'><b>📊 مستوى التوتر العصبي الحالي المسجل بملفك الموجه: {p_data['anxiety_score']} / 10</b></div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='background-color:#01060f; padding:15px; border-radius:10px; border-right: 5px solid #ff4b4b; margin-bottom:15px;'><b style='color:#ffffff !important;'>📊 مستوى التوتر العصبي الحالي المسجل بملفك الموجه: {p_data['anxiety_score']} / 10</b></div>", unsafe_allow_html=True)
         
-        # دمج منظومة العلاج بالموسيقى الموجهة والترددات الصوتية السلوكية لعام 2026
         st.markdown("""
             <div class="premium-card" style="border-color:#00ffcc; background:linear-gradient(145deg, #02171e, #010a0d);">
                 <h4 style="color:#00ffcc !important; text-align:center;">🎵 منظومة العلاج بالموسيقى والترددات الصوتية الموجهة بالذكاء الاصطناعي</h4>
-                <p style="font-size:13px; text-align:center; color:#ffffff;">
+                <p style="font-size:13px; text-align:center; color:#ffffff !important;">
                     بناءً على قياس مستشعراتك الحيوية للإجهاد والتوتر، تم توليد وتخصيص هذه الموجات الصوتية ثنائية النبرة وترددات <b>528Hz Solfeggio</b> المصممة علمياً لخفض هرمونات الكورتيزول والأدرينالين الزائدة وتفعيل التصفير الكظري الفوري لدعم الاستشفاء والترميم الخلوي.
                 </p>
                 <div style="display:flex; justify-content:center; margin-top:10px;">
@@ -590,7 +598,7 @@ if st.session_state.role in ["client", "supervisor"]:
                     prompt = f"""
                     أنت مستشعر الهرمونات الفائق ووحدة الذكاء الاصطناعي المخصصة للتحكم السلوكي والعلاج بالموسيقى والطب النفسي التكاملي في منظومة CellRevive AI المبتكرة بواسطة د/ إيهاب حشمت الظني لعام 2026.
                     العميل لديه مستوى توتر يقدر بـ {p_data['anxiety_score']}/10 وهو ما يؤدي لارتفاع هرمون الكورتيزول والأدرينالين المسبب لرفع السكر وعناد حرق الدهون.
-                    اكتشف الهرمون الزائد والمسبب للحالة بدقة، وقدم بروتوكولاً علاجياً سلوكياً ونفسياً وتوصيات منزلية وممارسات متميزة لتصفير الإجهاد وخفض الكورتيزول بطريقة علمية وبأسلوب تحفيزي فائق لعام 2026 يفوق أفضل الممارسات الطبية والنفسية في الكون.
+                    اكتشف الهرمون الزائد والمسبب للحالة بدقة، وقدم بروتوكولاً علاجياً سلوكياً ونفسياً وتوصيات منزلية وممارسات متميزة لتصفير الإجهاد وخفض الكورتيزول بطريقة علمية وبأسلوب تحفيزي فائق لعام 2026 يفوق أفضل الممارسات في الكون.
                     تكلم باللغة العربية وبلهجة مصرية مشجعة ومبهرة.
                     """
                     res = model.generate_content(prompt)
